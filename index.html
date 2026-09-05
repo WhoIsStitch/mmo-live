@@ -9,21 +9,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0e1217; --raise:#161c24; --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.14);
-    --text:#e8eef5; --muted:#8593a3; --dim:#5b6875;
-    --accent:#22d3ee; --off:#1e2833;
+    --bg:#0d1117; --raise:#171f29; --panel:#121922; --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.16);
+    --text:#eef5fb; --muted:#93a2b3; --dim:#647181;
+    --accent:#22d3ee; --accent-2:#facc15; --off:#1f2a36;
     --c1:#c084fc; --c2:#34d399; --c3:#22d3ee; --c4:#fbbf24;
     --c5:#fb7185; --c6:#60a5fa; --c7:#a3e635; --c8:#fb923c;
     --ui:"Space Grotesk",system-ui,sans-serif;
     --ease:cubic-bezier(.4,0,.2,1); --spring:cubic-bezier(.34,1.4,.64,1);
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.5 var(--ui);
-    -webkit-font-smoothing:antialiased}
-  .wrap{max-width:1120px;margin:0 auto;padding:32px 22px 90px}
+  body{margin:0;background:
+    radial-gradient(circle at 12% -10%,rgba(34,211,238,.11),transparent 34rem),
+    linear-gradient(180deg,#0d1117 0%,#0a0d12 100%);
+    color:var(--text);font:400 15px/1.5 var(--ui);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:32px 22px 90px;animation:pagein .34s var(--ease) both}
+  @keyframes pagein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-  .topbar{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
-  h1{font:700 21px/1 var(--ui);letter-spacing:-.025em;margin:0}
+  .topbar{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+  h1{font:700 24px/1 var(--ui);letter-spacing:0;margin:0}
   .status{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
   .dot{width:7px;height:7px;border-radius:50%;background:var(--dim)}
   .dot.live{background:var(--c2)} .dot.error{background:var(--c5)}
@@ -32,21 +35,24 @@
     letter-spacing:.01em;margin-bottom:9px}
 
   /* controls: quiet, no boxes unless needed */
-  .btn{font:500 13.5px/1 var(--ui);background:none;color:var(--muted);
-    border:1px solid transparent;border-radius:7px;padding:9px 13px;cursor:pointer;
-    transition:color .15s var(--ease),background .15s var(--ease)}
-  .btn:hover{color:var(--text);background:var(--raise)}
-  .btn.on{color:var(--bg);background:var(--accent);font-weight:600}
+  .btn{font:600 13.5px/1 var(--ui);background:rgba(255,255,255,.02);color:var(--muted);
+    border:1px solid var(--line);border-radius:7px;padding:9px 13px;cursor:pointer;
+    transition:color .15s var(--ease),background .15s var(--ease),border-color .15s var(--ease),transform .15s var(--ease)}
+  .btn:hover{color:var(--text);background:var(--raise);border-color:var(--line-2);transform:translateY(-1px)}
+  .btn.on{color:#071017;background:var(--accent);border-color:transparent;font-weight:700}
   .btn.sm{padding:8px 12px;font-size:13px}
   .btn.ghost{border-color:var(--line)}
   .btn.ghost:hover{border-color:var(--line-2);background:none}
+  .btn.danger:hover{color:#fff;background:rgba(251,113,133,.16);border-color:rgba(251,113,133,.55)}
+  .btn.gold{color:#facc15;border-color:rgba(250,204,21,.26)}
+  .btn.gold:hover,.btn.gold.on{color:#201600;background:#facc15;border-color:#facc15}
   input[type=text],input[type=password]{font:400 14.5px var(--ui);background:var(--raise);
     color:var(--text);border:1px solid transparent;border-radius:8px;padding:11px 13px;outline:none;
     transition:border-color .15s var(--ease)}
   input:focus{border-color:var(--accent)}
 
   /* tabs */
-  .tabs{display:flex;margin-bottom:30px;border-bottom:1px solid var(--line)}
+  .tabs{display:flex;margin-bottom:24px;border-bottom:1px solid var(--line)}
   .tab{font:500 15px/1 var(--ui);background:none;border:0;color:var(--muted);
     padding:0 2px 14px;margin-right:28px;cursor:pointer;position:relative;transition:color .15s}
   .tab:hover{color:var(--text)}
@@ -58,18 +64,24 @@
   @keyframes fade{from{opacity:0}to{opacity:1}}
 
   /* chart strip */
-  .charts{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
-  .chartcard{display:flex;flex-direction:column;min-width:168px;text-align:left;
-    font-family:var(--ui);background:none;border:0;border-radius:9px;padding:12px 14px;
-    cursor:pointer;position:relative;transition:background .15s var(--ease)}
-  .chartcard:hover{background:var(--raise)}
-  .chartcard[aria-current="true"]{background:var(--raise)}
+  .charts{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
+  .chartcard{display:flex;flex-direction:column;min-width:178px;text-align:left;
+    font-family:var(--ui);background:rgba(255,255,255,.025);border:1px solid var(--line);
+    border-radius:8px;padding:13px 14px;cursor:pointer;position:relative;
+    transition:background .15s var(--ease),border-color .15s var(--ease),transform .15s var(--ease)}
+  .chartcard:hover{background:var(--raise);border-color:var(--line-2);transform:translateY(-2px)}
+  .chartcard[aria-current="true"]{background:var(--panel);border-color:rgba(34,211,238,.34)}
   .chartcard .ct{font:600 15px/1.3 var(--ui);color:var(--muted);transition:color .15s}
   .chartcard[aria-current="true"] .ct{color:var(--text)}
   .chartcard .cm{font:400 12.5px/1 var(--ui);color:var(--dim);margin-top:4px}
   .chartcard .cbar{height:5px;background:var(--off);margin-top:11px;border-radius:3px;overflow:hidden}
   .chartcard .cbar i{display:block;height:100%;border-radius:3px;background:var(--c2);
     transition:width .45s var(--ease)}
+  .cardbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;align-items:center}
+  .sparkbtn{width:28px;height:24px;border-radius:7px;border:1px solid rgba(250,204,21,.26);
+    background:rgba(250,204,21,.07);color:#facc15;font:700 13px/1 var(--ui);cursor:pointer;
+    transition:background .15s var(--ease),transform .15s var(--ease),border-color .15s var(--ease)}
+  .sparkbtn:hover{background:#facc15;color:#211800;border-color:#facc15;transform:scale(1.06)}
   .newchart{align-items:flex-start;justify-content:center;color:var(--dim);min-width:0;font-size:13.5px}
   .newchart:hover{color:var(--muted)}
 
@@ -77,7 +89,7 @@
   .toolrow .spacer{margin-left:auto}
 
   /* table: hairlines, chunky KO blocks */
-  .tablewrap{overflow-x:auto}
+  .tablewrap{overflow-x:auto;background:rgba(255,255,255,.018);border:1px solid var(--line);border-radius:8px;padding:8px}
   table{border-collapse:collapse;width:100%;min-width:640px}
   thead th{font:500 12px/1 var(--ui);color:var(--dim);padding:0 8px 14px;text-align:center;
     white-space:nowrap;border-bottom:1px solid var(--line)}
@@ -116,8 +128,8 @@
   .note{margin-top:16px;font-size:13.5px;color:var(--muted);line-height:1.7;max-width:72ch}
 
   /* profile: sections, not boxes */
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:34px}
-  .card{background:none;border:0;padding:0}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:8px;padding:18px}
   .card h3{font:600 13px/1 var(--ui);margin:0 0 18px;padding-bottom:12px;color:var(--muted);
     border-bottom:1px solid var(--line)}
   .avrow{display:flex;align-items:center;gap:16px;margin-bottom:20px}
@@ -135,10 +147,13 @@
   .who-row .av{width:26px;height:26px;font-size:10px}
   .who-row b{font-weight:500}
   .who-row s{margin-left:auto;text-decoration:none;color:var(--dim);font-weight:500;font-size:13px}
+  .who-row .deluser{margin-left:4px;padding:7px 9px;font-size:12px}
+  .linkbox{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:10px}
+  .linkbox input{min-width:0}
 
   /* ============ OBS overlay: minimal rows, chunky bars ============ */
   body.overlay{background:transparent}
-  body.overlay .wrap{max-width:none;padding:6px 10px}
+  body.overlay .wrap{max-width:none;padding:6px 10px;animation:none}
   /* no panel behind the rows, so everything gets a shadow to stay readable
      over bright gameplay. ?scrim=1 adds a soft dark backing if you need it. */
   body.overlay .lane .nm,body.overlay .lane .sp,body.overlay .lane .count,
@@ -150,7 +165,7 @@
   body.overlay .hide-ov{display:none!important}
   .lanes{display:flex;flex-direction:column}
   .lane{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;
-    align-items:center;gap:20px;padding:15px 4px;background:none;border:0;
+    align-items:center;gap:22px;padding:17px 4px;background:none;border:0;
     border-bottom:1px solid var(--line);
     animation:lanein .4s var(--ease) both;transition:transform .45s var(--ease)}
   .lane:last-child{border-bottom:0}
@@ -158,20 +173,28 @@
   .lane.leaving{animation:laneout .28s var(--ease) forwards}
   @keyframes laneout{to{opacity:0;transform:translateY(-5px)}}
   .lane .who{display:flex;align-items:center;gap:12px;min-width:0}
-  .lane .av{width:30px;height:30px;border-radius:9px;font-size:11px;background-color:var(--c)}
-  .lane .nm{font:600 17px/1.15 var(--ui);letter-spacing:-.015em;white-space:nowrap;
+  .lane .av{width:38px;height:38px;border-radius:10px;font-size:12px;background-color:var(--c)}
+  .lane .nm{font:700 19px/1.15 var(--ui);letter-spacing:0;white-space:nowrap;
     max-width:200px;overflow:hidden;text-overflow:ellipsis}
   .lane .sp{font:400 12.5px/1 var(--ui);color:var(--dim);margin-top:5px;white-space:nowrap;
     max-width:200px;overflow:hidden;text-overflow:ellipsis}
   .lane.leader .nm::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
     background:var(--c4);margin-left:8px;vertical-align:middle}
-  .track{position:relative;height:24px;display:flex;align-items:center}
-  .segs{display:flex;gap:3px;width:100%;height:22px}
+  .track{position:relative;height:30px;display:flex;align-items:center}
+  .segs{display:flex;gap:3px;width:100%;height:27px}
   .segs i{flex:1 1 0;min-width:3px;border-radius:4px;background:var(--off);
     transition:background .3s var(--ease),transform .35s var(--spring)}
   .segs i.on{background:var(--c)}
   .segs i.just{animation:hit .6s var(--spring)}
   @keyframes hit{0%{transform:scaleY(1)}35%{transform:scaleY(1.55)}100%{transform:scaleY(1)}}
+  .lane.shiny{animation:shinyrow 1.35s var(--ease)}
+  .lane.shiny .track::after{content:"";position:absolute;inset:-7px -10px;border-radius:12px;
+    background:linear-gradient(90deg,transparent,rgba(250,204,21,.38),transparent);
+    animation:sweep 1.15s var(--ease);pointer-events:none}
+  .lane.shiny .segs i.on{animation:goldpop 1.15s var(--spring)}
+  @keyframes shinyrow{0%,100%{filter:none}40%{filter:drop-shadow(0 0 18px rgba(250,204,21,.72))}}
+  @keyframes sweep{from{transform:translateX(-55%);opacity:0}25%{opacity:1}to{transform:translateX(55%);opacity:0}}
+  @keyframes goldpop{0%,100%{background:var(--c);transform:none}38%{background:#facc15;transform:scaleY(1.55)}}
   .marker{position:absolute;top:50%;width:3px;height:30px;margin-left:-1.5px;margin-top:-15px;
     background:#fff;border-radius:3px;left:var(--x,0%);opacity:0;pointer-events:none;
     transition:left .65s var(--spring),opacity .25s var(--ease)}
@@ -217,7 +240,7 @@
     <div class="legend">
       <span><b>C</b> = catch it</span>
       <span><b>KO</b> = defeat it</span>
-      <span><i class="sw" style="background:var(--mag)"></i><i class="sw" style="background:var(--lime)"></i>
+      <span><i class="sw" style="background:var(--c6)"></i><i class="sw" style="background:var(--c2)"></i>
         same colour = defeat together in one battle</span>
     </div>
     <p class="note">
@@ -244,7 +267,7 @@
         <label class="fl" for="name">Display name</label>
         <input type="text" id="name" maxlength="16" placeholder="Your name" style="width:100%">
         <p class="hint" style="margin-top:12px">
-          Shown on the stream overlay. Images are shrunk to 96&times;96 in your browser before saving.
+          Shown on the stream overlay. Images are cached separately so the display can use a sharper picture.
         </p>
       </div>
 
@@ -271,7 +294,7 @@
           </p>
         </div>
         <div id="authed" hidden>
-          <p class="hint">Signed in as <b id="whoami" style="color:var(--lime)"></b>.
+          <p class="hint">Signed in as <b id="whoami" style="color:var(--c2)"></b>.
              Your charts sync to this account.</p>
           <button class="btn sm ghost" id="dologout" style="margin-top:14px">Log Out</button>
         </div>
@@ -285,6 +308,12 @@
         <p class="hint" style="margin-top:12px">
           Everyone using the same room code sees each other. Share the link, not just the code.
         </p>
+        <label class="fl" for="obslink" style="margin-top:18px">OBS display link</label>
+        <div class="linkbox">
+          <input type="text" id="obslink" readonly>
+          <button class="btn sm on" id="copyobs">Copy</button>
+        </div>
+        <div class="msg" id="linkmsg"></div>
         <div class="who-list" id="wholist"></div>
       </div>
 
@@ -322,8 +351,9 @@
   var profile = jget("mmo-profile", {name:"Hunter "+ME.slice(1,4).toUpperCase(), avatar:""});
   var charts  = jget("mmo-charts", null);
   var activeId = lget("mmo-active","");
-  var players = {}, colorMap = {}, hideDone=false, pushTimer=null;
-  var lanes = {}, prevDone = {};
+  if(profile.avatar && !profile.avatarKey) profile.avatarKey = "a"+Date.now().toString(36);
+  var players = {}, avatars = {}, colorMap = {}, hideDone=false, pushTimer=null;
+  var lanes = {}, prevDone = {}, prevShiny = {};
 
   if(!charts || !charts.length){
     charts = [{id:"c"+Date.now().toString(36), title:"Outbreak 1", spawns:8, done:{}}];
@@ -346,6 +376,19 @@
   }
   function avStyle(p){
     return p.avatar ? 'style="background-image:url('+p.avatar+')"' : "";
+  }
+  function isStitch(){
+    var n = (auth && auth.username) || profile.name || "";
+    return String(n).trim().toLowerCase() === "stitch";
+  }
+  function dbAuth(){
+    return auth && auth.idToken ? "&auth="+encodeURIComponent(auth.idToken) : "";
+  }
+  function buildDisplayLink(){
+    var u = new URL(location.href);
+    u.searchParams.set("overlay","1");
+    u.searchParams.set("room",ROOM);
+    return u.toString();
   }
 
   // ---------------- paths ----------------
@@ -389,10 +432,27 @@
     pushTimer = setTimeout(function(){
       fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/players/"+ME+".json?print=silent",{
         method:"PUT",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({name:profile.name,avatar:profile.avatar||"",
-          chart:c.title,spawns:c.spawns,done:c.done,updated:Date.now()})
+        body:JSON.stringify({name:profile.name,avatarKey:profile.avatarKey||"",
+          chart:c.title,spawns:c.spawns,done:c.done,shinyAt:c.shinyAt||0,updated:Date.now()})
       }).catch(function(){});
     },400);
+  }
+
+  function publishAvatar(force){
+    var key = profile.avatarKey || "";
+    var pubKey = "mmo-avatar-pub:"+ROOM+":"+ME;
+    var known = lget(pubKey,"");
+    if(!force && key && known===key) return;
+    if(profile.avatar && key){
+      fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/avatars/"+ME+".json?print=silent",{
+        method:"PUT",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({avatar:profile.avatar,avatarKey:key,updated:Date.now()})
+      }).then(function(){ lset(pubKey,key); avatars[ME]={key:key,url:profile.avatar}; }).catch(function(){});
+    } else {
+      fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/avatars/"+ME+".json?print=silent",{
+        method:"DELETE"
+      }).then(function(){ lset(pubKey,""); delete avatars[ME]; }).catch(function(){});
+    }
   }
 
   function pushAccount(){
@@ -468,15 +528,17 @@
     fr.onload=function(){
       var img=new Image();
       img.onload=function(){
-        var S=96, cv=document.createElement("canvas");
+        var S=192, cv=document.createElement("canvas");
         cv.width=cv.height=S;
         var cx=cv.getContext("2d");
         var scale=Math.max(S/img.width,S/img.height);
         var w=img.width*scale, h=img.height*scale;
         cx.drawImage(img,(S-w)/2,(S-h)/2,w,h);
-        var q=0.82, url=cv.toDataURL("image/jpeg",q);
-        while(url.length>46000 && q>0.35){ q-=0.12; url=cv.toDataURL("image/jpeg",q); }
-        profile.avatar=url; save(); renderProfile(); msg("good","Picture updated.");
+        var q=0.9, url=cv.toDataURL("image/jpeg",q);
+        while(url.length>120000 && q>0.42){ q-=0.1; url=cv.toDataURL("image/jpeg",q); }
+        profile.avatar=url;
+        profile.avatarKey="a"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+        save(); publishAvatar(true); renderProfile(); msg("good","Picture updated.");
       };
       img.onerror=function(){ msg("bad","Couldn't read that image."); };
       img.src=fr.result;
@@ -492,6 +554,7 @@
         players=d||{}; assignColors();
         setStatus("live", active().length+" hunting");
         if(OVERLAY) paintLanes(); else { renderWho(); renderTable(); }
+        loadAvatars();
       })
       .catch(function(e){ setStatus("error", String(e.message||e)); });
   }
@@ -509,13 +572,32 @@
   }
   function colorFor(id){ return colorMap[id] || COLORS[0]; }
 
+  function avatarFor(id,key){
+    var a=avatars[id];
+    return a && key && a.key===key ? a.url : "";
+  }
+
+  function loadAvatars(){
+    Object.keys(players).forEach(function(id){
+      var key=(players[id]&&players[id].avatarKey)||"";
+      if(!key) { delete avatars[id]; return; }
+      if(avatars[id] && avatars[id].key===key) return;
+      fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/avatars/"+id+".json?t="+Date.now(),{cache:"no-store"})
+        .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+        .then(function(d){
+          avatars[id]={key:key,url:(d&&d.avatar)||""};
+          if(OVERLAY) paintLanes(); else { renderWho(); renderTable(); }
+        }).catch(function(){});
+    });
+  }
+
   function active(){
     var now=Date.now(), list=[];
     for(var id in players){
       var p=players[id]||{};
       if(now-(p.updated||0)>AWAY) continue;
-      list.push({id:id,name:p.name||"?",avatar:p.avatar||"",chart:p.chart||"",
-                 spawns:p.spawns||8,done:p.done||{}});
+      list.push({id:id,name:p.name||"?",avatar:avatarFor(id,p.avatarKey||""),chart:p.chart||"",
+                 spawns:p.spawns||8,done:p.done||{},shinyAt:p.shinyAt||0});
     }
     list.sort(function(a,b){
       var d=Object.keys(b.done).length-Object.keys(a.done).length;
@@ -554,6 +636,11 @@
       if(!lane){ lane=lanes[p.id]=makeLane(); box.appendChild(lane); }
       lane.style.setProperty("--c", colorFor(p.id));
       lane.classList.toggle("leader", rank===0 && Object.keys(p.done).length>0);
+      if(Object.prototype.hasOwnProperty.call(prevShiny,p.id) && p.shinyAt && p.shinyAt!==prevShiny[p.id]){
+        lane.classList.remove("shiny"); void lane.offsetWidth; lane.classList.add("shiny");
+        setTimeout(function(){ lane.classList.remove("shiny"); },1400);
+      }
+      prevShiny[p.id]=p.shinyAt||0;
 
       var av=lane.querySelector(".av");
       if(p.avatar){ av.style.backgroundImage="url("+p.avatar+")"; av.textContent=""; }
@@ -591,7 +678,7 @@
       if(seen[id]) return;
       var l=lanes[id]; l.classList.add("leaving");
       setTimeout(function(){ if(l.parentNode) l.parentNode.removeChild(l); },300);
-      delete lanes[id]; delete prevDone[id];
+      delete lanes[id]; delete prevDone[id]; delete prevShiny[id];
     });
     Object.keys(lanes).forEach(function(id){
       var l=lanes[id], was=before[id]; if(was===undefined) return;
@@ -610,7 +697,9 @@
         '" style="animation-delay:'+(i*45)+'ms">'+
         '<span class="ct">'+esc(c.title)+"</span>"+
         '<span class="cm">'+c.spawns+" spawns · "+n+"/"+total+"</span>"+
-        '<span class="cbar"><i style="width:'+(total?n/total*100:0)+'%"></i></span></button>';
+        '<span class="cardbar"><span class="cbar"><i style="width:'+(total?n/total*100:0)+'%"></i></span>'+
+        '<span class="sparkbtn" role="button" tabindex="0" data-shiny="'+c.id+
+        '" aria-label="Play shiny animation" title="Shiny found">★</span></span></button>';
     }).join("") + '<button class="chartcard newchart" id="newchart">+ New Chart</button>';
   }
 
@@ -655,6 +744,7 @@
     else { a.style.backgroundImage=""; a.textContent=initials(profile.name); }
     if($("name").value!==profile.name) $("name").value=profile.name;
     if($("room").value!==ROOM) $("room").value=ROOM;
+    if($("obslink")) $("obslink").value=buildDisplayLink();
   }
 
   function renderWho(){
@@ -664,8 +754,52 @@
       var a=p.avatar?'style="background-image:url('+p.avatar+')"':
             'style="background:'+colorFor(p.id)+'"';
       return '<div class="who-row"><span class="av" '+a+'>'+(p.avatar?"":esc(initials(p.name)))+
-        "</span><b>"+esc(p.name)+"</b><s>"+Object.keys(p.done).length+"/"+total+"</s></div>";
+        "</span><b>"+esc(p.name)+"</b><s>"+Object.keys(p.done).length+"/"+total+"</s>"+
+        (isStitch()&&p.id!==ME?'<button class="btn sm ghost danger deluser" data-del-user="'+
+        esc(p.id)+'" data-del-name="'+esc(p.name)+'">Delete</button>':"")+"</div>";
     }).join("") || '<p class="hint">Nobody else in this room yet.</p>';
+  }
+
+  function triggerShiny(id){
+    var c=charts.filter(function(x){ return x.id===id; })[0];
+    if(!c) return;
+    activeId=id;
+    c.shinyAt=Date.now();
+    save(); renderStrip(); renderTable();
+    msg("good","Shiny animation sent to the display.");
+  }
+
+  function deletePlayer(id,name){
+    if(!isStitch()) return;
+    if(!confirm("Delete "+(name||"this user")+" from the room?")) return;
+    function mustDelete(url){
+      return fetch(url,{method:"DELETE"}).then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); });
+    }
+    Promise.all([
+      mustDelete(DB+"/rooms/"+encodeURIComponent(ROOM)+"/players/"+encodeURIComponent(id)+".json?print=silent"+dbAuth()),
+      mustDelete(DB+"/rooms/"+encodeURIComponent(ROOM)+"/avatars/"+encodeURIComponent(id)+".json?print=silent"+dbAuth())
+    ]).then(function(){
+      delete players[id]; delete avatars[id]; renderWho(); renderTable(); if(OVERLAY) paintLanes();
+    }).catch(function(){ msg("bad","Couldn't delete that user. Check Firebase room permissions."); });
+  }
+
+  function copyObsLink(){
+    var text=buildDisplayLink(), input=$("obslink"), out=$("linkmsg");
+    if(input) input.value=text;
+    function done(ok){
+      if(!out) return;
+      out.className="msg "+(ok?"good":"bad");
+      out.textContent=ok?"Display link copied.":"Copy failed. The link is selected.";
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(function(){ done(true); }).catch(function(){
+        if(input){ input.focus(); input.select(); }
+        done(false);
+      });
+    } else {
+      if(input){ input.focus(); input.select(); }
+      done(false);
+    }
   }
 
   function renderAll(){ renderStrip(); renderTable(); renderProfile(); renderWho(); renderAuth(); }
@@ -682,6 +816,10 @@
     }
 
     document.addEventListener("click",function(e){
+      var shiny=e.target.closest("[data-shiny]");
+      if(shiny){ e.preventDefault(); e.stopPropagation(); triggerShiny(shiny.getAttribute("data-shiny")); return; }
+      var del=e.target.closest("[data-del-user]");
+      if(del){ deletePlayer(del.getAttribute("data-del-user"),del.getAttribute("data-del-name")); return; }
       var card=e.target.closest(".chartcard");
       if(card && card.id!=="newchart"){ activeId=card.dataset.id; save(); renderStrip(); renderTable(); return; }
       if(card && card.id==="newchart"){
@@ -700,6 +838,9 @@
       }
     });
     document.addEventListener("keydown",function(e){
+      if((e.key===" "||e.key==="Enter")&&e.target.closest&&e.target.closest("[data-shiny]")){
+        e.preventDefault(); triggerShiny(e.target.closest("[data-shiny]").getAttribute("data-shiny")); return;
+      }
       if((e.key===" "||e.key==="Enter")&&e.target.classList&&e.target.classList.contains("check")){
         e.preventDefault(); e.target.click(); }
     });
@@ -717,13 +858,14 @@
       activeId=charts[0].id; save(); renderStrip(); renderTable(); });
 
     $("name").addEventListener("input",function(){
-      profile.name=this.value.trim()||"Hunter"; save(); renderProfile(); });
+      profile.name=this.value.trim()||"Hunter"; save(); renderProfile(); renderWho(); });
     $("room").addEventListener("change",function(){
-      ROOM=this.value.trim()||"main"; lset("mmo-room",ROOM); players={}; pull(); });
+      ROOM=this.value.trim()||"main"; lset("mmo-room",ROOM); players={}; avatars={}; publishAvatar(true); save(); renderProfile(); pull(); });
 
     $("pickav").addEventListener("click",function(){ $("avfile").click(); });
     $("avfile").addEventListener("change",function(){ handleAvatar(this.files[0]); this.value=""; });
-    $("clearav").addEventListener("click",function(){ profile.avatar=""; save(); renderProfile(); });
+    $("clearav").addEventListener("click",function(){ profile.avatar=""; profile.avatarKey=""; save(); publishAvatar(true); renderProfile(); });
+    $("copyobs").addEventListener("click",copyObsLink);
 
     $("dosignup").addEventListener("click",function(){
       var u=$("u").value.trim(), p=$("pw").value;
@@ -745,7 +887,7 @@
       renderAuth(); msg("","Logged out. Charts stay in this browser.");
     });
 
-    renderAll(); save();
+    renderAll(); save(); publishAvatar(false);
   }
 
   pull(); setInterval(pull, POLL);
