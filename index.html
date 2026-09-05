@@ -3,114 +3,123 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MMO Permutations</title>
+<title>Hisui Hunt Tools</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0d1117; --raise:#171f29; --panel:#121922; --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.16);
-    --text:#eef5fb; --muted:#93a2b3; --dim:#647181;
-    --accent:#22d3ee; --accent-2:#facc15; --off:#1f2a36;
+    --bg:#0e1217; --raise:#161c24; --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.15);
+    --text:#e8eef5; --muted:#8593a3; --dim:#5b6875;
+    --accent:#22d3ee; --off:#1e2833;
     --c1:#c084fc; --c2:#34d399; --c3:#22d3ee; --c4:#fbbf24;
     --c5:#fb7185; --c6:#60a5fa; --c7:#a3e635; --c8:#fb923c;
     --ui:"Space Grotesk",system-ui,sans-serif;
     --ease:cubic-bezier(.4,0,.2,1); --spring:cubic-bezier(.34,1.4,.64,1);
   }
   *{box-sizing:border-box}
-  body{margin:0;background:
-    radial-gradient(circle at 12% -10%,rgba(34,211,238,.11),transparent 34rem),
-    linear-gradient(180deg,#0d1117 0%,#0a0d12 100%);
-    color:var(--text);font:400 15px/1.5 var(--ui);-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1120px;margin:0 auto;padding:32px 22px 90px;animation:pagein .34s var(--ease) both}
-  @keyframes pagein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.5 var(--ui);
+    -webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 22px 90px}
 
-  .topbar{display:flex;align-items:center;gap:14px;margin-bottom:24px}
-  h1{font:700 24px/1 var(--ui);letter-spacing:0;margin:0}
+  .topbar{display:flex;align-items:baseline;gap:14px;margin-bottom:26px}
+  h1{font:700 21px/1 var(--ui);letter-spacing:-.025em;margin:0}
   .status{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
   .dot{width:7px;height:7px;border-radius:50%;background:var(--dim)}
   .dot.live{background:var(--c2)} .dot.error{background:var(--c5)}
+  label.fl{display:block;font:500 12px/1 var(--ui);color:var(--dim);margin-bottom:9px}
 
-  label.fl,.mlabel{display:block;font:500 12px/1 var(--ui);color:var(--dim);
-    letter-spacing:.01em;margin-bottom:9px}
-
-  /* controls: quiet, no boxes unless needed */
-  .btn{font:600 13.5px/1 var(--ui);background:rgba(255,255,255,.02);color:var(--muted);
-    border:1px solid var(--line);border-radius:7px;padding:9px 13px;cursor:pointer;
-    transition:color .15s var(--ease),background .15s var(--ease),border-color .15s var(--ease),transform .15s var(--ease)}
-  .btn:hover{color:var(--text);background:var(--raise);border-color:var(--line-2);transform:translateY(-1px)}
-  .btn.on{color:#071017;background:var(--accent);border-color:transparent;font-weight:700}
+  .btn{font:500 13.5px/1 var(--ui);background:none;color:var(--muted);border:1px solid transparent;
+    border-radius:7px;padding:9px 13px;cursor:pointer;
+    transition:color .15s var(--ease),background .15s var(--ease),border-color .15s var(--ease),
+               transform .1s var(--ease)}
+  .btn:hover{color:var(--text);background:var(--raise)}
+  .btn:active{transform:scale(.96)}
+  .btn.on{color:var(--bg);background:var(--accent);font-weight:600}
   .btn.sm{padding:8px 12px;font-size:13px}
   .btn.ghost{border-color:var(--line)}
   .btn.ghost:hover{border-color:var(--line-2);background:none}
-  .btn.danger:hover{color:#fff;background:rgba(251,113,133,.16);border-color:rgba(251,113,133,.55)}
-  .btn.gold{color:#facc15;border-color:rgba(250,204,21,.26)}
-  .btn.gold:hover,.btn.gold.on{color:#201600;background:#facc15;border-color:#facc15}
-  input[type=text],input[type=password]{font:400 14.5px var(--ui);background:var(--raise);
-    color:var(--text);border:1px solid transparent;border-radius:8px;padding:11px 13px;outline:none;
-    transition:border-color .15s var(--ease)}
-  input:focus{border-color:var(--accent)}
+  .btn.danger:hover{color:var(--c5);background:rgba(251,113,133,.1)}
+  .btn.big{font-size:15px;padding:13px 20px;border-radius:9px}
+  .btn.pri{background:var(--c2);color:#0e1217;font-weight:600}
+  .btn.pri:hover{background:#4ade80;color:#0e1217}
+  input[type=text],input[type=password],input[type=number],select{
+    font:400 14.5px var(--ui);background:var(--raise);color:var(--text);border:1px solid transparent;
+    border-radius:8px;padding:11px 13px;outline:none;transition:border-color .15s var(--ease)}
+  input:focus,select:focus{border-color:var(--accent)}
+  select{cursor:pointer}
 
-  /* tabs */
-  .tabs{display:flex;margin-bottom:24px;border-bottom:1px solid var(--line)}
-  .tab{font:500 15px/1 var(--ui);background:none;border:0;color:var(--muted);
-    padding:0 2px 14px;margin-right:28px;cursor:pointer;position:relative;transition:color .15s}
+  .tabs{display:flex;margin-bottom:30px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .tab{font:500 15px/1 var(--ui);background:none;border:0;color:var(--muted);padding:0 2px 14px;
+    margin-right:28px;cursor:pointer;position:relative;transition:color .15s}
   .tab:hover{color:var(--text)}
   .tab[aria-selected="true"]{color:var(--text);font-weight:600}
-  .tab[aria-selected="true"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;
-    height:2px;background:var(--text);border-radius:2px}
+  .tab[aria-selected="true"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;
+    background:var(--text);border-radius:2px;animation:grow .25s var(--ease)}
+  @keyframes grow{from{transform:scaleX(.3);opacity:0}to{transform:none;opacity:1}}
   .panel[hidden]{display:none}
-  .panel{animation:fade .25s var(--ease) both}
-  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .panel{animation:panelin .3s var(--ease) both}
+  @keyframes panelin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-  /* chart strip */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:34px}
+  .card h3{font:600 13px/1 var(--ui);margin:0 0 18px;padding-bottom:12px;color:var(--muted);
+    border-bottom:1px solid var(--line)}
+  .stack{display:flex;flex-direction:column;gap:9px}
+  .row2{display:flex;gap:8px;flex-wrap:wrap}
+  .hint{font-size:13.5px;color:var(--muted);line-height:1.65}
+  .msg{font-size:13.5px;margin-top:13px;min-height:18px}
+  .msg.bad{color:var(--c5)} .msg.good{color:var(--c2)}
+
+  /* ---------- charts ---------- */
   .charts{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
-  .chartcard{display:flex;flex-direction:column;min-width:178px;text-align:left;
-    font-family:var(--ui);background:rgba(255,255,255,.025);border:1px solid var(--line);
-    border-radius:8px;padding:13px 14px;cursor:pointer;position:relative;
-    transition:background .15s var(--ease),border-color .15s var(--ease),transform .15s var(--ease)}
-  .chartcard:hover{background:var(--raise);border-color:var(--line-2);transform:translateY(-2px)}
-  .chartcard[aria-current="true"]{background:var(--panel);border-color:rgba(34,211,238,.34)}
-  .chartcard .ct{font:600 15px/1.3 var(--ui);color:var(--muted);transition:color .15s}
+  .chartcard{display:flex;flex-direction:column;min-width:170px;text-align:left;font-family:var(--ui);
+    background:none;border:0;border-radius:9px;padding:12px 14px;cursor:pointer;position:relative;
+    transition:background .15s var(--ease),transform .15s var(--ease)}
+  .chartcard:hover{background:var(--raise);transform:translateY(-1px)}
+  .chartcard[aria-current="true"]{background:var(--raise)}
+  .chartcard .ct{font:600 15px/1.3 var(--ui);color:var(--muted);transition:color .15s;
+    display:flex;align-items:center;gap:7px}
   .chartcard[aria-current="true"] .ct{color:var(--text)}
   .chartcard .cm{font:400 12.5px/1 var(--ui);color:var(--dim);margin-top:4px}
   .chartcard .cbar{height:5px;background:var(--off);margin-top:11px;border-radius:3px;overflow:hidden}
   .chartcard .cbar i{display:block;height:100%;border-radius:3px;background:var(--c2);
     transition:width .45s var(--ease)}
-  .cardbar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:9px;align-items:center}
-  .sparkbtn{width:28px;height:24px;border-radius:7px;border:1px solid rgba(250,204,21,.26);
-    background:rgba(250,204,21,.07);color:#facc15;font:700 13px/1 var(--ui);cursor:pointer;
-    transition:background .15s var(--ease),transform .15s var(--ease),border-color .15s var(--ease)}
-  .sparkbtn:hover{background:#facc15;color:#211800;border-color:#facc15;transform:scale(1.06)}
+  .gflag{font:600 9.5px/1 var(--ui);letter-spacing:.06em;color:var(--c4);
+    background:rgba(251,191,36,.14);padding:3px 5px;border-radius:4px}
   .newchart{align-items:flex-start;justify-content:center;color:var(--dim);min-width:0;font-size:13.5px}
-  .newchart:hover{color:var(--muted)}
-
-  .toolrow{display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
+  .toolrow{display:flex;gap:4px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
   .toolrow .spacer{margin-left:auto}
+  .jump{width:118px;padding:8px 11px;font-size:13px}
+  .meta{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:18px;
+    font-size:13.5px;color:var(--muted)}
+  .meta b{color:var(--text);font-weight:600}
 
-  /* table: hairlines, chunky KO blocks */
-  .tablewrap{overflow-x:auto;background:rgba(255,255,255,.018);border:1px solid var(--line);border-radius:8px;padding:8px}
-  table{border-collapse:collapse;width:100%;min-width:640px}
+  .tablewrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;min-width:660px}
   thead th{font:500 12px/1 var(--ui);color:var(--dim);padding:0 8px 14px;text-align:center;
-    white-space:nowrap;border-bottom:1px solid var(--line)}
+    white-space:nowrap;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:2}
   tbody td{padding:3px 2px;text-align:center;border-bottom:1px solid var(--line);height:44px}
   tbody tr{animation:rowin .3s var(--ease) both}
-  @keyframes rowin{from{opacity:0}to{opacity:1}}
+  @keyframes rowin{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
   tbody tr:last-child td{border-bottom:none}
+  tbody tr.flash{animation:flashrow 1s var(--ease)}
+  @keyframes flashrow{from{background:rgba(34,211,238,.16)}to{background:transparent}}
   td.order{width:58px;font:500 14px var(--ui);color:var(--dim)}
   .cell{display:flex;align-items:center;justify-content:center;height:34px;border-radius:6px;
     font:600 12.5px var(--ui);letter-spacing:.02em;animation:cellin .3s var(--spring) both}
   @keyframes cellin{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
   .cell.c{color:var(--dim);background:var(--off)}
   .cell.ko{color:#0e1217}
-  .cell.leave{color:#101318;background:rgba(250,204,21,.78)}
-  .cell.empty{background:transparent;color:transparent}
   .g1{background:var(--c6)} .g2{background:var(--c2)} .g3{background:var(--c8)} .g4{background:var(--c1)}
+  td.gstep{width:132px}
+  .gchips{display:flex;gap:4px;justify-content:center;align-items:center}
+  .gchip{font:600 11px/1 var(--ui);color:#0e1217;background:var(--c4);border-radius:5px;padding:6px 7px}
+  .gnone{color:var(--dim);font-size:12.5px}
   td.done{width:92px}
   .check{width:20px;height:20px;border:1.5px solid var(--line-2);border-radius:6px;background:none;
     cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
-    transition:border-color .15s,background .15s}
-  .check:hover{border-color:var(--c2)}
+    transition:border-color .15s,background .15s,transform .15s var(--spring)}
+  .check:hover{border-color:var(--c2);transform:scale(1.12)}
   .check svg{width:11px;height:11px}
   .check path{stroke:#0e1217;stroke-width:3.4;fill:none;stroke-linecap:round;stroke-linejoin:round;
     stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .22s var(--ease)}
@@ -121,120 +130,155 @@
   .av{border-radius:6px;display:inline-flex;align-items:center;justify-content:center;
     font:600 10px var(--ui);color:#0e1217;background-size:cover;background-position:center;flex:none}
   .whos .av{width:18px;height:18px;border-radius:5px}
-
+  .more{padding:16px 0;text-align:center}
   .legend{margin-top:20px;font-size:13.5px;color:var(--muted);display:flex;gap:22px;flex-wrap:wrap;
     align-items:center}
   .legend i.sw{width:14px;height:14px;border-radius:4px;display:inline-block}
   .legend span{display:inline-flex;align-items:center;gap:8px}
   .legend b{color:var(--text);font-weight:600}
-  .note{margin-top:16px;font-size:13.5px;color:var(--muted);line-height:1.7;max-width:72ch}
+  .note{margin-top:16px;font-size:13.5px;color:var(--muted);line-height:1.7;max-width:74ch}
 
-  /* profile: sections, not boxes */
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
-  .card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:8px;padding:18px}
-  .card h3{font:600 13px/1 var(--ui);margin:0 0 18px;padding-bottom:12px;color:var(--muted);
-    border-bottom:1px solid var(--line)}
+  /* ---------- counter ---------- */
+  .countwrap{display:flex;align-items:center;gap:26px;flex-wrap:wrap;margin:6px 0 18px}
+  .bignum{font:700 76px/1 var(--ui);letter-spacing:-.05em;color:var(--text);
+    font-variant-numeric:tabular-nums;min-width:150px}
+  .bignum.bump{animation:bump .35s var(--spring)}
+  @keyframes bump{0%{transform:scale(1)}40%{transform:scale(1.16);color:var(--c2)}100%{transform:scale(1)}}
+  .bignum.down{animation:down .3s var(--ease)}
+  @keyframes down{0%{transform:scale(1)}40%{transform:scale(.9);color:var(--c5)}100%{transform:scale(1)}}
+  .countbtns{display:flex;flex-direction:column;gap:8px}
+  .hotkeys{font-size:12.5px;color:var(--dim);margin-top:4px}
+  .kbd{display:inline-block;background:var(--raise);border:1px solid var(--line-2);border-radius:5px;
+    padding:2px 6px;font:600 11px var(--ui);color:var(--muted);margin:0 2px}
+  .oddsrow{display:flex;gap:26px;flex-wrap:wrap;margin-top:6px}
+  .stat{min-width:112px}
+  .stat .k{font:500 11.5px/1 var(--ui);color:var(--dim);margin-bottom:6px}
+  .stat .v{font:700 22px/1 var(--ui);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+  .stat .v.sm{font-size:17px}
+  .odbar{height:7px;background:var(--off);border-radius:4px;overflow:hidden;margin-top:14px}
+  .odbar i{display:block;height:100%;border-radius:4px;
+    background:linear-gradient(90deg,var(--c3),var(--c2));transition:width .5s var(--ease)}
+  .checkline{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--muted);
+    cursor:pointer;padding:7px 0;user-select:none}
+  .checkline input{appearance:none;width:18px;height:18px;border-radius:5px;border:1.5px solid var(--line-2);
+    cursor:pointer;position:relative;flex:none;transition:all .15s var(--ease)}
+  .checkline input:checked{background:var(--c2);border-color:var(--c2)}
+  .checkline input:checked::after{content:"";position:absolute;left:5px;top:1.5px;width:5px;height:10px;
+    border:solid #0e1217;border-width:0 2.4px 2.4px 0;transform:rotate(45deg)}
+  .timerbig{font:700 52px/1 var(--ui);letter-spacing:-.04em;font-variant-numeric:tabular-nums;
+    margin:6px 0 16px}
+  .timerbig.warn{color:var(--c4);animation:pulse 1s infinite}
+  .timerbig.over{color:var(--c5)}
+  @keyframes pulse{50%{opacity:.45}}
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:99}
+  .confetti i{position:absolute;width:9px;height:14px;border-radius:2px;animation:fall 1.5s ease-in forwards}
+  @keyframes fall{to{transform:translateY(100vh) rotate(720deg);opacity:0}}
+
+  /* ---------- hunts ---------- */
+  .statrow{display:flex;gap:34px;flex-wrap:wrap;margin-bottom:26px}
+  .logtable td,.logtable th{text-align:left;padding:11px 10px}
+  .logtable th{font:500 11.5px/1 var(--ui);color:var(--dim);border-bottom:1px solid var(--line)}
+  .logtable td{border-bottom:1px solid var(--line);height:auto;font-size:14px}
+  .logtable tr:hover{background:var(--raise)}
+  .pill{font:600 11px/1 var(--ui);border-radius:5px;padding:5px 7px;color:#0e1217;display:inline-block}
+  .pill.mmo{background:var(--c1)} .pill.mo{background:var(--c4)}
+  .pill.reg{background:var(--off);color:var(--muted)}
+  .board{display:flex;flex-direction:column;margin-top:8px}
+  .brow{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line);
+    animation:rowin .35s var(--ease) both}
+  .brow .rank{font:700 15px var(--ui);color:var(--dim);width:24px}
+  .brow .av{width:28px;height:28px;font-size:10px}
+  .brow s{margin-left:auto;text-decoration:none;font:700 16px var(--ui);color:var(--c4)}
+
+  /* ---------- profile ---------- */
   .avrow{display:flex;align-items:center;gap:16px;margin-bottom:20px}
-  .avbig{width:64px;height:64px;border-radius:14px;background:var(--raise);
-    background-size:cover;background-position:center;display:flex;align-items:center;
-    justify-content:center;font:600 19px var(--ui);color:var(--dim);flex:none}
-  .stack{display:flex;flex-direction:column;gap:9px}
-  .row2{display:flex;gap:8px;flex-wrap:wrap}
-  .msg{font-size:13.5px;margin-top:13px;min-height:18px}
-  .msg.bad{color:var(--c5)} .msg.good{color:var(--c2)}
-  .hint{font-size:13.5px;color:var(--muted);line-height:1.65}
+  .avbig{width:64px;height:64px;border-radius:14px;background:var(--raise);background-size:cover;
+    background-position:center;display:flex;align-items:center;justify-content:center;
+    font:600 19px var(--ui);color:var(--dim);flex:none}
   .who-list{display:flex;flex-direction:column;margin-top:16px}
   .who-row{display:flex;align-items:center;gap:12px;font-size:14.5px;padding:11px 0;
     border-top:1px solid var(--line)}
   .who-row .av{width:26px;height:26px;font-size:10px}
   .who-row b{font-weight:500}
   .who-row s{margin-left:auto;text-decoration:none;color:var(--dim);font-weight:500;font-size:13px}
-  .who-row .deluser{margin-left:4px;padding:7px 9px;font-size:12px}
-  .linkbox{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:10px}
-  .linkbox input{min-width:0}
+  .who-row .rm{margin-left:10px;background:none;border:0;color:var(--dim);cursor:pointer;
+    font:500 12.5px var(--ui);padding:4px 8px;border-radius:6px;transition:all .15s var(--ease)}
+  .who-row .rm:hover{color:var(--c5);background:rgba(251,113,133,.1)}
+  .linkbox{display:flex;gap:8px;margin-bottom:12px}
+  .linkbox input{flex:1;font-size:13px;padding:10px 12px;color:var(--muted)}
+  .copied{color:var(--c2)!important}
+  .sizetip{font-size:13px;color:var(--dim);margin-top:8px}
+  .togg{display:flex;align-items:center;gap:11px;font-size:14px;color:var(--muted);cursor:pointer;
+    padding:9px 0;user-select:none}
+  .togg input{appearance:none;width:38px;height:21px;border-radius:99px;background:var(--off);
+    position:relative;cursor:pointer;transition:background .2s var(--ease);flex:none}
+  .togg input:checked{background:var(--c2)}
+  .togg input::after{content:"";position:absolute;top:2.5px;left:2.5px;width:16px;height:16px;
+    border-radius:50%;background:#fff;transition:transform .25s var(--spring)}
+  .togg input:checked::after{transform:translateX(17px)}
+  .togg b{color:var(--text);font-weight:500}
 
-  /* ============ OBS overlay: minimal rows, chunky bars ============ */
+  /* ================= OBS overlay ================= */
   body.overlay{background:transparent}
-  body.overlay .wrap{max-width:none;padding:6px 10px;animation:none}
-  /* no panel behind the rows, so everything gets a shadow to stay readable
-     over bright gameplay. ?scrim=1 adds a soft dark backing if you need it. */
-  body.overlay .lane .nm,body.overlay .lane .sp,body.overlay .lane .count,
-  body.overlay .empty-lane{text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 12px rgba(0,0,0,.7)}
-  body.overlay .lane .av{box-shadow:0 1px 5px rgba(0,0,0,.6)}
-  body.overlay .lane{border-bottom-color:rgba(255,255,255,.14)}
-  body.overlay .lanes{max-width:min(760px,calc(100vw - 20px))}
-  body.scrim .lanes{background:linear-gradient(90deg,rgba(14,18,23,.82),rgba(14,18,23,.55));
-    border-radius:12px;padding:2px 14px}
+  body.overlay .wrap{max-width:none;padding:6px 10px}
   body.overlay .hide-ov{display:none!important}
+  body.scrim .widget{background:linear-gradient(90deg,rgba(14,18,23,.85),rgba(14,18,23,.6));
+    border-radius:12px;padding:4px 14px}
+  .widget{margin-bottom:12px;animation:widin .45s var(--spring) both}
+  .widget.out{animation:widout .3s var(--ease) forwards}
+  @keyframes widin{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+  @keyframes widout{to{opacity:0;transform:translateX(24px)}}
+  body.overlay .nm,body.overlay .sp,body.overlay .count,body.overlay .empty-lane,
+  body.overlay .ovc .sp2,body.overlay .ovc .big,body.overlay .ovc .od{
+    text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 12px rgba(0,0,0,.7)}
+  body.overlay .segs i,body.overlay .av{box-shadow:0 1px 5px rgba(0,0,0,.55)}
   .lanes{display:flex;flex-direction:column}
-  .lane{position:relative;display:grid;grid-template-columns:auto minmax(180px,460px) auto;
-    align-items:center;gap:16px;padding:14px 4px;background:none;border:0;
-    border-bottom:1px solid var(--line);isolation:isolate;
-    animation:lanein .4s var(--ease) both;transition:transform .45s var(--ease),filter .25s var(--ease)}
+  .lane{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;
+    gap:20px;padding:15px 4px;border-bottom:1px solid var(--line);
+    animation:lanein .4s var(--ease) both;transition:transform .45s var(--ease)}
   .lane:last-child{border-bottom:0}
   @keyframes lanein{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
   .lane.leaving{animation:laneout .28s var(--ease) forwards}
   @keyframes laneout{to{opacity:0;transform:translateY(-5px)}}
   .lane .who{display:flex;align-items:center;gap:12px;min-width:0}
-  .lane .av{width:34px;height:34px;border-radius:9px;font-size:12px;background-color:var(--c)}
-  .lane .nm{font:700 18px/1.15 var(--ui);letter-spacing:0;white-space:nowrap;
-    max-width:190px;overflow:hidden;text-overflow:ellipsis}
+  .lane .av{width:30px;height:30px;border-radius:9px;font-size:11px;background-color:var(--c)}
+  .lane .nm{font:600 17px/1.15 var(--ui);letter-spacing:-.015em;white-space:nowrap;max-width:260px;
+    overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:8px}
   .lane .sp{font:400 12.5px/1 var(--ui);color:var(--dim);margin-top:5px;white-space:nowrap;
-    max-width:200px;overflow:hidden;text-overflow:ellipsis}
-  .lane.leader .nm::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
-    background:var(--c4);margin-left:8px;vertical-align:middle;box-shadow:0 0 10px rgba(250,204,21,.8);
-    animation:leadpulse 1.8s var(--ease) infinite}
-  @keyframes leadpulse{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.45);opacity:1}}
-  .track{position:relative;height:28px;display:flex;align-items:center}
-  .segs{position:relative;display:block;overflow:hidden;width:100%;height:22px;
-    border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(13,19,27,.88);
-    box-shadow:0 1px 7px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.05)}
-  .segs i{flex:1 1 0;min-width:3px;border-radius:4px;background:var(--off);
-    transition:background .3s var(--ease),transform .35s var(--spring)}
-  body.overlay .segs i{display:none!important}
-  .segs::before{content:"";position:absolute;inset:0 auto 0 0;width:var(--pct,0%);
-    background:linear-gradient(90deg,var(--c),#f8fafc);
-    border-radius:999px;transition:width .62s var(--spring);box-shadow:0 0 16px rgba(255,255,255,.22)}
-  .segs::after{content:"";position:absolute;inset:0;
-    background:linear-gradient(110deg,transparent 0 42%,rgba(255,255,255,.22) 50%,transparent 58% 100%);
-    transform:translateX(-130%);animation:compactshine 3.6s var(--ease) infinite}
-  .segs i.on{background:var(--c);box-shadow:0 0 10px rgba(255,255,255,.18)}
-  .segs i.just{animation:hit .7s var(--spring)}
-  @keyframes hit{0%{transform:scaleY(1)}35%{transform:scaleY(1.65)}100%{transform:scaleY(1)}}
-  .ghosttag{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    font:800 11px/1 var(--ui);color:rgba(255,255,255,.9);letter-spacing:.08em;text-shadow:0 1px 4px rgba(0,0,0,.85);
-    z-index:1}
-  .lane.ghostlane .sp::before{content:"GHOST";display:inline-block;margin-right:7px;padding:2px 5px;
-    border-radius:5px;background:rgba(250,204,21,.82);color:#151009;font:800 9px/1 var(--ui);letter-spacing:.08em;text-shadow:none}
-  .lane.ghostlane .count{color:#facc15}
-  @keyframes compactshine{0%,45%{transform:translateX(-130%)}75%,100%{transform:translateX(130%)}}
-  .lane.bump .av{animation:avpop .7s var(--spring)}
-  .lane.bump .count{animation:countpop .62s var(--spring)}
-  @keyframes avpop{0%,100%{transform:none}35%{transform:scale(1.18) rotate(-4deg)}}
-  @keyframes countpop{0%,100%{transform:none}35%{transform:scale(1.24)}}
-  .shinybadge{position:absolute;right:52px;top:-5px;z-index:3;padding:4px 8px;border-radius:999px;
-    background:#facc15;color:#1d1400;font:900 11px/1 var(--ui);letter-spacing:.08em;
-    opacity:0;transform:translateY(5px) scale(.88);box-shadow:0 0 16px rgba(250,204,21,.82);
-    pointer-events:none}
-  .lane.shiny{animation:shinyrow 1.55s var(--ease)}
-  .lane.shiny .shinybadge{animation:shinybadge 1.35s var(--spring) forwards}
-  .lane.shiny .track::after{content:"";position:absolute;inset:-8px -10px;border-radius:13px;
-    background:linear-gradient(90deg,transparent,rgba(255,255,255,.68),rgba(250,204,21,.58),transparent);
-    animation:sweep 1.15s var(--ease);pointer-events:none;z-index:2}
-  .lane.shiny .segs i.on{animation:goldpop 1.35s var(--spring)}
-  .lane.shiny .segs::before{background:linear-gradient(90deg,#facc15,#fff7bd,#fbbf24)}
-  @keyframes shinyrow{0%,100%{filter:none}30%,62%{filter:drop-shadow(0 0 16px rgba(250,204,21,.72))}}
-  @keyframes shinybadge{0%{opacity:0;transform:translateY(5px) scale(.88)}18%,72%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-6px) scale(.98)}}
-  @keyframes sweep{from{transform:translateX(-70%);opacity:0}20%{opacity:1}to{transform:translateX(70%);opacity:0}}
-  @keyframes goldpop{0%,100%{background:var(--c);transform:none}38%{background:#facc15;transform:scaleY(1.8)}}
+    max-width:360px;overflow:hidden;text-overflow:ellipsis}
+  .tag{font:600 9.5px/1 var(--ui);letter-spacing:.06em;padding:3px 5px;border-radius:4px;flex:none}
+  .tag.lead{color:#0e1217;background:var(--c4)}
+  .tag.done{color:#0e1217;background:var(--c2)}
+  .track{position:relative;height:24px;display:flex;align-items:center}
+  .segs{display:flex;gap:3px;width:100%;height:22px}
+  .segs i{flex:1 1 0;min-width:3px;border-radius:4px;background:var(--off);position:relative;
+    overflow:hidden;transition:background .3s var(--ease),transform .35s var(--spring)}
+  .segs i b{position:absolute;left:0;right:0;bottom:0;height:0;background:var(--c);
+    transition:height .4s var(--ease)}
+  .segs i.on{background:var(--c)}
+  .segs i.just{animation:hit .6s var(--spring)}
+  @keyframes hit{0%{transform:scaleY(1)}35%{transform:scaleY(1.55)}100%{transform:scaleY(1)}}
   .marker{position:absolute;top:50%;width:3px;height:30px;margin-left:-1.5px;margin-top:-15px;
     background:#fff;border-radius:3px;left:var(--x,0%);opacity:0;pointer-events:none;
     transition:left .65s var(--spring),opacity .25s var(--ease)}
   .lane.has-marker .marker{opacity:.85}
   .lane .count{font:700 20px/1 var(--ui);color:var(--c);letter-spacing:-.03em;white-space:nowrap}
   .lane .count s{text-decoration:none;font-size:13px;color:var(--dim);font-weight:500}
+  .lane.finished{animation:celebrate 1.4s var(--ease)}
+  @keyframes celebrate{0%,100%{background:transparent}25%{background:rgba(52,211,153,.22)}}
   .empty-lane{padding:16px 4px;color:var(--muted);font-size:14px}
   .empty-lane b{display:block;font-weight:600;color:var(--text);margin-bottom:4px}
+  /* counter widget */
+  .ovc{display:flex;align-items:center;gap:22px;padding:14px 4px}
+  .ovc .av{width:46px;height:46px;border-radius:12px;font-size:14px;background-color:var(--c)}
+  .ovc .big{font:700 54px/1 var(--ui);letter-spacing:-.05em;font-variant-numeric:tabular-nums;
+    color:var(--c)}
+  .ovc .big.bump{animation:bump .35s var(--spring)}
+  .ovc .sp2{font:600 19px/1.1 var(--ui);letter-spacing:-.02em}
+  .ovc .od{font:400 13px/1 var(--ui);color:var(--dim);margin-top:6px}
+  .ovc .ring{margin-left:auto;text-align:right}
+  .ovc .ring .pct{font:700 20px/1 var(--ui);color:var(--c2)}
+  .ovc .ring .lbl{font:400 12px/1 var(--ui);color:var(--dim);margin-top:5px}
 
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -243,93 +287,190 @@
 <div class="wrap">
 
   <div class="topbar hide-ov">
-    <h1>MMO Permutations</h1>
+    <h1>Hisui Hunt Tools</h1>
     <div class="status"><span class="dot" id="dot"></span><span id="stamp">connecting</span></div>
   </div>
 
   <div class="tabs hide-ov" role="tablist">
-    <button class="tab" id="tab-charts"  role="tab" aria-selected="true">Charts</button>
-    <button class="tab" id="tab-profile" role="tab" aria-selected="false">Profile</button>
+    <button class="tab" data-tab="charts"  aria-selected="true">Charts</button>
+    <button class="tab" data-tab="counter" aria-selected="false">Counter</button>
+    <button class="tab" data-tab="hunts"   aria-selected="false">Hunts</button>
+    <button class="tab" data-tab="profile" aria-selected="false">Profile</button>
   </div>
 
-  <!-- ============ CHARTS ============ -->
+  <!-- ================= CHARTS ================= -->
   <section class="panel hide-ov" id="p-charts">
     <div class="charts" id="chartstrip"></div>
-
     <div class="toolrow">
       <button class="btn sm" data-n="8">8 Spawns</button>
       <button class="btn sm" data-n="9">9 Spawns</button>
       <button class="btn sm" data-n="10">10 Spawns</button>
-      <button class="btn sm lime" id="f-hide">Hide Done</button>
-      <button class="btn sm ghost" id="f-ghost">Ghost Perms</button>
+      <button class="btn sm ghost" id="f-ghost">Ghost Steps</button>
+      <input type="number" class="jump" id="jump" min="1" placeholder="Go to #">
       <span class="spacer"></span>
-      <button class="btn sm ghost" id="f-rename">Rename</button>
-      <button class="btn sm ghost" id="f-clear">Clear Ticks</button>
-      <button class="btn sm ghost" id="f-delete">Delete Chart</button>
+      <button class="btn sm ghost" id="f-hide">Hide Done</button>
+      <button class="btn sm ghost" id="f-free">Unclaimed</button>
+      <button class="btn sm ghost" id="f-more">More</button>
     </div>
-
+    <div class="toolrow" id="moretools" hidden>
+      <button class="btn sm ghost" id="f-rename">Rename</button>
+      <button class="btn sm ghost" id="f-dupe">Duplicate</button>
+      <button class="btn sm ghost" id="f-clear">Clear Ticks</button>
+      <button class="btn sm ghost" id="f-export">Export</button>
+      <button class="btn sm ghost" id="f-import">Import</button>
+      <input type="file" id="importfile" accept="application/json,.json" hidden>
+      <span class="spacer"></span>
+      <button class="btn sm ghost danger" id="f-delete">Delete Chart</button>
+    </div>
+    <div class="meta" id="chartmeta"></div>
     <div id="content"></div>
-
     <div class="legend">
       <span><b>C</b> = catch it</span>
       <span><b>KO</b> = defeat it</span>
-      <span><b>L</b> = leave 120m and return</span>
       <span><i class="sw" style="background:var(--c6)"></i><i class="sw" style="background:var(--c2)"></i>
         same colour = defeat together in one battle</span>
+      <span><i class="sw" style="background:var(--c4)"></i> ghost step = clear that many, walk 120m away and back</span>
     </div>
-    <p class="note">
-      Each column is a spawn in the first wave, read left to right. A run of same-coloured KO cells
-      is a single multi-battle. New multi-battles stop once only four remain — that's where ghost
-      steps take over.
-    </p>
   </section>
 
-  <!-- ============ PROFILE ============ -->
+  <!-- ================= COUNTER ================= -->
+  <section class="panel hide-ov" id="p-counter" hidden>
+    <div class="cards">
+      <div class="card">
+        <h3>Current Hunt</h3>
+        <div class="row2" style="margin-bottom:16px">
+          <input type="text" id="species" placeholder="Species" maxlength="24" style="flex:1;min-width:150px">
+          <select id="method">
+            <option value="mmo">Massive Mass Outbreak</option>
+            <option value="mo">Mass Outbreak</option>
+            <option value="reg">Regular encounter</option>
+          </select>
+        </div>
+        <div class="countwrap">
+          <div class="bignum" id="bignum">0</div>
+          <div class="countbtns">
+            <button class="btn big pri" id="plus">+1 Encounter</button>
+            <div class="row2">
+              <button class="btn sm ghost" id="minus">Undo</button>
+              <button class="btn sm ghost" id="resetc">Reset</button>
+            </div>
+          </div>
+        </div>
+        <div class="hotkeys">
+          <span class="kbd">Space</span><span class="kbd">&uarr;</span><span class="kbd">+</span> add ·
+          <span class="kbd">&darr;</span><span class="kbd">-</span> undo ·
+          <span class="kbd">F</span> found it
+          <div style="margin-top:6px">Keys work while this tab is focused — for keys that work inside the
+            game, use an OBS hotkey script instead.</div>
+        </div>
+        <div style="margin-top:20px">
+          <button class="btn big pri" id="found">Found it!</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Your Odds</h3>
+        <label class="checkline"><input type="checkbox" id="o-lv10"> Research level 10 <span style="color:var(--dim)">(+1 roll)</span></label>
+        <label class="checkline"><input type="checkbox" id="o-perf"> Perfect research <span style="color:var(--dim)">(+2)</span></label>
+        <label class="checkline"><input type="checkbox" id="o-charm"> Shiny Charm <span style="color:var(--dim)">(+3)</span></label>
+        <div class="oddsrow" style="margin-top:18px">
+          <div class="stat"><div class="k">Rolls</div><div class="v" id="s-rolls">1</div></div>
+          <div class="stat"><div class="k">Odds each</div><div class="v sm" id="s-odds">1/4096</div></div>
+          <div class="stat"><div class="k">Expected</div><div class="v sm" id="s-exp">4096</div></div>
+        </div>
+        <div class="oddsrow" style="margin-top:20px">
+          <div class="stat"><div class="k">Chance so far</div><div class="v" id="s-cum">0%</div></div>
+          <div class="stat"><div class="k">Luck</div><div class="v sm" id="s-luck">—</div></div>
+        </div>
+        <div class="odbar"><i id="odbar"></i></div>
+        <p class="hint" style="margin-top:14px">
+          Odds are 1&minus;(1&minus;1/4096)<sup>rolls</sup>. Outbreaks add 25 rolls, massive outbreaks 12.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Distortion Timer</h3>
+        <div class="timerbig" id="timerbig">15:00</div>
+        <div class="row2">
+          <button class="btn sm pri" id="t-start">Start</button>
+          <button class="btn sm ghost" id="t-reset">Reset</button>
+          <input type="number" id="t-mins" value="15" min="1" max="60" style="width:88px">
+        </div>
+        <p class="hint" style="margin-top:14px">
+          Space-time distortions turn up every 10&ndash;15 minutes once you've been in an area a while.
+          Turns amber in the last minute.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= HUNTS ================= -->
+  <section class="panel hide-ov" id="p-hunts" hidden>
+    <div class="statrow" id="statrow"></div>
+    <div class="cards" style="grid-template-columns:minmax(0,2fr) minmax(260px,1fr)">
+      <div class="card">
+        <h3>Hunt Log</h3>
+        <div class="tablewrap"><table class="logtable"><tbody id="logbody"></tbody></table></div>
+      </div>
+      <div class="card">
+        <h3>Room Leaderboard</h3>
+        <div class="board" id="board"></div>
+        <p class="hint" style="margin-top:16px">Shinies logged by everyone in your room.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROFILE ================= -->
   <section class="panel hide-ov" id="p-profile" hidden>
     <div class="cards">
-
       <div class="card">
         <h3>Your Look</h3>
         <div class="avrow">
           <div class="avbig" id="avbig"></div>
           <div class="stack" style="flex:1">
-            <button class="btn sm" id="pickav">Upload Image</button>
+            <button class="btn sm ghost" id="pickav">Upload Image</button>
             <button class="btn sm ghost" id="clearav">Remove</button>
             <input type="file" id="avfile" accept="image/*" hidden>
           </div>
         </div>
         <label class="fl" for="name">Display name</label>
         <input type="text" id="name" maxlength="16" placeholder="Your name" style="width:100%">
-        <p class="hint" style="margin-top:12px">
-          Shown on the stream overlay. Images are cached separately so the display can use a sharper picture.
+      </div>
+
+      <div class="card">
+        <h3>What's On Stream</h3>
+        <p class="hint" style="margin-bottom:10px">
+          Flip these any time — your OBS overlay follows within a couple of seconds.
         </p>
+        <label class="togg"><input type="checkbox" id="w-lanes" checked><b>Hunter lanes</b></label>
+        <label class="togg"><input type="checkbox" id="w-counter"><b>Shiny counter</b></label>
+        <div class="linkbox" style="margin-top:16px">
+          <input type="text" id="obsurl" readonly>
+          <button class="btn ghost sm" id="copyobs">Copy</button>
+        </div>
+        <label class="togg"><input type="checkbox" id="scrimtog"><b>Dark backing</b></label>
+        <div class="sizetip" id="sizetip"></div>
       </div>
 
       <div class="card" id="authcard">
-        <h3 id="authtitle">Account</h3>
+        <h3>Account</h3>
         <div id="authforms">
           <div class="stack">
-            <div>
-              <label class="fl" for="u">Username</label>
-              <input type="text" id="u" maxlength="20" autocomplete="username" style="width:100%">
-            </div>
-            <div>
-              <label class="fl" for="pw">Password</label>
-              <input type="password" id="pw" minlength="6" autocomplete="current-password" style="width:100%">
-            </div>
+            <div><label class="fl" for="u">Username</label>
+              <input type="text" id="u" maxlength="20" autocomplete="username" style="width:100%"></div>
+            <div><label class="fl" for="pw">Password</label>
+              <input type="password" id="pw" minlength="6" autocomplete="current-password" style="width:100%"></div>
             <div class="row2">
               <button class="btn sm on" id="dologin">Log In</button>
-              <button class="btn sm" id="dosignup">Sign Up</button>
+              <button class="btn sm ghost" id="dosignup">Sign Up</button>
             </div>
           </div>
           <p class="hint" style="margin-top:14px">
-            No email needed. An account keeps your charts and avatar on any device you log in from.
-            Without one, everything still works and is saved in this browser only.
+            No email needed. An account keeps your charts, hunts and picture on any device.
           </p>
         </div>
         <div id="authed" hidden>
-          <p class="hint">Signed in as <b id="whoami" style="color:var(--c2)"></b>.
-             Your charts sync to this account.</p>
+          <p class="hint">Signed in as <b id="whoami" style="color:var(--c2)"></b>.</p>
           <button class="btn sm ghost" id="dologout" style="margin-top:14px">Log Out</button>
         </div>
         <div class="msg" id="authmsg"></div>
@@ -339,97 +480,82 @@
         <h3>Room</h3>
         <label class="fl" for="room">Room code</label>
         <input type="text" id="room" maxlength="24" style="width:100%">
-        <p class="hint" style="margin-top:12px">
-          Everyone using the same room code sees each other. Share the link, not just the code.
-        </p>
-        <label class="fl" for="obslink" style="margin-top:18px">OBS display link</label>
-        <div class="linkbox">
-          <input type="text" id="obslink" readonly>
-          <button class="btn sm on" id="copyobs">Copy</button>
-        </div>
-        <div class="msg" id="linkmsg"></div>
         <div class="who-list" id="wholist"></div>
+        <div id="adminbox" hidden style="margin-top:14px">
+          <button class="btn sm ghost danger" id="clearroom">Clear Whole Room</button>
+        </div>
       </div>
-
     </div>
   </section>
 
-  <div class="lanes" id="lanes" hidden></div>
+  <div id="ov" hidden>
+    <div class="widget" id="w1"><div class="lanes" id="lanes"></div></div>
+    <div class="widget" id="w2" hidden><div class="ovc" id="ovc"></div></div>
+  </div>
 </div>
-
 <script>
 (function(){
   "use strict";
 
-  // ---------------- config ----------------
-  var DB  = "https://mmo-live-default-rtdb.europe-west1.firebasedatabase.app";
-  var KEY = "AIzaSyCBSWFThWCX1ZzKfZw2qg51RMy0xd7oIEY";   // Firebase Web API key (public by design)
-  var POLL = 2500, AWAY = 30*60*1000;
+  var DB   = "https://mmo-live-default-rtdb.europe-west1.firebasedatabase.app";
+  var KEY  = "AIzaSyCBSWFThWCX1ZzKfZw2qg51RMy0xd7oIEY";
+  var POLL = 2500, AWAY = 30*60*1000, MAX_BARS = 40, PAGE = 60;
 
   var params  = new URLSearchParams(location.search);
-  if (params.get("db")) DB = params.get("db").replace(/\/+$/,"");
-  if (params.get("key")) KEY = params.get("key");
-  var OVERLAY = params.get("overlay") === "1";
-  var AUTH_OK = KEY.indexOf("PASTE-") !== 0;
-
-  var COLORS = ["#c084fc","#34d399","#22d3ee","#fbbf24","#fb7185","#60a5fa","#a3e635","#fb923c"];
+  if(params.get("db"))  DB  = params.get("db").replace(/\/+$/,"");
+  if(params.get("key")) KEY = params.get("key");
+  var OVERLAY = params.get("overlay")==="1";
+  var COLORS=["#c084fc","#34d399","#22d3ee","#fbbf24","#fb7185","#60a5fa","#a3e635","#fb923c"];
 
   function lget(k,d){ try{ return localStorage.getItem(k)||d; }catch(e){ return d; } }
   function lset(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
-  function jget(k,d){ try{ return JSON.parse(localStorage.getItem(k)) || d; }catch(e){ return d; } }
+  function jget(k,d){ try{ var v=JSON.parse(localStorage.getItem(k)); return v==null?d:v; }catch(e){ return d; } }
 
-  // ---------------- state ----------------
-  var ME = lget("mmo-id",""); if(!ME){ ME="p"+Math.random().toString(36).slice(2,9); lset("mmo-id",ME); }
-  var ROOM = params.get("room") || lget("mmo-room","main");
-  var auth = jget("mmo-auth", null);          // {uid, idToken, refreshToken, username}
-  var profile = jget("mmo-profile", {name:"Hunter "+ME.slice(1,4).toUpperCase(), avatar:""});
-  var charts  = jget("mmo-charts", null);
-  var activeId = lget("mmo-active","");
-  if(profile.avatar && !profile.avatarKey) profile.avatarKey = "a"+Date.now().toString(36);
-  if(profile.avatar && !profile.avatarThumb) profile.avatarThumb = profile.avatar;
-  var players = {}, avatars = {}, kicks = {}, colorMap = {}, hideDone=false, pushTimer=null;
-  var lanes = {}, prevDone = {}, prevShiny = {};
+  var ME=lget("mmo-id",""); if(!ME){ ME="p"+Math.random().toString(36).slice(2,9); lset("mmo-id",ME); }
+  var ROOM=params.get("room")||lget("mmo-room","main");
+  var auth=jget("mmo-auth",null);
+  var profile=jget("mmo-profile",{name:"Hunter "+ME.slice(1,4).toUpperCase(),avatar:"",avStamp:0});
+  var charts=jget("mmo-charts",null);
+  var hunts=jget("mmo-hunts",[]);
+  var counter=jget("mmo-counter",{species:"",method:"mmo",n:0,started:0});
+  var odds=jget("mmo-odds",{lv10:false,perf:false,charm:false});
+  var display=jget("mmo-display",{lanes:true,counter:false});
+  var activeId=lget("mmo-active","");
+  var players={},roomDisplay=null,colorMap={},avCache={},lanes={},prevDone={},prevFull={};
+  var hideDone=false,freeOnly=false,shownRows=PAGE,pushTimer=null,accTimer=null,prevCount=null;
+  var timer={end:0,running:false,mins:15};
 
-  if(!charts || !charts.length){
-    charts = [{id:"c"+Date.now().toString(36), title:"Outbreak 1", spawns:8, done:{}}];
-    activeId = charts[0].id;
+  if(!charts||!charts.length){
+    charts=[{id:"c"+Date.now().toString(36),title:"Outbreak 1",spawns:8,ghost:false,done:{},started:0}];
+    activeId=charts[0].id;
   }
-  if(!charts.some(function(c){ return c.id===activeId; })) activeId = charts[0].id;
+  charts.forEach(function(c){ if(!c.done) c.done={}; if(!c.started) c.started=0; });
+  if(!charts.some(function(c){ return c.id===activeId; })) activeId=charts[0].id;
+  function chart(){ return charts.filter(function(c){ return c.id===activeId; })[0]||charts[0]; }
 
-  function chart(){ return charts.filter(function(c){ return c.id===activeId; })[0] || charts[0]; }
-
-  var $ = function(id){ return document.getElementById(id); };
-  if(OVERLAY){ document.body.classList.add("overlay"); $("lanes").hidden=false;
+  var $=function(id){ return document.getElementById(id); };
+  if(OVERLAY){ document.body.classList.add("overlay"); $("ov").hidden=false;
     if(params.get("scrim")==="1") document.body.classList.add("scrim"); }
 
   function esc(s){ return String(s).replace(/[&<>"']/g,function(c){
     return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
   function initials(n){
     var p=String(n||"?").trim().split(/\s+/).filter(Boolean);
-    if(!p.length) return "?";
-    return (p.length===1?p[0].slice(0,2):p[0][0]+p[1][0]).toUpperCase();
+    return p.length?(p.length===1?p[0].slice(0,2):p[0][0]+p[1][0]).toUpperCase():"?";
   }
-  function avStyle(p){
-    return p.avatar ? 'style="background-image:url('+p.avatar+')"' : "";
+  function fmt(n){ return n.toLocaleString(); }
+
+  // ---------------- odds ----------------
+  var BASE=1/4096;
+  function rollsFor(method,o){
+    return 1+(o.lv10?1:0)+(o.perf?2:0)+(o.charm?3:0)+(method==="mo"?25:method==="mmo"?12:0);
   }
-  function isStitch(){
-    var a = auth && auth.username ? String(auth.username).trim().toLowerCase() : "";
-    var n = profile.name ? String(profile.name).trim().toLowerCase() : "";
-    return a === "stitch" || n === "stitch";
-  }
-  function dbAuth(){
-    return auth && auth.idToken ? "&auth="+encodeURIComponent(auth.idToken) : "";
-  }
-  function buildDisplayLink(){
-    var u = new URL(location.href);
-    u.searchParams.set("overlay","1");
-    u.searchParams.set("room",ROOM);
-    return u.toString();
-  }
+  function perEncounter(rolls){ return 1-Math.pow(1-BASE,rolls); }
+  function cumulative(p,n){ return 1-Math.pow(1-p,n); }
 
   // ---------------- paths ----------------
-  function buildPaths(n,ghost){
-    var out=[[]], limit=n-5, lead,g1,g2;
+  function basePaths(n){
+    var out=[[]],limit=n-5,lead,g1,g2;
     for(lead=0;lead<=limit;lead++){
       for(g1=2;g1<=4;g1++) if(lead+g1<=n) out.push([["C",lead],["KO",g1]]);
       for(g1=2;g1<=4;g1++){ if(lead+g1>limit) continue;
@@ -439,185 +565,147 @@
       if(lead+g1+1>limit) continue;
       for(g2=2;g2<=4;g2++) if(lead+g1+1+g2<=n) out.push([["C",lead],["KO",g1],["C",1],["KO",g2]]);
     }
-    return ghost ? addGhostPaths(out,n) : out;
+    return out;
   }
-  function ghostSteps(remaining){
+  function ghostSteps(rem){
     var out=[[]];
-    function walk(left,seq){
-      for(var x=1;x<left;x++){
-        var next=seq.concat(x);
-        out.push(next);
-        walk(left-x,next);
-      }
-    }
-    walk(remaining,[]);
+    (function walk(left,seq){
+      for(var x=1;x<left;x++){ var nx=seq.concat(x); out.push(nx); walk(left-x,nx); }
+    })(rem,[]);
     return out;
   }
-  function addGhostPaths(base,n){
-    var out=[];
-    base.forEach(function(path){
-      ghostSteps(Math.min(4,n)).forEach(function(gs){
-        out.push({base:path,ghost:gs});
-      });
-    });
-    return out;
+  var PATHS={};
+  function paths(n,ghost){
+    var k=n+(ghost?"g":"");
+    if(PATHS[k]) return PATHS[k];
+    var base=basePaths(n),out;
+    if(!ghost) out=base.map(function(b){ return {base:b,ghost:[]}; });
+    else { out=[]; var gs=ghostSteps(Math.min(4,n));
+      base.forEach(function(b){ gs.forEach(function(g){ out.push({base:b,ghost:g}); }); }); }
+    return (PATHS[k]=out);
   }
-  var COUNT = {
-    basic:{8:buildPaths(8,false).length, 9:buildPaths(9,false).length, 10:buildPaths(10,false).length},
-    ghost:{8:buildPaths(8,true).length, 9:buildPaths(9,true).length, 10:buildPaths(10,true).length}
-  };
-  function countFor(c){ return (c.ghost?COUNT.ghost:COUNT.basic)[c.spawns] || COUNT.basic[8]; }
+  function totalFor(c){ return paths(c.spawns,c.ghost).length; }
   function toCells(path,n){
-    var ghost = path && path.ghost ? path.ghost : [];
-    path = path && path.base ? path.base : path;
     var cells=[],g=0;
-    path.forEach(function(s){
+    path.base.forEach(function(s){
       var k=s[0],c=s[1],i;
       if(k==="C"){ for(i=0;i<c;i++) cells.push({t:"C"}); }
-      else { g++; for(i=0;i<c;i++) cells.push({t:"KO",g:((g-1)%4)+1,first:i===0,last:i===c-1}); }
+      else { g++; for(i=0;i<c;i++) cells.push({t:"KO",g:((g-1)%4)+1}); }
     });
     while(cells.length<n) cells.push({t:"C"});
-    cells = cells.slice(0,n);
-    if(ghost.length){
-      var head=cells.slice(0,Math.max(0,n-4)), tail=cells.slice(Math.max(0,n-4)), withLeaves=[], pos=0;
-      ghost.forEach(function(take){
-        for(var i=0;i<take && pos<tail.length;i++,pos++) withLeaves.push(tail[pos]);
-        withLeaves.push({t:"L"});
-      });
-      while(pos<tail.length) withLeaves.push(tail[pos++]);
-      cells=head.concat(withLeaves);
-    }
-    return cells;
+    return cells.slice(0,n);
   }
   function doneCount(c){ return Object.keys(c.done||{}).length; }
 
   // ---------------- persistence ----------------
   function saveLocal(){
-    lset("mmo-charts",JSON.stringify(charts));
-    lset("mmo-profile",JSON.stringify(profile));
-    lset("mmo-active",activeId);
-    lset("mmo-room",ROOM);
+    lset("mmo-charts",JSON.stringify(charts)); lset("mmo-profile",JSON.stringify(profile));
+    lset("mmo-hunts",JSON.stringify(hunts));   lset("mmo-counter",JSON.stringify(counter));
+    lset("mmo-odds",JSON.stringify(odds));     lset("mmo-display",JSON.stringify(display));
+    lset("mmo-active",activeId);               lset("mmo-room",ROOM);
   }
-
   function pushRoom(){
-    var c = chart();
+    var c=chart();
     clearTimeout(pushTimer);
-    pushTimer = setTimeout(function(){
+    pushTimer=setTimeout(function(){
       fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/players/"+ME+".json?print=silent",{
         method:"PUT",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({name:profile.name,avatar:profile.avatarThumb||"",avatarKey:profile.avatarKey||"",
-          chart:c.title,spawns:c.spawns,ghost:!!c.ghost,done:c.done,shinyAt:c.shinyAt||0,updated:Date.now()})
+        body:JSON.stringify({name:profile.name,av:profile.avStamp||0,chart:c.title,spawns:c.spawns,
+          ghost:!!c.ghost,total:totalFor(c),started:c.started||0,done:c.done,
+          counter:{species:counter.species,n:counter.n,method:counter.method,started:counter.started},
+          rolls:rollsFor(counter.method,odds),shinies:hunts.length,updated:Date.now()})
       }).catch(function(){});
     },400);
   }
-
-  function publishAvatar(force){
-    var key = profile.avatarKey || "";
-    var pubKey = "mmo-avatar-pub:"+ROOM+":"+ME;
-    var known = lget(pubKey,"");
-    if(!force && key && known===key) return;
-    if(profile.avatar && key){
-      fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/avatars/"+ME+".json?print=silent",{
-        method:"PUT",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({avatar:profile.avatar,avatarKey:key,updated:Date.now()})
-      }).then(function(){ lset(pubKey,key); avatars[ME]={key:key,url:profile.avatar}; }).catch(function(){});
-    } else {
-      fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/avatars/"+ME+".json?print=silent",{
-        method:"DELETE"
-      }).then(function(){ lset(pubKey,""); delete avatars[ME]; }).catch(function(){});
-    }
+  function pushDisplay(){
+    fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/display.json?print=silent",{
+      method:"PUT",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({lanes:!!display.lanes,counter:!!display.counter,who:ME,at:Date.now()})
+    }).catch(function(){});
   }
-
   function pushAccount(){
     if(!auth) return;
     fetch(DB+"/users/"+auth.uid+".json?auth="+auth.idToken+"&print=silent",{
       method:"PUT",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({profile:profile,charts:charts,active:activeId,updated:Date.now()})
+      body:JSON.stringify({profile:profile,charts:charts,hunts:hunts,odds:odds,active:activeId,
+        updated:Date.now()})
     }).catch(function(){});
   }
-
-  var accTimer=null;
   function save(){ saveLocal(); pushRoom(); clearTimeout(accTimer); accTimer=setTimeout(pushAccount,900); }
 
-  // ---------------- accounts (Firebase Auth REST, no email needed) ----------------
-  var IDP = "https://identitytoolkit.googleapis.com/v1/accounts:";
-  function fakeEmail(u){ return u.toLowerCase().replace(/[^a-z0-9_.-]/g,"") + "@mmo.local"; }
-
-  function authCall(kind, username, password){
-    return fetch(IDP+kind+"?key="+KEY,{
-      method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({email:fakeEmail(username),password:password,returnSecureToken:true})
-    }).then(function(r){ return r.json().then(function(j){
-      if(!r.ok) throw new Error((j.error&&j.error.message)||"failed"); return j; }); });
+  // ---------------- accounts ----------------
+  var IDP="https://identitytoolkit.googleapis.com/v1/accounts:";
+  function fakeEmail(u){ return u.toLowerCase().replace(/[^a-z0-9_.-]/g,"")+"@mmo.local"; }
+  function authCall(kind,u,p){
+    return fetch(IDP+kind+"?key="+KEY,{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({email:fakeEmail(u),password:p,returnSecureToken:true})})
+      .then(function(r){ return r.json().then(function(j){
+        if(!r.ok) throw new Error((j.error&&j.error.message)||"failed"); return j; }); });
   }
-
-  function friendlyAuthError(m){
-    if(/EMAIL_EXISTS/.test(m))            return "That username is taken.";
-    if(/EMAIL_NOT_FOUND|INVALID_LOGIN/.test(m)) return "No such username, or wrong password.";
-    if(/INVALID_PASSWORD/.test(m))        return "Wrong password.";
-    if(/WEAK_PASSWORD/.test(m))           return "Password must be at least 6 characters.";
-    if(/OPERATION_NOT_ALLOWED/.test(m))   return "Accounts aren't switched on in Firebase yet.";
-    if(/TOO_MANY_ATTEMPTS/.test(m))       return "Too many tries — wait a minute.";
+  function friendly(m){
+    if(/EMAIL_EXISTS/.test(m)) return "That username is taken.";
+    if(/EMAIL_NOT_FOUND|INVALID_LOGIN|INVALID_PASSWORD/.test(m)) return "No such username, or wrong password.";
+    if(/WEAK_PASSWORD/.test(m)) return "Password must be at least 6 characters.";
+    if(/OPERATION_NOT_ALLOWED/.test(m)) return "Email/password sign-in isn't enabled in Firebase yet.";
+    if(/CONFIGURATION_NOT_FOUND/.test(m)) return "Firebase Authentication hasn't been set up yet.";
+    if(/TOO_MANY_ATTEMPTS/.test(m)) return "Too many tries — wait a minute.";
     return m;
   }
-
-  function afterAuth(j, username){
-    auth = {uid:j.localId, idToken:j.idToken, refreshToken:j.refreshToken, username:username};
-    lset("mmo-auth",JSON.stringify(auth));
-    renderAuth();
-    // pull anything already stored on the account
-    return fetch(DB+"/users/"+auth.uid+".json?auth="+auth.idToken)
-      .then(function(r){ return r.json(); })
+  function msg(kind,text){ var m=$("authmsg"); if(m){ m.className="msg "+(kind||""); m.textContent=text||""; } }
+  function afterAuth(j,u){
+    auth={uid:j.localId,idToken:j.idToken,refreshToken:j.refreshToken,username:u};
+    lset("mmo-auth",JSON.stringify(auth)); renderAuth();
+    return fetch(DB+"/users/"+auth.uid+".json?auth="+auth.idToken).then(function(r){ return r.json(); })
       .then(function(d){
-        if(d && d.charts && d.charts.length){
-          charts=d.charts; activeId=d.active||charts[0].id;
+        if(d&&(d.charts||d.hunts)){
+          if(d.charts&&d.charts.length){ charts=d.charts; activeId=d.active||charts[0].id;
+            charts.forEach(function(c){ if(!c.done) c.done={}; }); }
+          if(d.hunts) hunts=d.hunts;
           if(d.profile) profile=d.profile;
-          saveLocal(); renderAll();
-          msg("good","Welcome back — charts restored.");
+          if(d.odds) odds=d.odds;
+          saveLocal(); renderAll(); msg("good","Welcome back — your stuff is restored.");
         } else { pushAccount(); msg("good","Account ready."); }
       }).catch(function(){ pushAccount(); });
   }
-
-  function msg(kind,text){
-    var m=$("authmsg"); if(!m) return;
-    m.className="msg "+(kind||""); m.textContent=text||"";
-  }
-
   function renderAuth(){
     if(!$("authed")) return;
-    $("authforms").hidden = !!auth;
-    $("authed").hidden = !auth;
-    $("authtitle").textContent = auth ? "Account" : "Account";
-    if(auth) $("whoami").textContent = auth.username || "you";
-    if(!AUTH_OK && !auth){
-      msg("bad","Accounts need the Firebase Web API key adding to this page.");
-    }
+    $("authforms").hidden=!!auth; $("authed").hidden=!auth;
+    if(auth) $("whoami").textContent=auth.username||"you";
   }
 
-  // ---------------- avatar ----------------
+  // ---------------- avatars ----------------
+  function avatarOf(p){ return (avCache[p.id]&&avCache[p.id].url)||""; }
+  function fetchAvatars(list){
+    list.forEach(function(p){
+      if(!p.av) return;
+      var c=avCache[p.id]; if(c&&c.stamp===p.av) return;
+      avCache[p.id]={stamp:p.av,url:(c&&c.url)||""};
+      fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/avatars/"+p.id+".json?t="+Date.now())
+        .then(function(r){ return r.json(); })
+        .then(function(u){ if(typeof u==="string"&&u){ avCache[p.id]={stamp:p.av,url:u};
+          if(OVERLAY) paintOverlay(); else { renderWho(); renderTable(); renderBoard(); } } })
+        .catch(function(){});
+    });
+  }
   function handleAvatar(file){
     if(!file) return;
     var fr=new FileReader();
     fr.onload=function(){
       var img=new Image();
       img.onload=function(){
-        var S=192, cv=document.createElement("canvas");
-        cv.width=cv.height=S;
-        var cx=cv.getContext("2d");
-        var scale=Math.max(S/img.width,S/img.height);
-        var w=img.width*scale, h=img.height*scale;
+        var S=192,cv=document.createElement("canvas"); cv.width=cv.height=S;
+        var cx=cv.getContext("2d"); cx.imageSmoothingEnabled=true; cx.imageSmoothingQuality="high";
+        var sc=Math.max(S/img.width,S/img.height),w=img.width*sc,h=img.height*sc;
         cx.drawImage(img,(S-w)/2,(S-h)/2,w,h);
-        var q=0.9, url=cv.toDataURL("image/jpeg",q);
-        while(url.length>120000 && q>0.42){ q-=0.1; url=cv.toDataURL("image/jpeg",q); }
-        profile.avatar=url;
-        profile.avatarKey="a"+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
-        var tv=document.createElement("canvas"), T=64;
-        tv.width=tv.height=T;
-        tv.getContext("2d").drawImage(cv,0,0,T,T);
-        profile.avatarThumb=tv.toDataURL("image/jpeg",0.68);
-        save(); publishAvatar(true); renderProfile(); msg("good","Picture updated.");
+        var q=0.9,url=cv.toDataURL("image/jpeg",q);
+        while(url.length>140000&&q>0.5){ q-=0.08; url=cv.toDataURL("image/jpeg",q); }
+        profile.avatar=url; profile.avStamp=Date.now();
+        avCache[ME]={stamp:profile.avStamp,url:url};
+        fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/avatars/"+ME+".json?print=silent",{
+          method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(url)
+        }).catch(function(){});
+        save(); renderProfile();
       };
-      img.onerror=function(){ msg("bad","Couldn't read that image."); };
       img.src=fr.result;
     };
     fr.readAsDataURL(file);
@@ -625,79 +713,108 @@
 
   // ---------------- room ----------------
   function pull(){
-    Promise.all([
-      fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/players.json?t="+Date.now(),{cache:"no-store"})
-        .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); }),
-      fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/kicks.json?t="+Date.now(),{cache:"no-store"})
-        .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); }).catch(function(){ return {}; })
-    ]).then(function(all){
-        players=all[0]||{}; kicks=all[1]||{}; assignColors();
-        setStatus("live", active().length+" hunting");
-        if(OVERLAY) paintLanes(); else { renderWho(); renderTable(); }
-        loadAvatars();
-      })
-      .catch(function(e){ setStatus("error", String(e.message||e)); });
+    fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+".json?t="+Date.now(),{cache:"no-store"})
+      .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+      .then(function(d){
+        d=d||{}; players=d.players||{}; roomDisplay=d.display||null;
+        assignColors();
+        var list=active(); fetchAvatars(list);
+        setStatus("live",list.length+" hunting");
+        if(OVERLAY) paintOverlay();
+        else { renderWho(); renderTable(); renderObs(); renderBoard(); }
+      }).catch(function(e){ setStatus("error",String(e.message||e)); });
   }
   function setStatus(s,t){ if($("dot")){ $("dot").className="dot"+(s?" "+s:""); $("stamp").textContent=t; } }
-
   function assignColors(){
-    var ids=Object.keys(players).sort(), used={}, map={};
+    var ids=Object.keys(players).sort(),used={},map={};
     ids.forEach(function(id){
       var h=0,i; for(i=0;i<id.length;i++) h=(h*31+id.charCodeAt(i))>>>0;
-      var slot=h%COLORS.length, t=0;
+      var slot=h%COLORS.length,t=0;
       while(used[slot]&&t<COLORS.length){ slot=(slot+1)%COLORS.length; t++; }
       used[slot]=1; map[id]=COLORS[slot];
     });
     colorMap=map;
   }
-  function colorFor(id){ return colorMap[id] || COLORS[0]; }
-
-  function avatarFor(id,key){
-    var a=avatars[id];
-    return a && key && a.key===key ? a.url : "";
-  }
-
-  function loadAvatars(){
-    Object.keys(players).forEach(function(id){
-      var key=(players[id]&&players[id].avatarKey)||"";
-      if(!key) { delete avatars[id]; return; }
-      if(avatars[id] && avatars[id].key===key) return;
-      fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/avatars/"+id+".json?t="+Date.now(),{cache:"no-store"})
-        .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
-        .then(function(d){
-          avatars[id]={key:key,url:(d&&d.avatar)||""};
-          if(OVERLAY) paintLanes(); else { renderWho(); renderTable(); }
-        }).catch(function(){});
-    });
-  }
-
+  function colorFor(id){ return colorMap[id]||COLORS[0]; }
   function active(){
-    var now=Date.now(), list=[];
+    var now=Date.now(),list=[];
     for(var id in players){
       var p=players[id]||{};
-      if(kicks && kicks[id]) continue;
       if(now-(p.updated||0)>AWAY) continue;
-      list.push({id:id,name:p.name||"?",avatar:avatarFor(id,p.avatarKey||"")||p.avatar||"",chart:p.chart||"",
-                 spawns:p.spawns||8,ghost:!!p.ghost,done:p.done||{},shinyAt:p.shinyAt||0});
+      list.push({id:id,name:p.name||"?",av:p.av||0,chart:p.chart||"",spawns:p.spawns||8,
+        ghost:!!p.ghost,total:p.total||0,started:p.started||0,done:p.done||{},
+        counter:p.counter||null,rolls:p.rolls||1,shinies:p.shinies||0});
     }
     list.sort(function(a,b){
       var d=Object.keys(b.done).length-Object.keys(a.done).length;
-      return d || String(a.name).localeCompare(String(b.name));
+      return d||String(a.name).localeCompare(String(b.name));
     });
     return list;
   }
+  function elapsed(ms){
+    if(!ms) return "";
+    var s=Math.floor((Date.now()-ms)/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60);
+    return h? h+"h "+m+"m" : m? m+"m" : "just started";
+  }
+  function hms(ms){
+    var s=Math.max(0,Math.floor(ms/1000)),m=Math.floor(s/60);
+    return m+":"+("0"+(s%60)).slice(-2);
+  }
 
-  // ---------------- overlay lanes ----------------
+  // ---------------- overlay ----------------
   function makeLane(){
     var l=document.createElement("div"); l.className="lane";
     l.innerHTML='<div class="who"><span class="av"></span>'+
       '<div style="min-width:0"><div class="nm"></div><div class="sp"></div></div></div>'+
       '<div class="track"><div class="segs"></div><div class="marker"></div></div>'+
-      '<div class="count"><b>0</b><s>/0</s></div><span class="shinybadge">SHINY</span>';
+      '<div class="count"><b>0</b><s>/0</s></div>';
     return l;
   }
+  function buckets(total){
+    if(total<=MAX_BARS) return {n:total,size:1};
+    var size=Math.ceil(total/MAX_BARS);
+    return {n:Math.ceil(total/size),size:size};
+  }
+  function wantShow(){
+    var d=roomDisplay||display;
+    return {lanes:d.lanes!==false, counter:!!d.counter, who:(roomDisplay&&roomDisplay.who)||ME};
+  }
+  function paintOverlay(){
+    var w=wantShow();
+    toggleWidget($("w1"),w.lanes);
+    toggleWidget($("w2"),w.counter);
+    if(w.lanes) paintLanes();
+    if(w.counter) paintCounter(w.who);
+  }
+  function toggleWidget(el,on){
+    if(on&&el.hidden){ el.hidden=false; el.classList.remove("out"); }
+    else if(!on&&!el.hidden){
+      el.classList.add("out");
+      setTimeout(function(){ if(el.classList.contains("out")) el.hidden=true; },300);
+    }
+  }
+  function paintCounter(who){
+    var list=active(),p=null,i;
+    for(i=0;i<list.length;i++) if(list[i].id===who) p=list[i];
+    if(!p) p=list.filter(function(x){ return x.counter&&x.counter.n; })[0]||list[0];
+    var box=$("ovc");
+    if(!p||!p.counter){ box.innerHTML='<div class="sp2">No hunt running</div>'; return; }
+    var c=p.counter,per=perEncounter(p.rolls||1),cum=cumulative(per,c.n||0),pic=avatarOf(p);
+    var was=box.getAttribute("data-n");
+    box.setAttribute("data-n",String(c.n||0));
+    box.style.setProperty("--c",colorFor(p.id));
+    box.innerHTML=
+      '<span class="av" style="'+(pic?"background-image:url("+pic+")":"background:"+colorFor(p.id))+'">'+
+        (pic?"":esc(initials(p.name)))+"</span>"+
+      '<div><div class="sp2">'+esc(c.species||"Shiny hunt")+"</div>"+
+      '<div class="od">'+esc(p.name)+" · 1/"+Math.round(1/per)+" each"+
+        (c.started?" · "+elapsed(c.started):"")+"</div></div>"+
+      '<div class="big'+(was!==null&&was!==String(c.n||0)?" bump":"")+'">'+fmt(c.n||0)+"</div>"+
+      '<div class="ring"><div class="pct">'+(cum*100).toFixed(1)+"%</div>"+
+      '<div class="lbl">chance by now</div></div>';
+  }
   function paintLanes(){
-    var list=active(), box=$("lanes");
+    var list=active(),box=$("lanes");
     if(!list.length){
       if(!box.querySelector(".empty-lane")){
         box.innerHTML='<div class="empty-lane"><b>No hunters yet</b>Open the link and tick a path.</div>';
@@ -706,142 +823,218 @@
       return;
     }
     var ph=box.querySelector(".empty-lane"); if(ph) ph.remove();
-
     var before={};
     Object.keys(lanes).forEach(function(id){ before[id]=lanes[id].getBoundingClientRect().top; });
-
     var seen={};
     list.forEach(function(p,rank){
       seen[p.id]=1;
       var lane=lanes[p.id];
       if(!lane){ lane=lanes[p.id]=makeLane(); box.appendChild(lane); }
-      lane.style.setProperty("--c", colorFor(p.id));
-      lane.classList.toggle("ghostlane",!!p.ghost);
-      lane.classList.toggle("leader", rank===0 && Object.keys(p.done).length>0);
-      if(Object.prototype.hasOwnProperty.call(prevShiny,p.id) && p.shinyAt && p.shinyAt!==prevShiny[p.id]){
-        lane.classList.remove("shiny"); void lane.offsetWidth; lane.classList.add("shiny");
-        setTimeout(function(){ lane.classList.remove("shiny"); },2300);
-      }
-      prevShiny[p.id]=p.shinyAt||0;
-
-      var av=lane.querySelector(".av");
-      if(p.avatar){ av.style.backgroundImage="url("+p.avatar+")"; av.textContent=""; }
+      lane.style.setProperty("--c",colorFor(p.id));
+      var pic=avatarOf(p),av=lane.querySelector(".av");
+      if(pic){ av.style.backgroundImage="url("+pic+")"; av.textContent=""; }
       else { av.style.backgroundImage=""; av.textContent=initials(p.name); }
-      lane.querySelector(".nm").textContent=p.name;
-      lane.querySelector(".sp").textContent=(p.chart? p.chart+" · ":"")+p.spawns+" spawns";
-
-      var total=countFor(p), segs=lane.querySelector(".segs");
-      var compact = true;
-      var hadProgress=Object.prototype.hasOwnProperty.call(prevDone,p.id);
-      var prev=prevDone[p.id]||{}, now={}, newest=-1, count=0;
+      var total=p.total||paths(p.spawns,p.ghost).length,count=Object.keys(p.done).length;
+      var full=count>=total&&total>0;
+      lane.querySelector(".nm").innerHTML=esc(p.name)+
+        (rank===0&&count>0?'<span class="tag lead">LEAD</span>':"")+
+        (full?'<span class="tag done">DONE</span>':"");
+      lane.querySelector(".sp").textContent=(p.chart?p.chart+" · ":"")+p.spawns+" spawns"+
+        (p.ghost?" · ghost":"")+(p.started?" · "+elapsed(p.started):"");
+      var b=buckets(total),segs=lane.querySelector(".segs");
+      if(segs.children.length!==b.n){
+        segs.innerHTML="";
+        for(var i=0;i<b.n;i++){ var e=document.createElement("i");
+          e.appendChild(document.createElement("b")); segs.appendChild(e); }
+      }
+      var prev=prevDone[p.id]||{},now={},newest=-1;
       for(var k in p.done){
-        var idx=parseInt(k,10);
-        if(isNaN(idx)||idx>=total) continue;
-        now[idx]=1; count++;
-        if(!prev[idx]) newest=idx;
+        var idx=parseInt(k,10); if(isNaN(idx)||idx>=total) continue;
+        now[idx]=1; if(!prev[idx]) newest=idx;
       }
-      if(hadProgress && count>Object.keys(prev).length){
-        lane.classList.remove("bump"); void lane.offsetWidth; lane.classList.add("bump");
-        setTimeout(function(){ lane.classList.remove("bump"); },720);
-      }
-      if(compact){
-        if(!segs.classList.contains("compact")){
-          segs.className="segs compact";
-          segs.innerHTML='<span class="ghosttag"></span>';
-        }
-        var pct=total?count/total*100:0;
-        segs.style.setProperty("--pct",pct.toFixed(3)+"%");
-        segs.querySelector(".ghosttag").textContent=(p.ghost?"GHOST ":"")+Math.round(pct)+"%";
-        lane.classList.remove("has-marker");
-      } else {
-        if(segs.classList.contains("compact") || segs.children.length!==total){
-          segs.className="segs";
-          segs.style.removeProperty("--pct");
-          segs.innerHTML="";
-          for(var i=0;i<total;i++) segs.appendChild(document.createElement("i"));
-        }
-        for(var s=0;s<total;s++){
-          var seg=segs.children[s], on=!!now[s];
-          if(seg.classList.contains("on")!==on) seg.classList.toggle("on",on);
-          if(on&&!prev[s]){ seg.classList.remove("just"); void seg.offsetWidth; seg.classList.add("just"); }
-        }
-        if(newest>=0){
-          lane.classList.add("has-marker");
-          lane.querySelector(".marker").style.setProperty("--x",((newest+0.5)/total*100).toFixed(3)+"%");
-        }
+      for(var s=0;s<b.n;s++){
+        var seg=segs.children[s],lo=s*b.size,hi=Math.min(total,lo+b.size),got=0;
+        for(var j=lo;j<hi;j++) if(now[j]) got++;
+        var frac=got/Math.max(1,hi-lo);
+        if(b.size===1){ seg.classList.toggle("on",frac>0); }
+        else { seg.classList.toggle("on",frac>=1); seg.firstChild.style.height=(frac>=1?0:frac*100)+"%"; }
+        if(newest>=lo&&newest<hi){ seg.classList.remove("just"); void seg.offsetWidth; seg.classList.add("just"); }
       }
       prevDone[p.id]=now;
+      if(newest>=0){
+        lane.classList.add("has-marker");
+        lane.querySelector(".marker").style.setProperty("--x",((newest+0.5)/total*100).toFixed(3)+"%");
+      }
+      if(full&&!prevFull[p.id]){ lane.classList.remove("finished"); void lane.offsetWidth;
+        lane.classList.add("finished"); }
+      prevFull[p.id]=full;
       lane.querySelector(".count").innerHTML="<b>"+count+"</b><s>/"+total+"</s>";
       box.appendChild(lane);
     });
-
     Object.keys(lanes).forEach(function(id){
       if(seen[id]) return;
       var l=lanes[id]; l.classList.add("leaving");
       setTimeout(function(){ if(l.parentNode) l.parentNode.removeChild(l); },300);
-      delete lanes[id]; delete prevDone[id]; delete prevShiny[id];
+      delete lanes[id]; delete prevDone[id]; delete prevFull[id];
     });
     Object.keys(lanes).forEach(function(id){
-      var l=lanes[id], was=before[id]; if(was===undefined) return;
+      var l=lanes[id],was=before[id]; if(was===undefined) return;
       var delta=was-l.getBoundingClientRect().top; if(!delta) return;
       l.style.transition="none"; l.style.transform="translateY("+delta+"px)";
       requestAnimationFrame(function(){ l.style.transition=""; l.style.transform=""; });
     });
   }
 
-  // ---------------- charts UI ----------------
+  // ---------------- charts view ----------------
   function renderStrip(){
     var strip=$("chartstrip"); if(!strip) return;
-    strip.innerHTML = charts.map(function(c,i){
-      var total=countFor(c), n=doneCount(c);
-      return '<button class="chartcard" data-id="'+c.id+'" aria-current="'+(c.id===activeId)+
-        '" style="animation-delay:'+(i*45)+'ms">'+
-        '<span class="ct">'+esc(c.title)+"</span>"+
-        '<span class="cm">'+c.spawns+" spawns"+(c.ghost?" · ghost":"")+" · "+n+"/"+total+"</span>"+
-        '<span class="cardbar"><span class="cbar"><i style="width:'+(total?n/total*100:0)+'%"></i></span>'+
-        '<span class="sparkbtn" role="button" tabindex="0" data-shiny="'+c.id+
-        '" aria-label="Play shiny animation" title="Shiny found">★</span></span></button>';
-    }).join("") + '<button class="chartcard newchart" id="newchart">+ New Chart</button>';
+    strip.innerHTML=charts.map(function(c){
+      var total=totalFor(c),n=doneCount(c);
+      return '<button class="chartcard" data-id="'+c.id+'" aria-current="'+(c.id===activeId)+'">'+
+        '<span class="ct">'+esc(c.title)+(c.ghost?'<i class="gflag">GHOST</i>':"")+"</span>"+
+        '<span class="cm">'+c.spawns+" spawns · "+n+"/"+total+"</span>"+
+        '<span class="cbar"><i style="width:'+(total?n/total*100:0)+'%"></i></span></button>';
+    }).join("")+'<button class="chartcard newchart" id="newchart">+ New Chart</button>';
   }
-
+  function renderMeta(){
+    var c=chart(),el=$("chartmeta"); if(!el) return;
+    el.innerHTML="<span><b>"+doneCount(c)+"</b> of <b>"+totalFor(c)+"</b> cleared</span>"+
+      (c.started?"<span>running <b>"+elapsed(c.started)+"</b></span>":"");
+  }
   function renderTable(){
-    var c=chart(), N=c.spawns, paths=buildPaths(N,!!c.ghost), shown=0;
-    var others=active().filter(function(p){ return p.id!==ME && !!p.ghost===!!c.ghost; });
-    var width=N+(c.ghost?3:0), head="";
-    for(var i=1;i<=width;i++) head+="<th>"+i+"</th>";
-    var body="";
-    paths.forEach(function(path,i){
-      var isDone=!!c.done[i];
-      if(hideDone&&isDone) return;
-      shown++;
-      var cells=toCells(path,N);
-      while(cells.length<width) cells.push({t:""});
-      var tds=cells.map(function(cell,ci){
-        var cls=cell.t==="KO"?"cell ko g"+cell.g:(cell.t==="L"?"cell leave":(cell.t?"cell c":"cell empty"));
-        return '<td><div class="'+cls+'" style="animation-delay:'+(shown*12+ci*10)+'ms">'+cell.t+"</div></td>";
+    if(!$("content")) return;
+    var c=chart(),N=c.spawns,list=paths(N,c.ghost),others=active().filter(function(p){ return p.id!==ME; });
+    var claimed={};
+    if(freeOnly) others.forEach(function(p){
+      if(p.spawns===N&&!!p.ghost===!!c.ghost) for(var k in p.done) claimed[k]=1; });
+    var head=""; for(var i=1;i<=N;i++) head+="<th>"+i+"</th>";
+    var rows="",drawn=0,skipped=0;
+    for(var idx=0;idx<list.length;idx++){
+      var isDone=!!c.done[idx];
+      if(hideDone&&isDone) continue;
+      if(freeOnly&&(claimed[idx]||isDone)) continue;
+      if(drawn>=shownRows){ skipped++; continue; }
+      drawn++;
+      var path=list[idx];
+      var tds=toCells(path,N).map(function(cell,ci){
+        return '<td><div class="cell '+(cell.t==="KO"?"ko g"+cell.g:"c")+
+          '" style="animation-delay:'+(drawn*7+ci*7)+'ms">'+cell.t+"</div></td>";
       }).join("");
-      var chips=others.filter(function(p){ return p.done[i] && p.spawns===N; }).map(function(p){
-        var a=p.avatar?'style="background-image:url('+p.avatar+')"':
-              'style="background:'+colorFor(p.id)+'"';
-        return '<span class="av" '+a+' title="'+esc(p.name)+'">'+(p.avatar?"":esc(initials(p.name)))+"</span>";
-      }).join("");
-      body+='<tr class="'+(isDone?"complete":"")+'" data-i="'+i+'" style="animation-delay:'+(shown*10)+'ms">'+
-        '<td class="order">'+(i+1)+"</td>"+tds+
+      var gcol=c.ghost?('<td class="gstep">'+(path.ghost.length
+        ? '<div class="gchips">'+path.ghost.map(function(x){ return '<span class="gchip">'+x+"</span>"; }).join("")+"</div>"
+        : '<span class="gnone">straight through</span>')+"</td>"):"";
+      var chips=others.filter(function(p){ return p.done[idx]&&p.spawns===N&&!!p.ghost===!!c.ghost; })
+        .map(function(p){
+          var pic=avatarOf(p);
+          return '<span class="av" style="'+(pic?"background-image:url("+pic+")":"background:"+colorFor(p.id))+
+            '" title="'+esc(p.name)+'">'+(pic?"":esc(initials(p.name)))+"</span>"; }).join("");
+      rows+='<tr class="'+(isDone?"complete":"")+'" data-i="'+idx+'">'+
+        '<td class="order">'+(idx+1)+"</td>"+tds+gcol+
         '<td class="done"><span class="check" role="checkbox" tabindex="0" aria-checked="'+isDone+
         '"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg></span>'+
         (chips?'<div class="whos">'+chips+"</div>":"")+"</td></tr>";
-    });
+    }
     $("content").innerHTML='<div class="tablewrap"><table><thead>'+
-      '<tr><th rowspan="2">Order</th><th colspan="'+width+'">'+(c.ghost?"Action Step":"Spawn Number")+'</th><th rowspan="2">Done</th></tr>'+
+      '<tr><th rowspan="2">Order</th><th colspan="'+N+'">Spawn Number</th>'+
+      (c.ghost?'<th rowspan="2">Ghost Steps</th>':"")+'<th rowspan="2">Done</th></tr>'+
       "<tr>"+head+"</tr></thead><tbody>"+
-      (body||'<tr><td colspan="'+(N+2)+'" style="padding:26px;color:var(--muted)">All paths cleared.</td></tr>')+
-      "</tbody></table></div>";
+      (rows||'<tr><td colspan="'+(N+3)+'" style="padding:26px;color:var(--muted)">Nothing matches those filters.</td></tr>')+
+      "</tbody></table></div>"+
+      (skipped?'<div class="more"><button class="btn ghost sm" id="showmore">Show '+
+        Math.min(skipped,PAGE)+" more ("+skipped+" hidden)</button></div>":"");
     Array.prototype.forEach.call(document.querySelectorAll("[data-n]"),function(b){
-      b.classList.toggle("on", parseInt(b.dataset.n,10)===N);
-    });
+      b.classList.toggle("on",parseInt(b.dataset.n,10)===N); });
     $("f-ghost").classList.toggle("on",!!c.ghost);
+    $("f-hide").classList.toggle("on",hideDone);
+    $("f-free").classList.toggle("on",freeOnly);
+    $("jump").max=list.length;
+    renderMeta(); renderStrip();
   }
 
+  // ---------------- counter view ----------------
+  function renderCounter(){
+    if(!$("bignum")) return;
+    var el=$("bignum");
+    if(prevCount!==null&&counter.n!==prevCount){
+      el.classList.remove("bump","down"); void el.offsetWidth;
+      el.classList.add(counter.n>prevCount?"bump":"down");
+    }
+    prevCount=counter.n;
+    el.textContent=fmt(counter.n);
+    if($("species").value!==counter.species) $("species").value=counter.species;
+    if($("method").value!==counter.method) $("method").value=counter.method;
+    $("o-lv10").checked=!!odds.lv10; $("o-perf").checked=!!odds.perf; $("o-charm").checked=!!odds.charm;
+    var rolls=rollsFor(counter.method,odds),per=perEncounter(rolls),cum=cumulative(per,counter.n);
+    $("s-rolls").textContent=rolls;
+    $("s-odds").textContent="1/"+Math.round(1/per).toLocaleString();
+    $("s-exp").textContent=fmt(Math.round(1/per));
+    $("s-cum").textContent=(cum*100).toFixed(1)+"%";
+    $("s-luck").textContent=counter.n?(counter.n<1/per?"ahead of odds":"behind odds"):"—";
+    $("odbar").style.width=Math.min(100,cum*100)+"%";
+  }
+  function bumpCount(d){
+    counter.n=Math.max(0,counter.n+d);
+    if(counter.n===1&&!counter.started) counter.started=Date.now();
+    save(); renderCounter();
+  }
+  function confetti(){
+    var box=document.createElement("div"); box.className="confetti";
+    for(var i=0;i<70;i++){
+      var s=document.createElement("i");
+      s.style.left=Math.random()*100+"%"; s.style.top="-20px";
+      s.style.background=COLORS[i%COLORS.length];
+      s.style.animationDelay=(Math.random()*.5)+"s";
+      s.style.animationDuration=(1.1+Math.random()*1.2)+"s";
+      box.appendChild(s);
+    }
+    document.body.appendChild(box);
+    setTimeout(function(){ box.remove(); },3200);
+  }
+  function foundIt(){
+    if(!counter.n && !confirm("Log this hunt with 0 encounters?")) return;
+    hunts.unshift({species:counter.species||"Unknown",method:counter.method,n:counter.n,
+      ms:counter.started?Date.now()-counter.started:0,at:Date.now(),
+      rolls:rollsFor(counter.method,odds)});
+    counter.n=0; counter.started=0; prevCount=null;
+    save(); renderCounter(); renderHunts(); confetti();
+  }
+
+  // ---------------- hunts view ----------------
+  function methodPill(m){
+    return m==="mmo"?'<span class="pill mmo">MMO</span>':
+           m==="mo"?'<span class="pill mo">Outbreak</span>':'<span class="pill reg">Regular</span>';
+  }
+  function renderHunts(){
+    if(!$("logbody")) return;
+    var tot=hunts.reduce(function(a,h){ return a+(h.n||0); },0);
+    var best=hunts.length?Math.min.apply(null,hunts.map(function(h){ return h.n||0; })):0;
+    var avg=hunts.length?Math.round(tot/hunts.length):0;
+    $("statrow").innerHTML=
+      '<div class="stat"><div class="k">Shinies logged</div><div class="v">'+hunts.length+"</div></div>"+
+      '<div class="stat"><div class="k">Total encounters</div><div class="v">'+fmt(tot)+"</div></div>"+
+      '<div class="stat"><div class="k">Average per shiny</div><div class="v">'+fmt(avg)+"</div></div>"+
+      '<div class="stat"><div class="k">Luckiest</div><div class="v">'+(hunts.length?fmt(best):"—")+"</div></div>";
+    $("logbody").innerHTML=hunts.length? hunts.map(function(h,i){
+      return '<tr style="animation-delay:'+(i*25)+'ms"><td><b>'+esc(h.species)+"</b></td>"+
+        "<td>"+methodPill(h.method)+"</td>"+
+        "<td>"+fmt(h.n||0)+" enc</td>"+
+        "<td>"+(h.ms?hms(h.ms).replace(":","m ")+"s":"—")+"</td>"+
+        "<td style='color:var(--dim)'>"+new Date(h.at).toLocaleDateString()+"</td>"+
+        '<td style="text-align:right"><button class="rm" data-del="'+i+'">Delete</button></td></tr>';
+    }).join("") : '<tr><td style="padding:22px;color:var(--muted)">No hunts logged yet. Press <b>Found it!</b> on the Counter tab when you catch one.</td></tr>';
+  }
+  function renderBoard(){
+    if(!$("board")) return;
+    var list=active().slice().sort(function(a,b){ return (b.shinies||0)-(a.shinies||0); });
+    $("board").innerHTML=list.length? list.map(function(p,i){
+      var pic=avatarOf(p);
+      return '<div class="brow" style="animation-delay:'+(i*40)+'ms"><span class="rank">'+(i+1)+"</span>"+
+        '<span class="av" style="'+(pic?"background-image:url("+pic+")":"background:"+colorFor(p.id))+'">'+
+        (pic?"":esc(initials(p.name)))+"</span><b>"+esc(p.name)+"</b><s>"+(p.shinies||0)+"</s></div>";
+    }).join("") : '<p class="hint">Nobody in this room yet.</p>';
+  }
+
+  // ---------------- profile view ----------------
   function renderProfile(){
     if(!$("avbig")) return;
     var a=$("avbig");
@@ -849,164 +1042,228 @@
     else { a.style.backgroundImage=""; a.textContent=initials(profile.name); }
     if($("name").value!==profile.name) $("name").value=profile.name;
     if($("room").value!==ROOM) $("room").value=ROOM;
-    if($("obslink")) $("obslink").value=buildDisplayLink();
+    $("w-lanes").checked=display.lanes!==false;
+    $("w-counter").checked=!!display.counter;
   }
-
+  function isAdmin(){
+    var n=auth?(auth.username||""):(profile.name||"");
+    return n.trim().toLowerCase()==="stitch";
+  }
+  function kick(id){
+    ["players","avatars"].forEach(function(node){
+      fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/"+node+"/"+id+".json",{method:"DELETE"}).catch(function(){});
+    });
+    delete players[id]; delete avCache[id]; renderWho(); renderTable(); renderBoard();
+  }
   function renderWho(){
     var box=$("wholist"); if(!box) return;
+    var admin=isAdmin();
+    if($("adminbox")) $("adminbox").hidden=!admin;
     box.innerHTML=active().map(function(p){
-      var total=countFor(p);
-      var a=p.avatar?'style="background-image:url('+p.avatar+')"':
-            'style="background:'+colorFor(p.id)+'"';
-      return '<div class="who-row"><span class="av" '+a+'>'+(p.avatar?"":esc(initials(p.name)))+
-        "</span><b>"+esc(p.name)+"</b><s>"+Object.keys(p.done).length+"/"+total+"</s>"+
-        (isStitch()&&p.id!==ME?'<button class="btn sm ghost danger deluser" data-del-user="'+
-        esc(p.id)+'" data-del-name="'+esc(p.name)+'">Delete</button>':"")+"</div>";
-    }).join("") || '<p class="hint">Nobody else in this room yet.</p>';
+      var total=p.total||paths(p.spawns,p.ghost).length,pic=avatarOf(p);
+      return '<div class="who-row"><span class="av" style="'+
+        (pic?"background-image:url("+pic+")":"background:"+colorFor(p.id))+'">'+
+        (pic?"":esc(initials(p.name)))+"</span><b>"+esc(p.name)+"</b><s>"+
+        Object.keys(p.done).length+"/"+total+"</s>"+
+        (admin&&p.id!==ME?'<button class="rm" data-kick="'+esc(p.id)+'">Remove</button>':"")+"</div>";
+    }).join("")||'<p class="hint">Nobody else in this room yet.</p>';
   }
-
-  function triggerShiny(id){
-    var c=charts.filter(function(x){ return x.id===id; })[0];
-    if(!c) return;
-    activeId=id;
-    c.shinyAt=Date.now();
-    save(); renderStrip(); renderTable();
-    msg("good","Shiny animation sent to the display.");
+  function renderObs(){
+    if(!$("obsurl")) return;
+    var u=location.origin+location.pathname+"?overlay=1";
+    if(ROOM&&ROOM!=="main") u+="&room="+encodeURIComponent(ROOM);
+    if($("scrimtog").checked) u+="&scrim=1";
+    $("obsurl").value=u;
+    var n=Math.max(active().length,1),h=(display.lanes!==false?68*n:0)+(display.counter?86:0)+16;
+    $("sizetip").textContent="In OBS: 1100 wide × "+h+" tall right now — leave spare height for people joining.";
   }
+  function renderAll(){ renderTable(); renderCounter(); renderHunts(); renderBoard();
+                        renderProfile(); renderWho(); renderAuth(); renderObs(); }
 
-  function deletePlayer(id,name){
-    if(!isStitch()) return;
-    if(!confirm("Delete "+(name||"this user")+" from the room?")) return;
-    function putKick(){
-      return fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/kicks/"+encodeURIComponent(id)+".json?print=silent"+dbAuth(),{
-        method:"PUT",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({by:profile.name||"Stitch",name:name||"",updated:Date.now()})
-      }).then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); });
-    }
-    function tryDelete(url){
-      return fetch(url,{method:"DELETE"}).catch(function(){});
-    }
-    putKick().then(function(){
-      kicks[id]=true; delete players[id]; delete avatars[id]; renderWho(); renderTable(); if(OVERLAY) paintLanes();
-      tryDelete(DB+"/rooms/"+encodeURIComponent(ROOM)+"/players/"+encodeURIComponent(id)+".json?print=silent"+dbAuth());
-      tryDelete(DB+"/rooms/"+encodeURIComponent(ROOM)+"/avatars/"+encodeURIComponent(id)+".json?print=silent"+dbAuth());
-    }).catch(function(){ msg("bad","Couldn't delete that user. Check Firebase room permissions."); });
+  // ---------------- timer ----------------
+  function tickTimer(){
+    if(!$("timerbig")) return;
+    var el=$("timerbig");
+    if(!timer.running){ el.textContent=hms(timer.mins*60000); el.className="timerbig"; return; }
+    var left=timer.end-Date.now();
+    el.textContent=(left<0?"-":"")+hms(Math.abs(left));
+    el.className="timerbig"+(left<0?" over":left<60000?" warn":"");
   }
-
-  function copyObsLink(){
-    var text=buildDisplayLink(), input=$("obslink"), out=$("linkmsg");
-    if(input) input.value=text;
-    function done(ok){
-      if(!out) return;
-      out.className="msg "+(ok?"good":"bad");
-      out.textContent=ok?"Display link copied.":"Copy failed. The link is selected.";
-    }
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(text).then(function(){ done(true); }).catch(function(){
-        if(input){ input.focus(); input.select(); }
-        done(false);
-      });
-    } else {
-      if(input){ input.focus(); input.select(); }
-      done(false);
-    }
-  }
-
-  function renderAll(){ renderStrip(); renderTable(); renderProfile(); renderWho(); renderAuth(); }
 
   // ---------------- events ----------------
   if(!OVERLAY){
-    $("tab-charts").addEventListener("click",function(){ switchTab("charts"); });
-    $("tab-profile").addEventListener("click",function(){ switchTab("profile"); });
-    function switchTab(which){
-      $("tab-charts").setAttribute("aria-selected", String(which==="charts"));
-      $("tab-profile").setAttribute("aria-selected", String(which==="profile"));
-      $("p-charts").hidden = which!=="charts";
-      $("p-profile").hidden = which!=="profile";
-    }
-
     document.addEventListener("click",function(e){
-      var shiny=e.target.closest("[data-shiny]");
-      if(shiny){ e.preventDefault(); e.stopPropagation(); triggerShiny(shiny.getAttribute("data-shiny")); return; }
-      var del=e.target.closest("[data-del-user]");
-      if(del){ deletePlayer(del.getAttribute("data-del-user"),del.getAttribute("data-del-name")); return; }
-      var card=e.target.closest(".chartcard");
-      if(card && card.id!=="newchart"){ activeId=card.dataset.id; save(); renderStrip(); renderTable(); return; }
-      if(card && card.id==="newchart"){
-        var t=prompt("Name this chart", "Outbreak "+(charts.length+1));
-        if(t===null) return;
-        var c={id:"c"+Date.now().toString(36),title:t.trim()||"Untitled",spawns:8,done:{}};
-        charts.push(c); activeId=c.id; save(); renderStrip(); renderTable(); return;
+      var t=e.target.closest(".tab");
+      if(t){
+        var which=t.dataset.tab;
+        Array.prototype.forEach.call(document.querySelectorAll(".tab"),function(b){
+          b.setAttribute("aria-selected",String(b.dataset.tab===which)); });
+        ["charts","counter","hunts","profile"].forEach(function(k){ $("p-"+k).hidden=k!==which; });
+        return;
       }
+      var card=e.target.closest(".chartcard");
+      if(card&&card.id!=="newchart"){ activeId=card.dataset.id; shownRows=PAGE; save(); renderTable(); return; }
+      if(card&&card.id==="newchart"){
+        var nm=prompt("Name this chart","Outbreak "+(charts.length+1)); if(nm===null) return;
+        var nc={id:"c"+Date.now().toString(36),title:nm.trim()||"Untitled",spawns:8,ghost:false,done:{},started:0};
+        charts.push(nc); activeId=nc.id; shownRows=PAGE; save(); renderTable(); return;
+      }
+      var rm=e.target.closest("[data-kick]");
+      if(rm){ if(confirm("Remove this hunter from the room?")) kick(rm.getAttribute("data-kick")); return; }
+      var del=e.target.closest("[data-del]");
+      if(del){ hunts.splice(parseInt(del.getAttribute("data-del"),10),1); save(); renderHunts(); return; }
       var sp=e.target.closest("[data-n]");
-      if(sp){ chart().spawns=parseInt(sp.dataset.n,10); chart().done={}; save(); renderStrip(); renderTable(); return; }
+      if(sp){ var c2=chart(); c2.spawns=parseInt(sp.dataset.n,10); c2.done={}; c2.started=0;
+        shownRows=PAGE; save(); renderTable(); return; }
+      if(e.target.id==="showmore"){ shownRows+=PAGE; renderTable(); return; }
       var chk=e.target.closest(".check");
       if(chk){
-        var i=chk.closest("tr").getAttribute("data-i"), c=chart();
-        if(c.done[i]) delete c.done[i]; else c.done[i]=true;
-        save(); renderStrip(); renderTable(); return;
+        var i=chk.closest("tr").getAttribute("data-i"),c3=chart();
+        if(c3.done[i]) delete c3.done[i];
+        else { c3.done[i]=true; if(!c3.started) c3.started=Date.now(); }
+        save(); renderTable(); renderWho(); return;
       }
     });
+
     document.addEventListener("keydown",function(e){
-      if((e.key===" "||e.key==="Enter")&&e.target.closest&&e.target.closest("[data-shiny]")){
-        e.preventDefault(); triggerShiny(e.target.closest("[data-shiny]").getAttribute("data-shiny")); return;
+      var tag=(e.target.tagName||"").toLowerCase();
+      if(tag==="input"||tag==="select"||tag==="textarea"){
+        if((e.key===" "||e.key==="Enter")&&e.target.classList.contains("check")){ e.preventDefault(); e.target.click(); }
+        return;
       }
-      if((e.key===" "||e.key==="Enter")&&e.target.classList&&e.target.classList.contains("check")){
+      if(e.key===" "||e.key==="ArrowUp"||e.key==="+"||e.key==="="){ e.preventDefault(); bumpCount(1); }
+      else if(e.key==="ArrowDown"||e.key==="-"){ e.preventDefault(); bumpCount(-1); }
+      else if(e.key==="f"||e.key==="F"){ foundIt(); }
+      else if(e.key==="Enter"&&e.target.classList&&e.target.classList.contains("check")){
         e.preventDefault(); e.target.click(); }
     });
 
-    $("f-hide").addEventListener("click",function(){
-      hideDone=!hideDone; this.classList.toggle("on",hideDone); renderTable(); });
     $("f-ghost").addEventListener("click",function(){
       var c=chart();
-      c.ghost=!c.ghost;
-      c.done={};
-      save(); renderStrip(); renderTable();
+      if(!c.ghost&&doneCount(c)&&!confirm("Ghost steps renumber every path, so ticks get cleared. Continue?")) return;
+      c.ghost=!c.ghost; c.done={}; shownRows=PAGE; save(); renderTable();
     });
-    $("f-clear").addEventListener("click",function(){ chart().done={}; save(); renderStrip(); renderTable(); });
+    $("f-hide").addEventListener("click",function(){ hideDone=!hideDone; shownRows=PAGE; renderTable(); });
+    $("f-free").addEventListener("click",function(){ freeOnly=!freeOnly; shownRows=PAGE; renderTable(); });
+    $("f-more").addEventListener("click",function(){
+      var m=$("moretools"); m.hidden=!m.hidden; this.classList.toggle("on",!m.hidden); });
+    $("jump").addEventListener("change",function(){
+      var n=parseInt(this.value,10); if(!n) return;
+      if(n>shownRows){ shownRows=n+10; renderTable(); }
+      var row=document.querySelector('tr[data-i="'+(n-1)+'"]');
+      if(row){ row.scrollIntoView({block:"center",behavior:"smooth"});
+        row.classList.remove("flash"); void row.offsetWidth; row.classList.add("flash"); }
+    });
     $("f-rename").addEventListener("click",function(){
-      var t=prompt("Rename chart", chart().title); if(t===null) return;
-      chart().title=t.trim()||chart().title; save(); renderStrip(); });
+      var t=prompt("Rename chart",chart().title); if(t===null) return;
+      chart().title=t.trim()||chart().title; save(); renderTable(); });
+    $("f-dupe").addEventListener("click",function(){
+      var c=chart(),copy=JSON.parse(JSON.stringify(c));
+      copy.id="c"+Date.now().toString(36); copy.title=c.title+" copy"; copy.done={}; copy.started=0;
+      charts.push(copy); activeId=copy.id; save(); renderTable(); });
+    $("f-clear").addEventListener("click",function(){
+      chart().done={}; chart().started=0; save(); renderTable(); renderWho(); });
     $("f-delete").addEventListener("click",function(){
       if(charts.length<2){ alert("Keep at least one chart."); return; }
-      if(!confirm("Delete \""+chart().title+"\"?")) return;
+      if(!confirm('Delete "'+chart().title+'"?')) return;
       charts=charts.filter(function(c){ return c.id!==activeId; });
-      activeId=charts[0].id; save(); renderStrip(); renderTable(); });
+      activeId=charts[0].id; save(); renderTable(); });
+    $("f-export").addEventListener("click",function(){
+      var blob=new Blob([JSON.stringify({charts:charts,hunts:hunts,exported:new Date().toISOString()},null,1)],
+        {type:"application/json"});
+      var a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+      a.download="hisui-hunt-tools.json"; a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); },2000); });
+    $("f-import").addEventListener("click",function(){ $("importfile").click(); });
+    $("importfile").addEventListener("change",function(){
+      var f=this.files[0]; this.value=""; if(!f) return;
+      var fr=new FileReader();
+      fr.onload=function(){
+        try{
+          var d=JSON.parse(fr.result);
+          (d.charts||[]).forEach(function(c){
+            c.id="c"+Math.random().toString(36).slice(2,9); if(!c.done) c.done={}; charts.push(c); });
+          if(d.hunts) hunts=hunts.concat(d.hunts);
+          activeId=charts[charts.length-1].id; save(); renderAll();
+        }catch(err){ alert("Couldn't read that file: "+err.message); }
+      };
+      fr.readAsText(f); });
 
+    // counter
+    $("plus").addEventListener("click",function(){ bumpCount(1); });
+    $("minus").addEventListener("click",function(){ bumpCount(-1); });
+    $("resetc").addEventListener("click",function(){
+      if(!confirm("Reset the counter to zero?")) return;
+      counter.n=0; counter.started=0; prevCount=null; save(); renderCounter(); });
+    $("found").addEventListener("click",foundIt);
+    $("species").addEventListener("input",function(){ counter.species=this.value; save(); });
+    $("method").addEventListener("change",function(){ counter.method=this.value; save(); renderCounter(); });
+    ["o-lv10","o-perf","o-charm"].forEach(function(id){
+      $(id).addEventListener("change",function(){
+        odds={lv10:$("o-lv10").checked,perf:$("o-perf").checked,charm:$("o-charm").checked};
+        save(); renderCounter(); }); });
+
+    // timer
+    $("t-start").addEventListener("click",function(){
+      if(timer.running){ timer.running=false; this.textContent="Start"; this.classList.remove("ghost"); }
+      else { timer.mins=parseInt($("t-mins").value,10)||15; timer.end=Date.now()+timer.mins*60000;
+        timer.running=true; this.textContent="Stop"; }
+      tickTimer(); });
+    $("t-reset").addEventListener("click",function(){
+      timer.running=false; $("t-start").textContent="Start"; tickTimer(); });
+    $("t-mins").addEventListener("change",function(){
+      timer.mins=parseInt(this.value,10)||15; if(!timer.running) tickTimer(); });
+
+    // profile
     $("name").addEventListener("input",function(){
       profile.name=this.value.trim()||"Hunter"; save(); renderProfile(); renderWho(); });
     $("room").addEventListener("change",function(){
-      ROOM=this.value.trim()||"main"; lset("mmo-room",ROOM); players={}; avatars={}; publishAvatar(true); save(); renderProfile(); pull(); });
-
+      ROOM=this.value.trim()||"main"; lset("mmo-room",ROOM); players={}; avCache={};
+      renderObs(); pull(); });
+    $("w-lanes").addEventListener("change",function(){
+      display.lanes=this.checked; saveLocal(); pushDisplay(); renderObs(); });
+    $("w-counter").addEventListener("change",function(){
+      display.counter=this.checked; saveLocal(); pushDisplay(); renderObs(); });
+    $("scrimtog").addEventListener("change",renderObs);
+    $("copyobs").addEventListener("click",function(){
+      var f=$("obsurl"),btn=this; f.select(); f.setSelectionRange(0,999);
+      function ok(){ btn.textContent="Copied"; btn.classList.add("copied");
+        setTimeout(function(){ btn.textContent="Copy"; btn.classList.remove("copied"); },1600); }
+      if(navigator.clipboard) navigator.clipboard.writeText(f.value).then(ok,function(){
+        try{ document.execCommand("copy"); ok(); }catch(e){} });
+      else { try{ document.execCommand("copy"); ok(); }catch(e){} } });
+    $("clearroom").addEventListener("click",function(){
+      if(!confirm("Remove everyone from this room?")) return;
+      ["players","avatars"].forEach(function(n){
+        fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/"+n+".json",{method:"DELETE"}).catch(function(){}); });
+      players={}; avCache={}; renderWho(); renderTable(); renderBoard(); });
     $("pickav").addEventListener("click",function(){ $("avfile").click(); });
     $("avfile").addEventListener("change",function(){ handleAvatar(this.files[0]); this.value=""; });
-    $("clearav").addEventListener("click",function(){ profile.avatar=""; profile.avatarThumb=""; profile.avatarKey=""; save(); publishAvatar(true); renderProfile(); });
-    $("copyobs").addEventListener("click",copyObsLink);
+    $("clearav").addEventListener("click",function(){
+      profile.avatar=""; profile.avStamp=0; save(); renderProfile(); });
 
     $("dosignup").addEventListener("click",function(){
-      var u=$("u").value.trim(), p=$("pw").value;
+      var u=$("u").value.trim(),p=$("pw").value;
       if(u.length<3) return msg("bad","Username needs 3+ characters.");
       if(p.length<6) return msg("bad","Password needs 6+ characters.");
       msg("","Creating account…");
       authCall("signUp",u,p).then(function(j){ return afterAuth(j,u); })
-        .catch(function(e){ msg("bad",friendlyAuthError(e.message)); });
-    });
+        .catch(function(e){ msg("bad",friendly(e.message)); }); });
     $("dologin").addEventListener("click",function(){
-      var u=$("u").value.trim(), p=$("pw").value;
+      var u=$("u").value.trim(),p=$("pw").value;
       if(!u||!p) return msg("bad","Fill both fields.");
       msg("","Logging in…");
       authCall("signInWithPassword",u,p).then(function(j){ return afterAuth(j,u); })
-        .catch(function(e){ msg("bad",friendlyAuthError(e.message)); });
-    });
+        .catch(function(e){ msg("bad",friendly(e.message)); }); });
     $("dologout").addEventListener("click",function(){
       auth=null; try{ localStorage.removeItem("mmo-auth"); }catch(e){}
-      renderAuth(); msg("","Logged out. Charts stay in this browser.");
-    });
+      renderAuth(); msg("","Logged out. Everything stays in this browser."); });
 
-    renderAll(); save(); publishAvatar(false);
+    renderAll(); save(); pushDisplay();
+    setInterval(function(){ renderMeta(); tickTimer(); },1000);
   }
 
-  pull(); setInterval(pull, POLL);
+  pull(); setInterval(pull,POLL);
 })();
 </script>
 </body>
