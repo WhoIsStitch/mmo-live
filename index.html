@@ -3,460 +3,301 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MMO Permutations - Live</title>
+<title>MMO Permutations</title>
 <style>
   :root{
     --bg:#0d1117; --panel:#161b22; --panel-2:#1b2230; --line:#2b3441;
     --text:#eef3f8; --muted:#8b98a5;
     --head:#0f6f8f; --head-2:#12b0d8;
-    --ko1:#2ba9e0; --ko2:#35c08a; --ko3:#ef8a3c; --ko4:#a97bea; --ko5:#e8547c; --ko6:#e0c341;
-    --shiny:#ffd45e; --alpha:#ff6b9d; --ok:#3fb950;
-    --r:12px;
-    --ease:cubic-bezier(.22,1,.36,1);
+    --ko1:#2ba9e0; --ko2:#35c08a; --ko3:#ef8a3c; --ko4:#a97bea;
+    --gold:#ffd45e; --ok:#3fb950;
+    --r:12px; --ease:cubic-bezier(.22,1,.36,1);
   }
   *{box-sizing:border-box}
-  body{
-    margin:0;background:var(--bg);color:var(--text);
-    font:15px/1.5 ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:1180px;margin:0 auto;padding:22px 16px 70px}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font:15px/1.5 ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1100px;margin:0 auto;padding:22px 16px 70px}
 
-  /* ---------- header ---------- */
-  header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
-  h1{
-    font-size:22px;margin:0;letter-spacing:.3px;
-    background:linear-gradient(100deg,var(--head-2),#7ee0ff 40%,var(--head-2) 80%);
+  header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+  h1{font-size:23px;margin:0;letter-spacing:.3px;
+    background:linear-gradient(100deg,var(--head-2),#9fe9ff 40%,var(--head-2) 80%);
     background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
-    animation:sheen 7s linear infinite;
-  }
+    animation:sheen 7s linear infinite}
   @keyframes sheen{to{background-position:220% 0}}
-  .status{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
-  .dot{width:9px;height:9px;border-radius:50%;background:#57606a;transition:background .3s}
-  .dot.live{background:var(--ok);animation:pulse 2s var(--ease) infinite}
-  .dot.stale{background:#d29922}
-  .dot.error{background:#f85149}
-  @keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(63,185,80,.55)}
-    70%{box-shadow:0 0 0 9px rgba(63,185,80,0)}
-    100%{box-shadow:0 0 0 0 rgba(63,185,80,0)}
-  }
+  .sub{color:var(--muted);font-size:13px;margin:0 0 18px}
 
-  /* ---------- toolbar ---------- */
-  .bar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
-  .chipbtn{
-    background:var(--panel);border:1px solid var(--line);color:var(--muted);
-    padding:6px 13px;border-radius:999px;font-size:13px;cursor:pointer;
-    transition:all .25s var(--ease);
-  }
-  .chipbtn:hover{transform:translateY(-1px);border-color:#41505f;color:var(--text)}
-  .chipbtn[aria-pressed="true"]{
-    background:linear-gradient(180deg,#17384a,#132c3a);color:#7ee0ff;border-color:#1f5f7a;
-    box-shadow:0 0 14px rgba(18,176,216,.18);
-  }
+  .bar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+  .seg button{
+    background:none;border:0;color:var(--muted);padding:6px 16px;border-radius:999px;
+    font-size:13px;font-weight:600;cursor:pointer;transition:all .3s var(--ease)}
+  .seg button:hover{color:var(--text)}
+  .seg button[aria-pressed="true"]{
+    background:linear-gradient(180deg,var(--head-2),var(--head));color:#fff;
+    box-shadow:0 3px 12px rgba(18,176,216,.34)}
+  .chipbtn{background:var(--panel);border:1px solid var(--line);color:var(--muted);
+    padding:6px 13px;border-radius:999px;font-size:13px;cursor:pointer;transition:all .25s var(--ease)}
+  .chipbtn:hover{transform:translateY(-1px);color:var(--text);border-color:#41505f}
+  .chipbtn[aria-pressed="true"]{background:linear-gradient(180deg,#17384a,#132c3a);
+    color:#7ee0ff;border-color:#1f5f7a;box-shadow:0 0 14px rgba(18,176,216,.18)}
   .tally{margin-left:auto;font-size:13px;color:var(--muted)}
   .tally b{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
 
-  /* ---------- progress ---------- */
-  .prog{height:4px;background:var(--panel);border-radius:99px;overflow:hidden;margin-bottom:22px}
-  .prog i{
-    display:block;height:100%;width:0;border-radius:99px;
+  .prog{height:5px;background:var(--panel);border-radius:99px;overflow:hidden;margin-bottom:20px}
+  .prog i{display:block;height:100%;width:0;border-radius:99px;
     background:linear-gradient(90deg,var(--ko1),var(--ko2));
-    transition:width .7s var(--ease);
-  }
+    transition:width .7s var(--ease);box-shadow:0 0 12px rgba(53,192,138,.5)}
 
-  /* ---------- group ---------- */
-  .group{margin-bottom:34px;animation:rise .5s var(--ease) both}
-  .group h2{
-    font-size:13px;font-weight:700;color:var(--muted);margin:0 0 4px;
-    text-transform:uppercase;letter-spacing:.09em;
-  }
-  .group .ctx{font-size:13px;color:var(--muted);margin-bottom:11px}
+  .tablewrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--line);
+    background:var(--panel);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+  table{border-collapse:separate;border-spacing:0;width:100%;min-width:600px}
+  thead th{background:linear-gradient(180deg,var(--head-2),var(--head));color:#fff;
+    font-size:13px;font-weight:800;letter-spacing:.05em;padding:10px 8px;text-align:center;
+    white-space:nowrap;border-bottom:1px solid rgba(0,0,0,.3);position:sticky;top:0;z-index:2}
+  thead th.corner{background:linear-gradient(180deg,#0f6f8f,#0a4d5f)}
+  thead tr:first-child th{border-bottom:1px solid rgba(255,255,255,.15)}
 
-  /* ---------- grid ---------- */
-  .tablewrap{
-    overflow-x:auto;border-radius:var(--r);
-    border:1px solid var(--line);background:var(--panel);
-    box-shadow:0 10px 34px rgba(0,0,0,.34);
-  }
-  table{border-collapse:separate;border-spacing:0;width:100%;min-width:640px}
-  thead th{
-    background:linear-gradient(180deg,var(--head-2),var(--head));
-    color:#fff;font-size:13px;font-weight:800;letter-spacing:.04em;
-    padding:9px 8px;text-align:center;white-space:nowrap;
-    border-bottom:1px solid rgba(0,0,0,.28);
-  }
-  thead th.corner{background:linear-gradient(180deg,#0f6f8f,#0b5063)}
-  thead tr:first-child th{border-bottom:1px solid rgba(255,255,255,.14)}
-
-  tbody td{
-    padding:0;text-align:center;border-bottom:1px solid var(--line);
-    font-weight:700;font-size:14px;height:44px;
-  }
-  tbody tr{animation:rise .45s var(--ease) both}
-  tbody tr:nth-child(even){background:rgba(255,255,255,.018)}
-  tbody tr:hover{background:rgba(18,176,216,.07)}
+  tbody td{padding:0;text-align:center;border-bottom:1px solid var(--line);
+    font-weight:700;font-size:14px;height:46px}
+  tbody tr{animation:rise .5s var(--ease) both}
+  tbody tr:nth-child(even){background:rgba(255,255,255,.02)}
+  tbody tr:hover{background:rgba(18,176,216,.08)}
   tbody tr:last-child td{border-bottom:none}
-  @keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-  td.order{color:var(--shiny);width:74px;font-variant-numeric:tabular-nums}
+  td.order{color:var(--gold);width:78px;font-variant-numeric:tabular-nums}
+  .cell{display:flex;align-items:center;justify-content:center;height:46px;position:relative;
+    animation:pop .4s var(--ease) both;overflow:hidden}
+  @keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+  .cell.c{color:#c3d0de}
+  .cell.ko{color:#fff;font-weight:800}
+  .cell.ko::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(100deg,transparent 32%,rgba(255,255,255,.30) 50%,transparent 68%);
+    background-size:300% 100%;animation:sweep 5s linear infinite}
+  @keyframes sweep{from{background-position:300% 0}to{background-position:-80% 0}}
+  .g1{background:var(--ko1)} .g2{background:var(--ko2)}
+  .g3{background:var(--ko3)} .g4{background:var(--ko4)}
+  .cell.start{border-top-left-radius:8px;border-bottom-left-radius:8px}
+  .cell.end{border-top-right-radius:8px;border-bottom-right-radius:8px}
 
-  .cell{
-    display:flex;align-items:center;justify-content:center;
-    height:44px;position:relative;
-    animation:pop .38s var(--ease) both;
-  }
-  @keyframes pop{from{opacity:0;transform:scale(.72)}to{opacity:1;transform:none}}
-
-  .cell.c{color:#cbd6e2}
-  .cell.ko{color:#fff;font-weight:800;letter-spacing:.02em}
-  .cell.ko::after{         /* shimmer sweep across each KO block */
-    content:"";position:absolute;inset:0;
-    background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);
-    background-size:280% 100%;animation:sweep 4.5s linear infinite;
-  }
-  .g1{background:var(--ko1)} .g2{background:var(--ko2)} .g3{background:var(--ko3)}
-  .g4{background:var(--ko4)} .g5{background:var(--ko5)} .g6{background:var(--ko6)}
-  @keyframes sweep{from{background-position:280% 0}to{background-position:-60% 0}}
-
-  td.result{text-align:left;padding:6px 12px;white-space:nowrap}
-  .name{font-weight:700}
-  .sex{color:var(--muted);font-weight:500;font-size:12px;margin-left:3px}
-  .badge{
-    font-size:10px;font-weight:800;padding:2px 6px;border-radius:5px;
-    margin-left:6px;letter-spacing:.05em;vertical-align:1px;
-  }
-  .b-shiny{background:rgba(255,212,94,.16);color:var(--shiny)}
-  .b-alpha{background:rgba(255,107,157,.16);color:var(--alpha);animation:glow 2.4s ease-in-out infinite}
-  @keyframes glow{50%{box-shadow:0 0 12px rgba(255,107,157,.45)}}
-  .ivs{font:11px/1.4 ui-monospace,Consolas,monospace;color:var(--muted);display:block;margin-top:1px}
-  .iv31{color:var(--ok)} .iv0{color:#f85149}
-
-  /* shiny rows get a slow golden wash */
-  tr.is-shiny td.order{color:var(--shiny)}
-  tr.is-shiny{
-    background-image:linear-gradient(90deg,rgba(255,212,94,.10),transparent 62%);
-    background-size:200% 100%;animation:wash 6s ease-in-out infinite;
-  }
-  @keyframes wash{0%,100%{background-position:0 0}50%{background-position:60% 0}}
-
-  /* completion */
-  td.done{width:96px}
-  .check{
-    width:22px;height:22px;border-radius:6px;border:2px solid #3b4757;
-    background:var(--panel-2);cursor:pointer;display:inline-flex;
-    align-items:center;justify-content:center;transition:all .25s var(--ease);
-  }
-  .check:hover{border-color:var(--ko2);transform:scale(1.12)}
+  td.done{width:100px}
+  .check{width:23px;height:23px;border-radius:7px;border:2px solid #3b4757;background:var(--panel-2);
+    cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
+    transition:all .25s var(--ease)}
+  .check:hover{border-color:var(--ko2);transform:scale(1.14)}
   .check svg{width:13px;height:13px}
-  .check path{
-    stroke:#fff;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round;
-    stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .3s var(--ease);
-  }
-  tr.complete .check{background:var(--ko2);border-color:var(--ko2)}
+  .check path{stroke:#fff;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .32s var(--ease)}
+  tr.complete .check{background:var(--ko2);border-color:var(--ko2);
+    box-shadow:0 0 16px rgba(53,192,138,.45)}
   tr.complete .check path{stroke-dashoffset:0}
-  tr.complete{opacity:.42}
+  tr.complete{opacity:.4}
   tr.complete .cell::after{animation:none}
-  tr.complete td.result .name{text-decoration:line-through}
+  tr.complete td.order{text-decoration:line-through}
 
-  /* new-data flash */
-  .flash{animation:flash .9s var(--ease)}
-  @keyframes flash{from{background-color:rgba(18,176,216,.24)}to{background-color:transparent}}
+  .legend{margin-top:14px;font-size:12.5px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap;
+    align-items:center;animation:rise .6s var(--ease) both}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .sw{width:14px;height:14px;border-radius:4px;display:inline-block}
+  .note{margin-top:16px;font-size:12.5px;color:var(--muted);line-height:1.7}
 
-  /* ---------- empty / raw ---------- */
-  .empty{
-    background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
-    padding:24px;color:var(--muted);animation:rise .5s var(--ease) both;
-  }
-  .empty h3{color:var(--text);margin:0 0 10px;font-size:16px}
-  .empty code{background:var(--panel-2);padding:2px 6px;border-radius:5px;color:#7ee0ff;font-size:13px}
-  .empty ol{margin:10px 0 0;padding-left:20px} .empty li{margin-bottom:7px}
-
-  details.raw{margin-top:26px}
-  details.raw summary{cursor:pointer;color:var(--muted);font-size:13px}
-  details.raw pre{
-    background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
-    padding:12px;overflow-x:auto;font-size:12px;color:var(--muted);
-  }
-  .legend{margin-top:10px;font-size:12px;color:var(--muted);display:flex;gap:14px;flex-wrap:wrap}
-  .legend span{display:inline-flex;align-items:center;gap:6px}
-  .swatch{width:13px;height:13px;border-radius:4px;display:inline-block}
-
-  /* ---------- OBS overlay: ?overlay=1 ---------- */
   body.overlay{background:transparent}
   body.overlay .wrap{padding:8px;max-width:none}
-  body.overlay header,body.overlay .bar,body.overlay .prog,
-  body.overlay details.raw,body.overlay .legend{display:none}
-  body.overlay .tablewrap{background:rgba(13,17,23,.84);backdrop-filter:blur(3px)}
+  body.overlay header,body.overlay .sub,body.overlay .bar,
+  body.overlay .prog,body.overlay .legend,body.overlay .note{display:none}
+  body.overlay .tablewrap{background:rgba(13,17,23,.85);backdrop-filter:blur(3px)}
 
-  @media (prefers-reduced-motion:reduce){
-    *{animation:none!important;transition:none!important}
-  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <header>
-    <h1>MMO Permutations</h1>
-    <div class="status"><span class="dot" id="dot"></span><span id="stamp">connecting…</span></div>
+  <header><h1>MMO Permutations</h1>
+    <div class="tally" id="tally"></div>
   </header>
+  <p class="sub">Catch and despawn paths for Massive Mass Outbreaks in Pokémon Legends: Arceus.
+     Your ticks are saved in this browser.</p>
 
   <div class="bar">
-    <button class="chipbtn" id="f-shiny" aria-pressed="false">Shiny only</button>
-    <button class="chipbtn" id="f-alpha" aria-pressed="false">Alpha only</button>
-    <button class="chipbtn" id="f-hide"  aria-pressed="false">Hide completed</button>
+    <div class="seg" id="seg">
+      <button data-n="8"  aria-pressed="false">8 spawns</button>
+      <button data-n="9"  aria-pressed="false">9 spawns</button>
+      <button data-n="10" aria-pressed="false">10 spawns</button>
+    </div>
+    <button class="chipbtn" id="f-hide" aria-pressed="false">Hide completed</button>
     <button class="chipbtn" id="f-reset">Reset ticks</button>
-    <div class="tally" id="tally"></div>
   </div>
 
   <div class="prog"><i id="progbar"></i></div>
-
   <div id="content"></div>
 
-  <div class="legend" id="legend" hidden>
+  <div class="legend">
     <span><b>C</b> = catch it</span>
     <span><b>KO</b> = defeat it</span>
-    <span><i class="swatch" style="background:var(--ko1)"></i> same colour = KO that many in one battle</span>
+    <span><i class="sw" style="background:var(--ko1)"></i>
+          <i class="sw" style="background:var(--ko2)"></i>
+          cells sharing a colour must be defeated in one battle</span>
   </div>
 
-  <details class="raw" id="rawbox" hidden>
-    <summary>Raw PermuteMMO output</summary>
-    <pre id="raw"></pre>
-  </details>
+  <p class="note">
+    Read a row left to right: each column is a spawn in the first wave. A run of same-coloured
+    KO cells is one multi-battle — three blue means take all three down together.
+    New paths stop once only four remain in the wave, which is where ghost steps take over.
+  </p>
 </div>
 
 <script>
 (function(){
   "use strict";
 
-  // Point this at your own data.json (raw GitHub URL), or pass ?src=<url>.
-  var DEFAULT_SRC = "https://raw.githubusercontent.com/WhoIsStitch/mmo-live/main/data.json";
-  var POLL_MS = 5000, STALE_MS = 120000, MIN_COLS = 8;
-
   var params  = new URLSearchParams(location.search);
-  var SRC     = params.get("src") || DEFAULT_SRC;
   if (params.get("overlay") === "1") document.body.classList.add("overlay");
 
-  var filters = {shiny:false, alpha:false, hide:false};
-  var payload = null, signature = null, firstPaint = true;
-  var done = load();
+  var N = parseInt(params.get("spawns"), 10);
+  if ([8,9,10].indexOf(N) < 0) N = parseInt(localStorage.getItem("mmo-n"), 10) || 8;
+
+  var hideDone = false;
+  var done = read();
 
   var el = {
-    dot:document.getElementById("dot"), stamp:document.getElementById("stamp"),
-    tally:document.getElementById("tally"), content:document.getElementById("content"),
-    prog:document.getElementById("progbar"), legend:document.getElementById("legend"),
-    rawbox:document.getElementById("rawbox"), raw:document.getElementById("raw")
+    content: document.getElementById("content"),
+    tally:   document.getElementById("tally"),
+    prog:    document.getElementById("progbar"),
+    seg:     document.getElementById("seg")
   };
 
-  function load(){
-    try { return JSON.parse(localStorage.getItem("mmo-done") || "{}"); }
+  function read(){
+    try { return JSON.parse(localStorage.getItem("mmo-ticks") || "{}"); }
     catch(e){ return {}; }
   }
-  function save(){
-    try { localStorage.setItem("mmo-done", JSON.stringify(done)); } catch(e){}
+  function write(){
+    try { localStorage.setItem("mmo-ticks", JSON.stringify(done)); } catch(e){}
   }
 
-  function esc(s){
-    return String(s).replace(/[&<>"']/g,function(c){
-      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];
-    });
-  }
+  // ---- path generation -------------------------------------------------
+  // A step is either a catch (one Pokemon) or a multi-battle KO of 2-4.
+  // A new multi-battle cannot START once only four remain in the wave,
+  // which is the point where ghost-spawn steps take over instead.
+  function buildPaths(n){
+    var out = [[]], limit = n - 5, lead, g1, g2;
 
-  function ago(iso){
-    var s=(Date.now()-new Date(iso).getTime())/1000;
-    if(!isFinite(s)) return "unknown";
-    if(s<10) return "just now";
-    if(s<60) return Math.round(s)+"s ago";
-    if(s<3600) return Math.round(s/60)+"m ago";
-    return Math.round(s/3600)+"h ago";
-  }
-
-  // "CR|B2|B3" -> C, then 2 KO cells (group 1), then 3 KO cells (group 2)
-  function cellsFor(steps){
-    var out=[], group=0;
-    (steps||[]).forEach(function(step){
-      var m=/^B(\d+)/i.exec(step);
-      if(m){
-        var n=Math.max(1,parseInt(m[1],10)); group++;
-        for(var i=0;i<n;i++) out.push({type:"KO",group:((group-1)%6)+1});
-      } else if(/^C/i.test(step)){
-        out.push({type:"C"});
-      } else {
-        out.push({type:step});
+    for (lead = 0; lead <= limit; lead++){
+      for (g1 = 2; g1 <= 4; g1++)
+        if (lead + g1 <= n) out.push([["C",lead],["KO",g1]]);
+      for (g1 = 2; g1 <= 4; g1++){
+        if (lead + g1 > limit) continue;
+        for (g2 = 2; g2 <= 4; g2++)
+          if (lead + g1 + g2 <= n) out.push([["C",lead],["KO",g1],["KO",g2]]);
       }
-    });
+    }
+    for (lead = 0; lead <= limit; lead++){
+      for (g1 = 2; g1 <= 4; g1++){
+        if (lead + g1 + 1 > limit) continue;
+        for (g2 = 2; g2 <= 4; g2++)
+          if (lead + g1 + 1 + g2 <= n) out.push([["C",lead],["KO",g1],["C",1],["KO",g2]]);
+      }
+    }
     return out;
   }
 
-  function key(g,r){ return (g.header||"") + "|" + (r.steps_raw||"") + "|" + r.spawn; }
-
-  function ivHtml(ivs){
-    if(!ivs||!ivs.length) return "";
-    return ivs.map(function(v){
-      var c = v===31 ? "iv31" : (v===0 ? "iv0" : "");
-      return '<span class="'+c+'">'+String(v).padStart(2,"0")+"</span>";
-    }).join("/");
-  }
-
-  function keep(r,k){
-    if(filters.shiny && !r.shiny) return false;
-    if(filters.alpha && !r.alpha) return false;
-    if(filters.hide && done[k]) return false;
-    return true;
-  }
-
-  function setupHtml(){
-    return '<div class="empty"><h3>Waiting for results</h3>'+
-      "<p>This page shows PermuteMMO paths live, to anyone with the link.</p><ol>"+
-      "<li>Send PermuteMMO's output to a file: <code>PermuteMMO.exe &gt; results.txt</code></li>"+
-      "<li>Run <code>permute_publish.py</code> on the same PC, pointed at that file.</li>"+
-      "<li>Paths show up here within seconds.</li></ol>"+
-      "<p style='margin-top:14px'>Reading from <code>"+esc(SRC)+"</code></p></div>";
+  // turn a path into one cell per spawn column
+  function toCells(path, n){
+    var cells = [], group = 0;
+    path.forEach(function(step){
+      var kind = step[0], count = step[1], i;
+      if (kind === "C"){ for (i=0;i<count;i++) cells.push({t:"C"}); }
+      else {
+        group++;
+        for (i=0;i<count;i++)
+          cells.push({t:"KO", g:((group-1)%4)+1, first:i===0, last:i===count-1});
+      }
+    });
+    while (cells.length < n) cells.push({t:"C"});
+    return cells.slice(0, n);
   }
 
   function render(){
-    if(!payload || !payload.groups || !payload.groups.length){
-      el.content.innerHTML = setupHtml();
-      el.tally.textContent=""; el.legend.hidden=true;
-      return;
-    }
+    var paths = buildPaths(N), total = paths.length, doneCount = 0, shown = 0;
 
-    var html="", shown=0, totalRows=0, doneRows=0, gi=0;
+    paths.forEach(function(_, i){ if (done[N+":"+i]) doneCount++; });
 
-    payload.groups.forEach(function(g){
-      var rows=[];
-      (g.results||[]).forEach(function(r){
-        var k=key(g,r);
-        totalRows++; if(done[k]) doneRows++;
-        if(keep(r,k)) rows.push({r:r,k:k});
-      });
-      if(!rows.length) return;
-      shown+=rows.length;
+    var head = "";
+    for (var c = 1; c <= N; c++) head += "<th>" + c + "</th>";
 
-      var cols=MIN_COLS;
-      rows.forEach(function(o){ cols=Math.max(cols, cellsFor(o.r.steps).length); });
+    var body = "";
+    paths.forEach(function(path, i){
+      var k = N + ":" + i, isDone = !!done[k];
+      if (hideDone && isDone) return;
+      shown++;
 
-      var head="";
-      for(var c=1;c<=cols;c++) head+="<th>"+c+"</th>";
-
-      var body=rows.map(function(o,i){
-        var r=o.r, cells=cellsFor(r.steps), tds="";
-        for(var c=0;c<cols;c++){
-          var cell=cells[c];
-          if(!cell){ tds+="<td></td>"; continue; }
-          var cls = cell.type==="KO" ? "cell ko g"+cell.group
-                  : cell.type==="C"  ? "cell c" : "cell";
-          tds+='<td><div class="'+cls+'" style="animation-delay:'+(i*22+c*14)+'ms">'+
-               esc(cell.type)+"</div></td>";
-        }
-
-        var badges="";
-        if(r.shiny) badges+='<span class="badge b-shiny">'+(r.square?"SQUARE":"SHINY")+
-                            (r.rolls?" "+r.rolls:"")+"</span>";
-        if(r.alpha) badges+='<span class="badge b-alpha">ALPHA</span>';
-
-        var res = r.species
-          ? '<span class="name">'+esc(r.species)+"</span>"+
-            (r.gender?'<span class="sex">'+esc(r.gender)+"</span>":"")+badges+
-            '<span class="ivs">'+ivHtml(r.ivs)+(r.nature?" · "+esc(r.nature):"")+
-            ((r.notes&&r.notes.length)?" · "+esc(r.notes.join(" · ")):"")+"</span>"
-          : "";
-
-        return '<tr class="'+(r.shiny?"is-shiny ":"")+(done[o.k]?"complete":"")+
-               '" data-k="'+esc(o.k)+'" style="animation-delay:'+(i*30)+'ms">'+
-          '<td class="order">'+(i+1)+"</td>"+tds+
-          '<td class="result">'+res+"</td>"+
-          '<td class="done"><span class="check" role="checkbox" tabindex="0" aria-checked="'+
-            (done[o.k]?"true":"false")+'"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg></span></td>'+
-        "</tr>";
+      var tds = toCells(path, N).map(function(cell, ci){
+        var cls = cell.t === "KO"
+          ? "cell ko g" + cell.g + (cell.first ? " start" : "") + (cell.last ? " end" : "")
+          : "cell c";
+        return '<td><div class="' + cls + '" style="animation-delay:' +
+               (shown*16 + ci*13) + 'ms">' + cell.t + "</div></td>";
       }).join("");
 
-      html+='<section class="group" style="animation-delay:'+(gi++*80)+'ms">'+
-        (g.header?"<h2>"+esc(g.header)+"</h2>":"")+
-        ((g.context&&g.context.length)?'<div class="ctx">'+esc(g.context.join(" · "))+"</div>":"")+
-        '<div class="tablewrap"><table><thead>'+
-          '<tr><th class="corner" rowspan="2">Order #</th><th colspan="'+cols+'">Spawn Number</th>'+
-          '<th rowspan="2">Result</th><th class="corner" rowspan="2">Complete</th></tr>'+
-          "<tr>"+head+"</tr></thead><tbody>"+body+"</tbody></table></div></section>";
+      body += '<tr class="' + (isDone ? "complete" : "") + '" data-k="' + k +
+              '" style="animation-delay:' + (shown*14) + 'ms">' +
+        '<td class="order">' + (i+1) + "</td>" + tds +
+        '<td class="done"><span class="check" role="checkbox" tabindex="0" aria-checked="' +
+          (isDone ? "true" : "false") +
+          '"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg></span></td></tr>';
     });
 
-    el.content.innerHTML = html || '<div class="empty">Nothing matches those filters.</div>';
-    el.legend.hidden = !html;
+    el.content.innerHTML =
+      '<div class="tablewrap"><table><thead>' +
+      '<tr><th class="corner" rowspan="2">Order #</th><th colspan="' + N + '">Spawn Number</th>' +
+      '<th class="corner" rowspan="2">Complete</th></tr><tr>' + head + "</tr></thead><tbody>" +
+      (body || '<tr><td colspan="' + (N+2) + '" style="padding:22px;color:var(--muted)">' +
+               "Every path is ticked off. Nice.</td></tr>") +
+      "</tbody></table></div>";
 
-    var c=payload.counts||{};
-    el.tally.innerHTML="<b>"+(c.total||0)+"</b> paths · <b>"+(c.shiny||0)+"</b> shiny · <b>"+
-      (c.alpha||0)+"</b> alpha · <b>"+doneRows+"</b>/"+totalRows+" done"+
-      (shown!==(c.total||0)?" · showing "+shown:"");
-    el.prog.style.width = totalRows ? (doneRows/totalRows*100)+"%" : "0%";
+    el.tally.innerHTML = "<b>" + total + "</b> paths · <b>" + doneCount + "</b> done";
+    el.prog.style.width = total ? (doneCount / total * 100) + "%" : "0%";
 
-    if(payload.raw){ el.rawbox.hidden=false; el.raw.textContent=payload.raw; }
+    Array.prototype.forEach.call(el.seg.children, function(b){
+      b.setAttribute("aria-pressed", String(parseInt(b.dataset.n,10) === N));
+    });
   }
 
-  // tick a row off (click or keyboard)
-  function toggle(node){
-    var tr=node.closest("tr"); if(!tr) return;
-    var k=tr.getAttribute("data-k");
-    done[k]=!done[k]; save();
-    tr.classList.toggle("complete",!!done[k]);
-    node.setAttribute("aria-checked", done[k]?"true":"false");
-    if(filters.hide && done[k]) render(); else updateTally();
-  }
-  function updateTally(){ render(); }
-
-  document.addEventListener("click",function(e){
-    var c=e.target.closest(".check"); if(c) toggle(c);
-  });
-  document.addEventListener("keydown",function(e){
-    if((e.key===" "||e.key==="Enter") && e.target.classList && e.target.classList.contains("check")){
-      e.preventDefault(); toggle(e.target);
+  document.addEventListener("click", function(e){
+    var seg = e.target.closest("#seg button");
+    if (seg){
+      N = parseInt(seg.dataset.n, 10);
+      try { localStorage.setItem("mmo-n", String(N)); } catch(err){}
+      render();
+      return;
+    }
+    var chk = e.target.closest(".check");
+    if (chk){
+      var tr = chk.closest("tr"), k = tr.getAttribute("data-k");
+      done[k] = !done[k]; write();
+      tr.classList.toggle("complete", !!done[k]);
+      chk.setAttribute("aria-checked", done[k] ? "true" : "false");
+      if (hideDone) render(); else render();
     }
   });
 
-  function setStatus(state,text){
-    el.dot.className="dot"+(state?" "+state:"");
-    el.stamp.textContent=text;
-  }
-
-  function poll(){
-    fetch(SRC+(SRC.indexOf("?")<0?"?":"&")+"t="+Date.now(),{cache:"no-store"})
-      .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
-      .then(function(d){
-        var sig=JSON.stringify(d.groups)+d.updated;
-        var changed = sig!==signature;
-        payload=d; 
-        setStatus(Date.now()-new Date(d.updated).getTime()>STALE_MS?"stale":"live","updated "+ago(d.updated));
-        if(changed){
-          signature=sig;
-          render();
-          if(!firstPaint) el.content.classList.add("flash"),
-            setTimeout(function(){el.content.classList.remove("flash");},900);
-          firstPaint=false;
-        }
-      })
-      .catch(function(err){
-        setStatus("error",String(err.message||err));
-        if(!payload) el.content.innerHTML=setupHtml();
-      });
-  }
-
-  function bind(id,k){
-    var b=document.getElementById(id);
-    b.addEventListener("click",function(){
-      filters[k]=!filters[k]; b.setAttribute("aria-pressed",String(filters[k])); render();
-    });
-  }
-  bind("f-shiny","shiny"); bind("f-alpha","alpha"); bind("f-hide","hide");
-  document.getElementById("f-reset").addEventListener("click",function(){
-    done={}; save(); render();
+  document.addEventListener("keydown", function(e){
+    if ((e.key === " " || e.key === "Enter") &&
+        e.target.classList && e.target.classList.contains("check")){
+      e.preventDefault(); e.target.click();
+    }
   });
 
-  poll();
-  setInterval(poll,POLL_MS);
-  setInterval(function(){
-    if(payload) setStatus(Date.now()-new Date(payload.updated).getTime()>STALE_MS?"stale":"live",
-                          "updated "+ago(payload.updated));
-  },5000);
+  document.getElementById("f-hide").addEventListener("click", function(){
+    hideDone = !hideDone;
+    this.setAttribute("aria-pressed", String(hideDone));
+    render();
+  });
+  document.getElementById("f-reset").addEventListener("click", function(){
+    done = {}; write(); render();
+  });
+
+  render();
 })();
 </script>
 </body>
