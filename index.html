@@ -160,15 +160,15 @@
      over bright gameplay. ?scrim=1 adds a soft dark backing if you need it. */
   body.overlay .lane .nm,body.overlay .lane .sp,body.overlay .lane .count,
   body.overlay .empty-lane{text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 12px rgba(0,0,0,.7)}
-  body.overlay .segs i,body.overlay .lane .av{box-shadow:0 1px 5px rgba(0,0,0,.6)}
+  body.overlay .lane .av{box-shadow:0 1px 5px rgba(0,0,0,.6)}
   body.overlay .lane{border-bottom-color:rgba(255,255,255,.14)}
-  body.overlay .lanes{max-width:min(980px,calc(100vw - 20px))}
+  body.overlay .lanes{max-width:min(760px,calc(100vw - 20px))}
   body.scrim .lanes{background:linear-gradient(90deg,rgba(14,18,23,.82),rgba(14,18,23,.55));
     border-radius:12px;padding:2px 14px}
   body.overlay .hide-ov{display:none!important}
   .lanes{display:flex;flex-direction:column}
-  .lane{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;
-    align-items:center;gap:22px;padding:17px 4px;background:none;border:0;
+  .lane{position:relative;display:grid;grid-template-columns:auto minmax(180px,460px) auto;
+    align-items:center;gap:16px;padding:14px 4px;background:none;border:0;
     border-bottom:1px solid var(--line);isolation:isolate;
     animation:lanein .4s var(--ease) both;transition:transform .45s var(--ease),filter .25s var(--ease)}
   .lane:last-child{border-bottom:0}
@@ -176,32 +176,34 @@
   .lane.leaving{animation:laneout .28s var(--ease) forwards}
   @keyframes laneout{to{opacity:0;transform:translateY(-5px)}}
   .lane .who{display:flex;align-items:center;gap:12px;min-width:0}
-  .lane .av{width:38px;height:38px;border-radius:10px;font-size:12px;background-color:var(--c)}
-  .lane .nm{font:700 19px/1.15 var(--ui);letter-spacing:0;white-space:nowrap;
-    max-width:200px;overflow:hidden;text-overflow:ellipsis}
+  .lane .av{width:34px;height:34px;border-radius:9px;font-size:12px;background-color:var(--c)}
+  .lane .nm{font:700 18px/1.15 var(--ui);letter-spacing:0;white-space:nowrap;
+    max-width:190px;overflow:hidden;text-overflow:ellipsis}
   .lane .sp{font:400 12.5px/1 var(--ui);color:var(--dim);margin-top:5px;white-space:nowrap;
     max-width:200px;overflow:hidden;text-overflow:ellipsis}
   .lane.leader .nm::after{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
     background:var(--c4);margin-left:8px;vertical-align:middle;box-shadow:0 0 10px rgba(250,204,21,.8);
     animation:leadpulse 1.8s var(--ease) infinite}
   @keyframes leadpulse{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.45);opacity:1}}
-  .track{position:relative;height:30px;display:flex;align-items:center}
-  .segs{display:flex;gap:3px;width:100%;height:27px}
+  .track{position:relative;height:28px;display:flex;align-items:center}
+  .segs{position:relative;display:block;overflow:hidden;width:100%;height:22px;
+    border:1px solid rgba(255,255,255,.2);border-radius:999px;background:rgba(13,19,27,.88);
+    box-shadow:0 1px 7px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,255,255,.05)}
   .segs i{flex:1 1 0;min-width:3px;border-radius:4px;background:var(--off);
     transition:background .3s var(--ease),transform .35s var(--spring)}
+  body.overlay .segs i{display:none!important}
+  .segs::before{content:"";position:absolute;inset:0 auto 0 0;width:var(--pct,0%);
+    background:linear-gradient(90deg,var(--c),#f8fafc);
+    border-radius:999px;transition:width .62s var(--spring);box-shadow:0 0 16px rgba(255,255,255,.22)}
+  .segs::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(110deg,transparent 0 42%,rgba(255,255,255,.22) 50%,transparent 58% 100%);
+    transform:translateX(-130%);animation:compactshine 3.6s var(--ease) infinite}
   .segs i.on{background:var(--c);box-shadow:0 0 10px rgba(255,255,255,.18)}
   .segs i.just{animation:hit .7s var(--spring)}
   @keyframes hit{0%{transform:scaleY(1)}35%{transform:scaleY(1.65)}100%{transform:scaleY(1)}}
-  .segs.compact{position:relative;display:block;overflow:hidden;border:1px solid rgba(255,255,255,.2);
-    border-radius:10px;background:rgba(15,23,32,.84);box-shadow:0 1px 8px rgba(0,0,0,.55)}
-  .segs.compact::before{content:"";position:absolute;inset:0 auto 0 0;width:var(--pct,0%);
-    background:linear-gradient(90deg,var(--c),#facc15);border-radius:9px;
-    transition:width .7s var(--spring);box-shadow:0 0 18px rgba(250,204,21,.38)}
-  .segs.compact::after{content:"";position:absolute;inset:0;
-    background:linear-gradient(110deg,transparent 0 38%,rgba(255,255,255,.24) 46%,transparent 54% 100%);
-    transform:translateX(-130%);animation:compactshine 3.2s var(--ease) infinite}
   .ghosttag{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    font:800 12px/1 var(--ui);color:rgba(255,255,255,.9);letter-spacing:.08em;text-shadow:0 1px 4px rgba(0,0,0,.85)}
+    font:800 11px/1 var(--ui);color:rgba(255,255,255,.9);letter-spacing:.08em;text-shadow:0 1px 4px rgba(0,0,0,.85);
+    z-index:1}
   .lane.ghostlane .sp::before{content:"GHOST";display:inline-block;margin-right:7px;padding:2px 5px;
     border-radius:5px;background:rgba(250,204,21,.82);color:#151009;font:800 9px/1 var(--ui);letter-spacing:.08em;text-shadow:none}
   .lane.ghostlane .count{color:#facc15}
@@ -210,29 +212,19 @@
   .lane.bump .count{animation:countpop .62s var(--spring)}
   @keyframes avpop{0%,100%{transform:none}35%{transform:scale(1.18) rotate(-4deg)}}
   @keyframes countpop{0%,100%{transform:none}35%{transform:scale(1.24)}}
-  .lane.shiny{animation:shinyrow 2.3s var(--ease)}
-  .lane.shiny::before{content:"SHINY!";position:absolute;left:50%;top:50%;z-index:4;
-    transform:translate(-50%,-50%) scale(.72);font:900 34px/1 var(--ui);letter-spacing:.08em;
-    color:#fff7bd;text-shadow:0 2px 0 #7c4a03,0 0 12px rgba(250,204,21,.95),0 0 34px rgba(250,204,21,.75);
-    pointer-events:none;animation:shinyword 1.9s var(--spring) forwards}
-  .lane.shiny::after{content:"";position:absolute;inset:-14px -18px;z-index:3;border-radius:18px;
-    background:
-      radial-gradient(circle at 14% 30%,#fff7bd 0 2px,transparent 3px),
-      radial-gradient(circle at 24% 72%,#facc15 0 3px,transparent 4px),
-      radial-gradient(circle at 72% 22%,#ffffff 0 2px,transparent 3px),
-      radial-gradient(circle at 88% 62%,#fde68a 0 3px,transparent 4px),
-      linear-gradient(90deg,transparent,rgba(250,204,21,.42),transparent);
-    opacity:0;pointer-events:none;animation:shinyflash 1.7s var(--ease) forwards}
-  .lane.shiny .track{animation:trackquake 1.15s var(--spring)}
+  .shinybadge{position:absolute;right:52px;top:-5px;z-index:3;padding:4px 8px;border-radius:999px;
+    background:#facc15;color:#1d1400;font:900 11px/1 var(--ui);letter-spacing:.08em;
+    opacity:0;transform:translateY(5px) scale(.88);box-shadow:0 0 16px rgba(250,204,21,.82);
+    pointer-events:none}
+  .lane.shiny{animation:shinyrow 1.55s var(--ease)}
+  .lane.shiny .shinybadge{animation:shinybadge 1.35s var(--spring) forwards}
   .lane.shiny .track::after{content:"";position:absolute;inset:-8px -10px;border-radius:13px;
-    background:linear-gradient(90deg,transparent,rgba(255,255,255,.88),rgba(250,204,21,.78),transparent);
-    animation:sweep 1.35s var(--ease);pointer-events:none;z-index:2}
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.68),rgba(250,204,21,.58),transparent);
+    animation:sweep 1.15s var(--ease);pointer-events:none;z-index:2}
   .lane.shiny .segs i.on{animation:goldpop 1.35s var(--spring)}
-  .lane.shiny .segs.compact::before{background:linear-gradient(90deg,#facc15,#fff7bd,#fbbf24)}
-  @keyframes shinyrow{0%,100%{filter:none}35%,62%{filter:drop-shadow(0 0 22px rgba(250,204,21,.9))}}
-  @keyframes shinyword{0%{opacity:0;transform:translate(-50%,-50%) scale(.55)}18%{opacity:1;transform:translate(-50%,-58%) scale(1.08)}72%{opacity:1}100%{opacity:0;transform:translate(-50%,-76%) scale(1.28)}}
-  @keyframes shinyflash{0%{opacity:0;transform:scale(.96)}18%,68%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.06)}}
-  @keyframes trackquake{0%,100%{transform:none}18%{transform:translateX(-5px)}34%{transform:translateX(4px)}50%{transform:translateX(-2px)}}
+  .lane.shiny .segs::before{background:linear-gradient(90deg,#facc15,#fff7bd,#fbbf24)}
+  @keyframes shinyrow{0%,100%{filter:none}30%,62%{filter:drop-shadow(0 0 16px rgba(250,204,21,.72))}}
+  @keyframes shinybadge{0%{opacity:0;transform:translateY(5px) scale(.88)}18%,72%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-6px) scale(.98)}}
   @keyframes sweep{from{transform:translateX(-70%);opacity:0}20%{opacity:1}to{transform:translateX(70%);opacity:0}}
   @keyframes goldpop{0%,100%{background:var(--c);transform:none}38%{background:#facc15;transform:scaleY(1.8)}}
   .marker{position:absolute;top:50%;width:3px;height:30px;margin-left:-1.5px;margin-top:-15px;
@@ -701,7 +693,7 @@
     l.innerHTML='<div class="who"><span class="av"></span>'+
       '<div style="min-width:0"><div class="nm"></div><div class="sp"></div></div></div>'+
       '<div class="track"><div class="segs"></div><div class="marker"></div></div>'+
-      '<div class="count"><b>0</b><s>/0</s></div>';
+      '<div class="count"><b>0</b><s>/0</s></div><span class="shinybadge">SHINY</span>';
     return l;
   }
   function paintLanes(){
@@ -739,7 +731,7 @@
       lane.querySelector(".sp").textContent=(p.chart? p.chart+" · ":"")+p.spawns+" spawns";
 
       var total=countFor(p), segs=lane.querySelector(".segs");
-      var compact = p.ghost || total>64;
+      var compact = true;
       var hadProgress=Object.prototype.hasOwnProperty.call(prevDone,p.id);
       var prev=prevDone[p.id]||{}, now={}, newest=-1, count=0;
       for(var k in p.done){
