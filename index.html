@@ -16,7 +16,7 @@
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--text);
     font:15px/1.5 ui-sans-serif,system-ui,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1100px;margin:0 auto;padding:22px 16px 70px}
+  .wrap{max-width:1140px;margin:0 auto;padding:22px 16px 70px}
 
   header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:6px}
   h1{font-size:23px;margin:0;letter-spacing:.3px;
@@ -25,35 +25,51 @@
     animation:sheen 7s linear infinite}
   @keyframes sheen{to{background-position:220% 0}}
   .sub{color:var(--muted);font-size:13px;margin:0 0 18px}
+  .status{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+  .dot{width:9px;height:9px;border-radius:50%;background:#57606a;transition:background .3s}
+  .dot.live{background:var(--ok);animation:pulse 2s var(--ease) infinite}
+  .dot.error{background:#f85149}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(63,185,80,.55)}
+    70%{box-shadow:0 0 0 9px rgba(63,185,80,0)}100%{box-shadow:0 0 0 0 rgba(63,185,80,0)}}
 
   .bar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
   .seg{display:flex;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
-  .seg button{
-    background:none;border:0;color:var(--muted);padding:6px 16px;border-radius:999px;
+  .seg button{background:none;border:0;color:var(--muted);padding:6px 15px;border-radius:999px;
     font-size:13px;font-weight:600;cursor:pointer;transition:all .3s var(--ease)}
   .seg button:hover{color:var(--text)}
-  .seg button[aria-pressed="true"]{
-    background:linear-gradient(180deg,var(--head-2),var(--head));color:#fff;
-    box-shadow:0 3px 12px rgba(18,176,216,.34)}
+  .seg button[aria-pressed="true"]{background:linear-gradient(180deg,var(--head-2),var(--head));
+    color:#fff;box-shadow:0 3px 12px rgba(18,176,216,.34)}
   .chipbtn{background:var(--panel);border:1px solid var(--line);color:var(--muted);
     padding:6px 13px;border-radius:999px;font-size:13px;cursor:pointer;transition:all .25s var(--ease)}
   .chipbtn:hover{transform:translateY(-1px);color:var(--text);border-color:#41505f}
   .chipbtn[aria-pressed="true"]{background:linear-gradient(180deg,#17384a,#132c3a);
-    color:#7ee0ff;border-color:#1f5f7a;box-shadow:0 0 14px rgba(18,176,216,.18)}
-  .tally{margin-left:auto;font-size:13px;color:var(--muted)}
-  .tally b{color:var(--text);font-weight:700;font-variant-numeric:tabular-nums}
+    color:#7ee0ff;border-color:#1f5f7a}
+  #name{background:var(--panel);border:1px solid var(--line);color:var(--text);
+    padding:6px 13px;border-radius:999px;font-size:13px;width:150px;transition:all .25s var(--ease)}
+  #name:focus{outline:none;border-color:var(--head-2);box-shadow:0 0 0 3px rgba(18,176,216,.15)}
 
   .prog{height:5px;background:var(--panel);border-radius:99px;overflow:hidden;margin-bottom:20px}
   .prog i{display:block;height:100%;width:0;border-radius:99px;
     background:linear-gradient(90deg,var(--ko1),var(--ko2));
     transition:width .7s var(--ease);box-shadow:0 0 12px rgba(53,192,138,.5)}
 
+  /* hunters strip */
+  .hunters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}
+  .hunter{display:flex;align-items:center;gap:9px;background:var(--panel);
+    border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 6px;
+    animation:rise .5s var(--ease) both}
+  .pip{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:800;color:#04121a}
+  .hname{font-size:13px;font-weight:600}
+  .hprog{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .hunter.me{border-color:#1f5f7a;box-shadow:0 0 14px rgba(18,176,216,.16)}
+
   .tablewrap{overflow-x:auto;border-radius:var(--r);border:1px solid var(--line);
     background:var(--panel);box-shadow:0 12px 40px rgba(0,0,0,.4)}
-  table{border-collapse:separate;border-spacing:0;width:100%;min-width:600px}
+  table{border-collapse:separate;border-spacing:0;width:100%;min-width:620px}
   thead th{background:linear-gradient(180deg,var(--head-2),var(--head));color:#fff;
     font-size:13px;font-weight:800;letter-spacing:.05em;padding:10px 8px;text-align:center;
-    white-space:nowrap;border-bottom:1px solid rgba(0,0,0,.3);position:sticky;top:0;z-index:2}
+    white-space:nowrap;border-bottom:1px solid rgba(0,0,0,.3)}
   thead th.corner{background:linear-gradient(180deg,#0f6f8f,#0a4d5f)}
   thead tr:first-child th{border-bottom:1px solid rgba(255,255,255,.15)}
 
@@ -65,7 +81,7 @@
   tbody tr:last-child td{border-bottom:none}
   @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
-  td.order{color:var(--gold);width:78px;font-variant-numeric:tabular-nums}
+  td.order{color:var(--gold);width:76px;font-variant-numeric:tabular-nums}
   .cell{display:flex;align-items:center;justify-content:center;height:46px;position:relative;
     animation:pop .4s var(--ease) both;overflow:hidden}
   @keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
@@ -80,7 +96,7 @@
   .cell.start{border-top-left-radius:8px;border-bottom-left-radius:8px}
   .cell.end{border-top-right-radius:8px;border-bottom-right-radius:8px}
 
-  td.done{width:100px}
+  td.done{width:110px}
   .check{width:23px;height:23px;border-radius:7px;border:2px solid #3b4757;background:var(--panel-2);
     cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
     transition:all .25s var(--ease)}
@@ -91,12 +107,15 @@
   tr.complete .check{background:var(--ko2);border-color:var(--ko2);
     box-shadow:0 0 16px rgba(53,192,138,.45)}
   tr.complete .check path{stroke-dashoffset:0}
-  tr.complete{opacity:.4}
+  tr.complete{opacity:.42}
   tr.complete .cell::after{animation:none}
   tr.complete td.order{text-decoration:line-through}
 
-  .legend{margin-top:14px;font-size:12.5px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap;
-    align-items:center;animation:rise .6s var(--ease) both}
+  /* who-cleared-it chips */
+  .whos{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;padding:5px 8px}
+  .whos .pip{width:23px;height:23px;font-size:10px;animation:pop .4s var(--ease) both}
+
+  .legend{margin-top:14px;font-size:12.5px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap;align-items:center}
   .legend span{display:inline-flex;align-items:center;gap:7px}
   .sw{width:14px;height:14px;border-radius:4px;display:inline-block}
   .note{margin-top:16px;font-size:12.5px;color:var(--muted);line-height:1.7}
@@ -105,7 +124,9 @@
   body.overlay .wrap{padding:8px;max-width:none}
   body.overlay header,body.overlay .sub,body.overlay .bar,
   body.overlay .prog,body.overlay .legend,body.overlay .note{display:none}
+  body.overlay .hunters{display:flex}
   body.overlay .tablewrap{background:rgba(13,17,23,.85);backdrop-filter:blur(3px)}
+  body.overlay .hunter{background:rgba(22,27,34,.85)}
 
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -113,37 +134,39 @@
 <body>
 <div class="wrap">
 
-  <header><h1>MMO Permutations</h1>
-    <div class="tally" id="tally"></div>
+  <header>
+    <h1>MMO Permutations</h1>
+    <div class="status"><span class="dot" id="dot"></span><span id="stamp">connecting…</span></div>
   </header>
-  <p class="sub">Catch and despawn paths for Massive Mass Outbreaks in Pokémon Legends: Arceus.
-     Your ticks are saved in this browser.</p>
+  <p class="sub" id="sub">Catch and despawn paths for Massive Mass Outbreaks. Tick as you go —
+     everyone hunting in this room can see each other's progress.</p>
 
   <div class="bar">
+    <input id="name" maxlength="16" placeholder="Your name" autocomplete="off">
     <div class="seg" id="seg">
       <button data-n="8"  aria-pressed="false">8 spawns</button>
       <button data-n="9"  aria-pressed="false">9 spawns</button>
       <button data-n="10" aria-pressed="false">10 spawns</button>
     </div>
     <button class="chipbtn" id="f-hide" aria-pressed="false">Hide completed</button>
-    <button class="chipbtn" id="f-reset">Reset ticks</button>
+    <button class="chipbtn" id="f-reset">Reset my ticks</button>
   </div>
 
   <div class="prog"><i id="progbar"></i></div>
+  <div class="hunters" id="hunters"></div>
   <div id="content"></div>
 
   <div class="legend">
     <span><b>C</b> = catch it</span>
     <span><b>KO</b> = defeat it</span>
-    <span><i class="sw" style="background:var(--ko1)"></i>
-          <i class="sw" style="background:var(--ko2)"></i>
+    <span><i class="sw" style="background:var(--ko1)"></i><i class="sw" style="background:var(--ko2)"></i>
           cells sharing a colour must be defeated in one battle</span>
   </div>
 
   <p class="note">
-    Read a row left to right: each column is a spawn in the first wave. A run of same-coloured
-    KO cells is one multi-battle — three blue means take all three down together.
-    New paths stop once only four remain in the wave, which is where ghost steps take over.
+    Read a row left to right: each column is a spawn in the first wave. A run of same-coloured KO
+    cells is one multi-battle — three blue means take all three down together. New paths stop once
+    only four remain in the wave, which is where ghost steps take over.
   </p>
 </div>
 
@@ -151,153 +174,257 @@
 (function(){
   "use strict";
 
+  // ---- config ---------------------------------------------------------
+  var DB   = "https://mmo-live-default-rtdb.europe-west1.firebasedatabase.app";
+  var POLL = 3000;          // how often we read everyone else's progress
+  var AWAY = 30*60*1000;    // hide hunters idle longer than this
+
   var params  = new URLSearchParams(location.search);
-  if (params.get("overlay") === "1") document.body.classList.add("overlay");
+  if (params.get("db")) DB = params.get("db").replace(/\/+$/,"");
+  var ROOM    = params.get("room") || "main";
+  var OVERLAY = params.get("overlay") === "1";
+  if (OVERLAY) document.body.classList.add("overlay");
 
-  var N = parseInt(params.get("spawns"), 10);
-  if ([8,9,10].indexOf(N) < 0) N = parseInt(localStorage.getItem("mmo-n"), 10) || 8;
+  var COLORS = ["#12b0d8","#35c08a","#ef8a3c","#a97bea","#ffd45e","#e8547c","#7ee0ff","#9ae66e"];
 
-  var hideDone = false;
-  var done = read();
+  // ---- identity -------------------------------------------------------
+  function local(k, d){ try { return localStorage.getItem(k) || d; } catch(e){ return d; } }
+  function store(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+
+  var ME = local("mmo-id", "");
+  if (!ME){ ME = "p" + Math.random().toString(36).slice(2,9); store("mmo-id", ME); }
+
+  var me = {
+    name:   local("mmo-name", "Hunter " + ME.slice(1,4).toUpperCase()),
+    spawns: parseInt(local("mmo-n","8"),10) || 8,
+    done:   {}
+  };
+  try { me.done = JSON.parse(local("mmo-ticks","{}")); } catch(e){ me.done = {}; }
+
+  var N = parseInt(params.get("spawns"),10);
+  if ([8,9,10].indexOf(N) < 0) N = me.spawns; else me.spawns = N;
+
+  var players = {}, hideDone = false, saveTimer = null;
 
   var el = {
-    content: document.getElementById("content"),
-    tally:   document.getElementById("tally"),
-    prog:    document.getElementById("progbar"),
-    seg:     document.getElementById("seg")
+    content:  document.getElementById("content"),
+    hunters:  document.getElementById("hunters"),
+    prog:     document.getElementById("progbar"),
+    seg:      document.getElementById("seg"),
+    name:     document.getElementById("name"),
+    dot:      document.getElementById("dot"),
+    stamp:    document.getElementById("stamp")
   };
 
-  function read(){
-    try { return JSON.parse(localStorage.getItem("mmo-ticks") || "{}"); }
-    catch(e){ return {}; }
+  function esc(s){ return String(s).replace(/[&<>"']/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+  function colorFor(id){
+    var h = 0; for (var i=0;i<id.length;i++) h = (h*31 + id.charCodeAt(i)) >>> 0;
+    return COLORS[h % COLORS.length];
   }
-  function write(){
-    try { localStorage.setItem("mmo-ticks", JSON.stringify(done)); } catch(e){}
+  function initials(name){
+    var parts = String(name).trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return "?";
+    return (parts.length === 1 ? parts[0].slice(0,2) : parts[0][0]+parts[1][0]).toUpperCase();
   }
 
-  // ---- path generation -------------------------------------------------
-  // A step is either a catch (one Pokemon) or a multi-battle KO of 2-4.
-  // A new multi-battle cannot START once only four remain in the wave,
-  // which is the point where ghost-spawn steps take over instead.
+  // ---- paths ----------------------------------------------------------
+  // A step is a catch (one) or a multi-battle KO of 2-4. A new multi-battle
+  // cannot START once only four remain - that is where ghost steps begin.
   function buildPaths(n){
-    var out = [[]], limit = n - 5, lead, g1, g2;
-
-    for (lead = 0; lead <= limit; lead++){
-      for (g1 = 2; g1 <= 4; g1++)
-        if (lead + g1 <= n) out.push([["C",lead],["KO",g1]]);
-      for (g1 = 2; g1 <= 4; g1++){
-        if (lead + g1 > limit) continue;
-        for (g2 = 2; g2 <= 4; g2++)
-          if (lead + g1 + g2 <= n) out.push([["C",lead],["KO",g1],["KO",g2]]);
+    var out=[[]], limit=n-5, lead, g1, g2;
+    for (lead=0; lead<=limit; lead++){
+      for (g1=2; g1<=4; g1++) if (lead+g1<=n) out.push([["C",lead],["KO",g1]]);
+      for (g1=2; g1<=4; g1++){
+        if (lead+g1>limit) continue;
+        for (g2=2; g2<=4; g2++) if (lead+g1+g2<=n) out.push([["C",lead],["KO",g1],["KO",g2]]);
       }
     }
-    for (lead = 0; lead <= limit; lead++){
-      for (g1 = 2; g1 <= 4; g1++){
-        if (lead + g1 + 1 > limit) continue;
-        for (g2 = 2; g2 <= 4; g2++)
-          if (lead + g1 + 1 + g2 <= n) out.push([["C",lead],["KO",g1],["C",1],["KO",g2]]);
+    for (lead=0; lead<=limit; lead++)
+      for (g1=2; g1<=4; g1++){
+        if (lead+g1+1>limit) continue;
+        for (g2=2; g2<=4; g2++)
+          if (lead+g1+1+g2<=n) out.push([["C",lead],["KO",g1],["C",1],["KO",g2]]);
       }
-    }
     return out;
   }
 
-  // turn a path into one cell per spawn column
   function toCells(path, n){
-    var cells = [], group = 0;
+    var cells=[], group=0;
     path.forEach(function(step){
-      var kind = step[0], count = step[1], i;
-      if (kind === "C"){ for (i=0;i<count;i++) cells.push({t:"C"}); }
-      else {
-        group++;
-        for (i=0;i<count;i++)
-          cells.push({t:"KO", g:((group-1)%4)+1, first:i===0, last:i===count-1});
-      }
+      var kind=step[0], count=step[1], i;
+      if (kind==="C"){ for(i=0;i<count;i++) cells.push({t:"C"}); }
+      else { group++; for(i=0;i<count;i++)
+        cells.push({t:"KO", g:((group-1)%4)+1, first:i===0, last:i===count-1}); }
     });
     while (cells.length < n) cells.push({t:"C"});
-    return cells.slice(0, n);
+    return cells.slice(0,n);
+  }
+
+  // ---- sync -----------------------------------------------------------
+  function push(){
+    store("mmo-ticks", JSON.stringify(me.done));
+    store("mmo-name", me.name);
+    store("mmo-n", String(me.spawns));
+    if (!DB) return;
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      fetch(DB + "/rooms/" + encodeURIComponent(ROOM) + "/players/" + ME + ".json?print=silent", {
+        method: "PUT",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({name:me.name, spawns:me.spawns, done:me.done, updated:Date.now()})
+      }).catch(function(){});
+    }, 400);
+  }
+
+  function pull(){
+    if (!DB) { setStatus("error","offline"); return; }
+    fetch(DB + "/rooms/" + encodeURIComponent(ROOM) + "/players.json?t=" + Date.now(), {cache:"no-store"})
+      .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+      .then(function(d){
+        players = d || {};
+        setStatus("live", countActive() + " hunting");
+        renderHunters();
+        if (OVERLAY) render();
+      })
+      .catch(function(e){ setStatus("error", String(e.message||e)); });
+  }
+
+  function countActive(){
+    var n=0, now=Date.now();
+    for (var id in players) if (now - (players[id].updated||0) < AWAY) n++;
+    return n;
+  }
+
+  function setStatus(state, text){
+    el.dot.className = "dot" + (state ? " " + state : "");
+    el.stamp.textContent = text;
+  }
+
+  // ---- rendering ------------------------------------------------------
+  function activeList(){
+    var now = Date.now(), list = [];
+    for (var id in players){
+      var p = players[id] || {};
+      if (now - (p.updated||0) > AWAY) continue;
+      list.push({id:id, name:p.name||"?", spawns:p.spawns||8, done:p.done||{}});
+    }
+    // me first, then most progress
+    list.sort(function(a,b){
+      if (a.id===ME) return -1; if (b.id===ME) return 1;
+      return Object.keys(b.done).length - Object.keys(a.done).length;
+    });
+    return list;
+  }
+
+  function renderHunters(){
+    var list = activeList();
+    if (!list.length && !OVERLAY){
+      el.hunters.innerHTML = ""; return;
+    }
+    el.hunters.innerHTML = list.map(function(p,i){
+      var total = buildPaths(p.spawns).length;
+      var n = Object.keys(p.done).filter(function(k){
+        return k.indexOf(p.spawns + ":") === 0; }).length;
+      return '<div class="hunter' + (p.id===ME ? " me" : "") +
+             '" style="animation-delay:' + (i*60) + 'ms">' +
+        '<span class="pip" style="background:' + colorFor(p.id) + '">' +
+          esc(initials(p.name)) + "</span>" +
+        '<span class="hname">' + esc(p.name) + "</span>" +
+        '<span class="hprog">' + n + "/" + total + " · " + p.spawns + "sp</span></div>";
+    }).join("");
   }
 
   function render(){
-    var paths = buildPaths(N), total = paths.length, doneCount = 0, shown = 0;
+    var paths = buildPaths(N), total = paths.length, mine = 0, shown = 0;
+    paths.forEach(function(_,i){ if (me.done[N+":"+i]) mine++; });
 
-    paths.forEach(function(_, i){ if (done[N+":"+i]) doneCount++; });
+    var others = activeList().filter(function(p){ return p.id !== ME; });
 
     var head = "";
-    for (var c = 1; c <= N; c++) head += "<th>" + c + "</th>";
+    for (var c=1; c<=N; c++) head += "<th>" + c + "</th>";
 
     var body = "";
     paths.forEach(function(path, i){
-      var k = N + ":" + i, isDone = !!done[k];
-      if (hideDone && isDone) return;
+      var k = N + ":" + i, isDone = !!me.done[k];
+      if (hideDone && isDone && !OVERLAY) return;
       shown++;
 
       var tds = toCells(path, N).map(function(cell, ci){
         var cls = cell.t === "KO"
-          ? "cell ko g" + cell.g + (cell.first ? " start" : "") + (cell.last ? " end" : "")
+          ? "cell ko g" + cell.g + (cell.first?" start":"") + (cell.last?" end":"")
           : "cell c";
         return '<td><div class="' + cls + '" style="animation-delay:' +
-               (shown*16 + ci*13) + 'ms">' + cell.t + "</div></td>";
+               (shown*15 + ci*12) + 'ms">' + cell.t + "</div></td>";
       }).join("");
 
-      body += '<tr class="' + (isDone ? "complete" : "") + '" data-k="' + k +
-              '" style="animation-delay:' + (shown*14) + 'ms">' +
-        '<td class="order">' + (i+1) + "</td>" + tds +
-        '<td class="done"><span class="check" role="checkbox" tabindex="0" aria-checked="' +
-          (isDone ? "true" : "false") +
-          '"><svg viewBox="0 0 16 16"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg></span></td></tr>';
+      // who else has cleared this path
+      var chips = others.filter(function(p){ return p.done[k]; }).map(function(p){
+        return '<span class="pip" style="background:' + colorFor(p.id) + '" title="' +
+               esc(p.name) + '">' + esc(initials(p.name)) + "</span>";
+      }).join("");
+
+      var last = OVERLAY
+        ? '<td class="done"><div class="whos">' + (chips || "") + "</div></td>"
+        : '<td class="done"><span class="check" role="checkbox" tabindex="0" aria-checked="' +
+          (isDone?"true":"false") + '"><svg viewBox="0 0 16 16">' +
+          '<path d="M3 8.5l3.2 3.2L13 4.8"/></svg></span>' +
+          (chips ? '<div class="whos">' + chips + "</div>" : "") + "</td>";
+
+      body += '<tr class="' + (isDone && !OVERLAY ? "complete" : "") + '" data-i="' + i +
+              '" style="animation-delay:' + (shown*13) + 'ms">' +
+        '<td class="order">' + (i+1) + "</td>" + tds + last + "</tr>";
     });
 
     el.content.innerHTML =
       '<div class="tablewrap"><table><thead>' +
       '<tr><th class="corner" rowspan="2">Order #</th><th colspan="' + N + '">Spawn Number</th>' +
-      '<th class="corner" rowspan="2">Complete</th></tr><tr>' + head + "</tr></thead><tbody>" +
+      '<th class="corner" rowspan="2">' + (OVERLAY ? "Cleared by" : "Complete") + "</th></tr><tr>" +
+      head + "</tr></thead><tbody>" +
       (body || '<tr><td colspan="' + (N+2) + '" style="padding:22px;color:var(--muted)">' +
                "Every path is ticked off. Nice.</td></tr>") +
       "</tbody></table></div>";
 
-    el.tally.innerHTML = "<b>" + total + "</b> paths · <b>" + doneCount + "</b> done";
-    el.prog.style.width = total ? (doneCount / total * 100) + "%" : "0%";
-
+    el.prog.style.width = total ? (mine/total*100) + "%" : "0%";
     Array.prototype.forEach.call(el.seg.children, function(b){
       b.setAttribute("aria-pressed", String(parseInt(b.dataset.n,10) === N));
     });
   }
 
+  // ---- events ---------------------------------------------------------
   document.addEventListener("click", function(e){
     var seg = e.target.closest("#seg button");
-    if (seg){
-      N = parseInt(seg.dataset.n, 10);
-      try { localStorage.setItem("mmo-n", String(N)); } catch(err){}
-      render();
-      return;
-    }
+    if (seg){ N = me.spawns = parseInt(seg.dataset.n,10); push(); render(); renderHunters(); return; }
+
     var chk = e.target.closest(".check");
     if (chk){
-      var tr = chk.closest("tr"), k = tr.getAttribute("data-k");
-      done[k] = !done[k]; write();
-      tr.classList.toggle("complete", !!done[k]);
-      chk.setAttribute("aria-checked", done[k] ? "true" : "false");
-      if (hideDone) render(); else render();
+      var tr = chk.closest("tr"), k = N + ":" + tr.getAttribute("data-i");
+      if (me.done[k]) delete me.done[k]; else me.done[k] = true;
+      push(); render(); renderHunters();
     }
   });
 
   document.addEventListener("keydown", function(e){
-    if ((e.key === " " || e.key === "Enter") &&
-        e.target.classList && e.target.classList.contains("check")){
-      e.preventDefault(); e.target.click();
-    }
+    if ((e.key===" "||e.key==="Enter") && e.target.classList &&
+        e.target.classList.contains("check")){ e.preventDefault(); e.target.click(); }
+  });
+
+  el.name.value = me.name;
+  el.name.addEventListener("input", function(){
+    me.name = this.value.trim() || "Hunter";
+    push(); renderHunters();
   });
 
   document.getElementById("f-hide").addEventListener("click", function(){
-    hideDone = !hideDone;
-    this.setAttribute("aria-pressed", String(hideDone));
-    render();
+    hideDone = !hideDone; this.setAttribute("aria-pressed", String(hideDone)); render();
   });
   document.getElementById("f-reset").addEventListener("click", function(){
-    done = {}; write(); render();
+    me.done = {}; push(); render(); renderHunters();
   });
 
-  render();
+  render(); renderHunters(); push(); pull();
+  setInterval(pull, POLL);
 })();
 </script>
 </body>
