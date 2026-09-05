@@ -1,11 +1,160 @@
 {
- "updated": "1970-01-01T00:00:00+00:00",
- "source": "none yet",
+ "updated": "2026-09-05T18:00:50.362732+00:00",
+ "source": "results.txt",
  "counts": {
-  "total": 0,
-  "shiny": 0,
-  "alpha": 0
+  "total": 5,
+  "shiny": 4,
+  "alpha": 2
  },
- "groups": [],
- "raw": ""
+ "groups": [
+  {
+   "header": "Spawner 1 - Seed 0x8B4C2F19A03D77E2",
+   "context": [
+    "Species: Charizard | First wave count: 10"
+   ],
+   "results": [
+    {
+     "species": "Charizard",
+     "alpha": true,
+     "gender": "F",
+     "shiny": true,
+     "square": true,
+     "rolls": 3,
+     "ivs": [
+      31,
+      31,
+      30,
+      25,
+      31,
+      31
+     ],
+     "nature": "Timid",
+     "notes": [],
+     "steps": [
+      "CR",
+      "B2",
+      "B3"
+     ],
+     "steps_raw": "CR|B2|B3",
+     "wave": "",
+     "spawn": 3
+    },
+    {
+     "species": "Gible",
+     "alpha": false,
+     "gender": "M",
+     "shiny": true,
+     "square": false,
+     "rolls": 7,
+     "ivs": [
+      31,
+      0,
+      31,
+      12,
+      31,
+      31
+     ],
+     "nature": "Adamant",
+     "notes": [],
+     "steps": [
+      "CR",
+      "CR",
+      "B4"
+     ],
+     "steps_raw": "CR|CR|B4",
+     "wave": "Wave 2",
+     "spawn": 5
+    },
+    {
+     "species": "Rowlet",
+     "alpha": false,
+     "gender": "",
+     "shiny": true,
+     "square": false,
+     "rolls": 12,
+     "ivs": [
+      31,
+      31,
+      31,
+      31,
+      31,
+      31
+     ],
+     "nature": "Modest",
+     "notes": [
+      "NOT ALPHA"
+     ],
+     "steps": [
+      "B2",
+      "CR",
+      "CR",
+      "B3"
+     ],
+     "steps_raw": "B2|CR|CR|B3",
+     "wave": "Bonus",
+     "spawn": 2
+    },
+    {
+     "species": "Magikarp",
+     "alpha": false,
+     "gender": "F",
+     "shiny": false,
+     "square": false,
+     "rolls": null,
+     "ivs": [
+      20,
+      15,
+      31,
+      9,
+      22,
+      3
+     ],
+     "nature": "Bold",
+     "notes": [
+      "Skittish: Multi scaring!"
+     ],
+     "steps": [
+      "CR",
+      "B2"
+     ],
+     "steps_raw": "CR|B2",
+     "wave": "",
+     "spawn": 1
+    }
+   ]
+  },
+  {
+   "header": "Spawner 2 - Seed 0x11FF00AA22BB33CC",
+   "context": [],
+   "results": [
+    {
+     "species": "Garchomp",
+     "alpha": true,
+     "gender": "M",
+     "shiny": true,
+     "square": true,
+     "rolls": 1,
+     "ivs": [
+      31,
+      31,
+      31,
+      0,
+      31,
+      31
+     ],
+     "nature": "Jolly",
+     "notes": [],
+     "steps": [
+      "B3",
+      "B3",
+      "CR"
+     ],
+     "steps_raw": "B3|B3|CR",
+     "wave": "",
+     "spawn": 7
+    }
+   ]
+  }
+ ],
+ "raw": "Spawner 1 - Seed 0x8B4C2F19A03D77E2\nSpecies: Charizard | First wave count: 10\n* CR|B2|B3                             >>> Spawn3 = α-Charizard (F):  3 ■ 31/31/30/25/31/31 Timid   \n* CR|CR|B4                             >>> Wave 2 Spawn5 =   Gible (M):  7 * 31/00/31/12/31/31 Adamant\n* B2|CR|CR|B3                          >>> Bonus Spawn2 = α-Rowlet: 12 * 31/31/31/31/31/31 Modest   -- NOT ALPHA\n* CR|B2                                >>> Spawn1 =   Magikarp (F): 20/15/31/09/22/03 Bold    -- Skittish: Multi scaring!\n\nSpawner 2 - Seed 0x11FF00AA22BB33CC\n* B3|B3|CR                             >>> Spawn7 = α-Garchomp (M):  1 ■ 31/31/31/00/31/31 Jolly   \n"
 }
