@@ -655,7 +655,19 @@
           </div>
           <div id="authed" hidden>
             <p class="hint">Signed in as <b id="whoami" style="color:var(--c2)"></b>.</p>
-            <button class="btn sm ghost" id="dologout" style="margin-top:14px">Log Out</button>
+            <div class="stack" style="margin-top:16px">
+              <div><label class="fl" for="npw">Change password</label>
+                <input type="password" id="npw" minlength="6" placeholder="New password"
+                  autocomplete="new-password" style="width:100%"></div>
+              <div class="row2">
+                <button class="btn sm pri" id="dochangepw">Update password</button>
+                <button class="btn sm ghost" id="dologout">Log Out</button>
+              </div>
+            </div>
+            <p class="hint" style="margin-top:14px">
+              Passwords are kept only as salted hashes, so nobody can read one back — not you, not the
+              room owner, not this site. Forgotten yours? Set a new one here while you're signed in.
+            </p>
           </div>
           <div class="msg" id="authmsg"></div>
         </div>
@@ -675,8 +687,12 @@
             <button class="btn ghost sm" id="copyinvite">Copy</button>
           </div>
           <div class="who-list" id="wholist"></div>
-          <div id="adminbox" hidden style="margin-top:14px">
-            <button class="btn sm ghost danger" id="clearroom">Clear Whole Room</button>
+          <div id="adminbox" hidden style="margin-top:16px">
+            <div class="hint" style="margin-bottom:10px">You're the owner of this room.</div>
+            <div class="row2">
+              <button class="btn sm ghost danger" id="clearroom">Clear whole room</button>
+              <button class="btn sm ghost" id="roomdiag">Check connection</button>
+            </div>
           </div>
         </div>
       </div>
@@ -981,6 +997,11 @@
     fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+"/display.json?print=silent",{
       method:"PUT",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({lanes:!!display.lanes,counter:!!display.counter,who:ME,at:Date.now()})
+    }).then(function(r){
+      if((r.status===401||r.status===403)&&!rulesWarned){
+        rulesWarned=true;
+        showRulesFix("The stream toggles can't be saved - your rules don't cover rooms/…/display.");
+      }
     }).catch(function(){});
   }
   function pushAccount(){
@@ -1072,10 +1093,20 @@
   }
 
   // ---------- room ----------
+  var rulesWarned=false;
+  // Reading the whole room in one request needs read permission on the room
+  // node. Older rule sets only granted it on rooms/$room/players, which comes
+  // back 401 - so fall back to the narrower reads and say what needs fixing.
   function pull(){
-    fetch(DB+"/rooms/"+encodeURIComponent(ROOM)+".json?t="+Date.now(),{cache:"no-store"})
-      .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+    var base=DB+"/rooms/"+encodeURIComponent(ROOM);
+    fetch(base+".json?t="+Date.now(),{cache:"no-store"})
+      .then(function(r){
+        if(r.status===401||r.status===403) return legacyPull();
+        if(!r.ok) throw new Error("HTTP "+r.status);
+        return r.json();
+      })
       .then(function(d){
+        if(d===undefined) return;
         d=d||{}; players=d.players||{}; roomDisplay=d.display||null;
         assignColors();
         var list=active(); fetchAvatars(list);
@@ -1084,6 +1115,56 @@
         if(!OVERLAY){ renderWho(); renderTable(); renderObs(); renderBoard();
           if($("b-live")) $("b-live").textContent=list.length; }
       }).catch(function(e){ setStatus("error",String(e.message||e)); });
+  }
+
+  function legacyPull(){
+    var base=DB+"/rooms/"+encodeURIComponent(ROOM);
+    return Promise.all([
+      fetch(base+"/players.json?t="+Date.now(),{cache:"no-store"}).then(function(r){
+        if(r.status===401||r.status===403) throw new Error("rules"); return r.json(); }),
+      fetch(base+"/display.json?t="+Date.now(),{cache:"no-store"}).then(function(r){
+        return r.ok?r.json():null; }).catch(function(){ return null; })
+    ]).then(function(a){
+      if(!rulesWarned){
+        rulesWarned=true;
+        showRulesFix("Your database rules only allow part of the room, so avatars and the stream toggles can't save.");
+      }
+      return {players:a[0]||{},display:a[1]||null};
+    }).catch(function(){
+      if(!rulesWarned){
+        rulesWarned=true;
+        showRulesFix("Your database is refusing this room (401). The rules below fix it.");
+      }
+      setStatus("error","blocked by database rules");
+      return undefined;
+    });
+  }
+
+  var RULES='{\n  "rules": {\n    "rooms": {\n      "$room": {\n        ".read": true,\n'+
+    '        ".write": true\n      }\n    },\n    "users": {\n      "$uid": {\n'+
+    '        ".read": "$uid === auth.uid",\n        ".write": "$uid === auth.uid"\n'+
+    '      }\n    }\n  }\n}';
+  function showRulesFix(why){
+    if(OVERLAY) return;
+    var s=document.createElement("div"); s.className="scrim";
+    s.innerHTML='<div class="modal" style="max-width:560px"><h4>Database rules need updating</h4>'+
+      "<p>"+esc(why)+" In the Firebase console open <b>Realtime Database &rarr; Rules</b>, "+
+      "replace everything with this, and press Publish.</p>"+
+      '<textarea id="rulesbox" readonly style="min-height:210px;font-family:ui-monospace,monospace;'+
+      'font-size:12.5px">'+esc(RULES)+"</textarea>"+
+      '<div class="row2" style="margin-top:16px;justify-content:flex-end">'+
+      '<button class="btn ghost sm" data-x>Later</button>'+
+      '<button class="btn sm pri" id="copyrules">Copy rules</button></div></div>';
+    document.body.appendChild(s);
+    s.addEventListener("click",function(e){
+      if(e.target===s||e.target.hasAttribute("data-x")) s.remove();
+      if(e.target.id==="copyrules"){
+        var t=$("rulesbox"); t.select();
+        if(navigator.clipboard) navigator.clipboard.writeText(RULES);
+        else { try{ document.execCommand("copy"); }catch(err){} }
+        toast("Rules copied — paste them into Firebase and publish.");
+      }
+    });
   }
   function setStatus(s,t){ if($("dot")){ $("dot").className="dot"+(s?" "+s:""); $("stamp").textContent=t; } }
   function assignColors(){
@@ -1970,6 +2051,39 @@
       msg("","Logging in…");
       authCall("signInWithPassword",u,p).then(function(j){ return afterAuth(j,u); })
         .catch(function(e){ msg("bad",friendly(e.message)); }); });
+    $("dochangepw").addEventListener("click",function(){
+      var np=$("npw").value;
+      if(np.length<6) return msg("bad","New password needs 6+ characters.");
+      if(!auth) return msg("bad","You're not signed in.");
+      msg("","Updating…");
+      fetch(IDP+"update?key="+KEY,{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({idToken:auth.idToken,password:np,returnSecureToken:true})})
+        .then(function(r){ return r.json().then(function(j){
+          if(!r.ok) throw new Error((j.error&&j.error.message)||"failed"); return j; }); })
+        .then(function(j){
+          if(j.idToken){ auth.idToken=j.idToken; lset("mmo-auth",JSON.stringify(auth)); }
+          $("npw").value=""; msg("good",""); toast("Password updated.");
+        })
+        .catch(function(e){
+          var m=e.message||"";
+          if(/TOKEN_EXPIRED|INVALID_ID_TOKEN|CREDENTIAL_TOO_OLD/.test(m))
+            msg("bad","Session too old — log out, log back in, then try again.");
+          else msg("bad",friendly(m));
+        });
+    });
+    $("roomdiag").addEventListener("click",function(){
+      var base=DB+"/rooms/"+encodeURIComponent(ROOM);
+      Promise.all([
+        fetch(base+".json?t="+Date.now()).then(function(r){ return r.status; }),
+        fetch(base+"/players.json?t="+Date.now()).then(function(r){ return r.status; }),
+        fetch(base+"/display.json?t="+Date.now()).then(function(r){ return r.status; })
+      ]).then(function(a){
+        if(a.filter(function(x){ return x===401||x===403; }).length)
+          showRulesFix("Room read "+a[0]+", players "+a[1]+", display "+a[2]+
+            " — anything that isn't 200 is being blocked by your rules.");
+        else toast("Room “"+ROOM+"” is reachable — all three reads returned 200.");
+      }).catch(function(e){ toast("Couldn't reach the database: "+e.message,"bad"); });
+    });
     $("dologout").addEventListener("click",function(){
       auth=null; try{ localStorage.removeItem("mmo-auth"); }catch(e){}
       renderAuth(); toast("Logged out. Everything stays in this browser."); });
